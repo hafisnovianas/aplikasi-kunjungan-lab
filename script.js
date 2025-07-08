@@ -1,7 +1,7 @@
 // javascript.js (Versi Modifikasi untuk Netlify)
 
 // !! PENTING !! Ganti dengan URL Web App Anda dari Langkah 2
-const API_URL = 'https://script.google.com/macros/s/xxxxx/exec'; 
+const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLgrpu7FyZzw2Fl0PA_MupPItiX_y05sW-TaE_XSkyrY58s/exec'; 
 
 let userNIM = null;
 const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
