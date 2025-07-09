@@ -140,22 +140,31 @@ function logout() {
 
 // --- FUNGSI SCANNER ---
 
+// --- FUNGSI SCANNER ---
+
 let html5QrCode;
 function startScanner() {
   const scanButton = document.querySelector('#scanAndPurposeView button');
-  scanButton.style.display = 'none';
-  document.getElementById('reader').style.display = 'block';
+  const readerDiv = document.getElementById('reader');
 
-  html5QrCode = new Html5Qrcode("reader");
-  html5QrCode.start(
-    { facingMode: "environment" }, { fps: 10 },
-    onScanSuccess,
-    (errorMessage) => { /* Abaikan */ }
-  ).catch((err) => {
-    alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
-    scanButton.style.display = 'block';
-    document.getElementById('reader').style.display = 'none';
-  });
+  // 1. Ubah tampilan UI terlebih dahulu
+  scanButton.style.display = 'none';
+  readerDiv.style.display = 'block';
+
+  // 2. Beri jeda singkat sebelum meminta izin kamera
+  setTimeout(() => {
+    html5QrCode = new Html5Qrcode("reader");
+    html5QrCode.start(
+      { facingMode: "environment" }, { fps: 10 },
+      onScanSuccess,
+      (errorMessage) => { /* Abaikan */ }
+    ).catch((err) => {
+      // Jika gagal, kembalikan UI seperti semula
+      alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
+      scanButton.style.display = 'block';
+      readerDiv.style.display = 'none';
+    });
+  }, 200); // Jeda selama 0.2 detik
 }
 
 async function onScanSuccess(decodedText, decodedResult) {
