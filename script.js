@@ -1,25 +1,21 @@
-// javascript.js (Versi Modifikasi untuk Netlify)
-
-// !! PENTING !! Ganti dengan URL Web App Anda dari Langkah 2
+// !! PENTING !! Ganti dengan URL Web App Anda
 const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLgrpu7FyZzw2Fl0PA_MupPItiX_y05sW-TaE_XSkyrY58s/exec'; 
 
 let userNIM = null;
 const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
 
-// Fungsi untuk memanggil API
+// --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
+
 async function callApi(action, payload) {
   const response = await fetch(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8', // Apps Script doPost seringkali lebih stabil dengan text/plain
-    },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ action, payload }),
     redirect: 'follow'
   });
   return response.json();
 }
 
-// Fungsi Pendaftaran (diubah menggunakan fetch)
 async function registerUser() {
   const nim = document.getElementById('nim_reg').value;
   const nama = document.getElementById('nama_reg').value;
@@ -39,7 +35,6 @@ async function registerUser() {
   try {
     const payload = { nim, nama, prodi, password };
     const response = await callApi('register', payload);
-    
     const nimInput = document.getElementById('nim_reg');
     const nimWarning = document.getElementById('nimWarning');
 
@@ -59,7 +54,6 @@ async function registerUser() {
   }
 }
 
-// Fungsi Login (diubah menggunakan fetch)
 async function login(event) {
   const nim = document.getElementById('nimInput').value;
   const password = document.getElementById('passwordInput').value;
@@ -75,7 +69,6 @@ async function login(event) {
   try {
     const payload = { nim, password };
     const response = await callApi('login', payload);
-
     const nimInput = document.getElementById('nimInput');
     const loginWarning = document.getElementById('loginWarning');
 
@@ -83,7 +76,7 @@ async function login(event) {
       userNIM = nim;
       nimInput.classList.remove('is-invalid');
       loginWarning.style.display = 'none';
-      showScanView(nim, response.nama);
+      showScanAndPurposeView(response.nama);
     } else {
       nimInput.classList.add('is-invalid');
       loginWarning.innerText = response.message;
@@ -97,15 +90,88 @@ async function login(event) {
   }
 }
 
-// Fungsi Submit Keperluan (diubah menggunakan fetch)
-async function submitPurpose() {
+// --- FUNGSI TAMPILAN (VIEW) ---
+
+function showLoginView() {
+  document.getElementById('loginView').style.display = 'block';
+  document.getElementById('registerView').style.display = 'none';
+  document.getElementById('successView').style.display = 'none';
+  document.getElementById('registerSuccessView').style.display = 'none';
+  document.getElementById('scanAndPurposeView').style.display = 'none';
+
+  const nimLoginInput = document.getElementById('nimInput');
+  nimLoginInput.addEventListener('input', function() {
+    document.getElementById('loginWarning').style.display = 'none';
+    nimLoginInput.classList.remove('is-invalid');
+  });
+}
+
+function showRegisterView() {
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('registerView').style.display = 'block';
+  document.getElementById('registerSuccessView').style.display = 'none';
+
+  const nimInput = document.getElementById('nim_reg');
+  nimInput.addEventListener('input', function() {
+    document.getElementById('nimWarning').style.display = 'none';
+    nimInput.classList.remove('is-invalid');
+  });
+}
+
+function showScanAndPurposeView(nama) {
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('successView').style.display = 'none';
+  document.getElementById('scanAndPurposeView').style.display = 'block';
+  document.getElementById('welcomeMessageCombined').innerText = `Selamat Datang, ${nama}!`;
+
+  document.querySelector('#scanAndPurposeView button').style.display = 'block';
+  document.getElementById('reader').style.display = 'none';
+}
+
+function logout() {
+  userNIM = null;
+  if (html5QrCode && html5QrCode.isScanning) {
+    html5QrCode.stop();
+  }
+  showLoginView();
+  document.getElementById('nimInput').value = '';
+  document.getElementById('passwordInput').value = '';
+}
+
+// --- FUNGSI SCANNER ---
+
+let html5QrCode;
+function startScanner() {
+  const scanButton = document.querySelector('#scanAndPurposeView button');
+  scanButton.style.display = 'none';
+  document.getElementById('reader').style.display = 'block';
+
+  html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start(
+    { facingMode: "environment" }, { fps: 10 },
+    onScanSuccess,
+    (errorMessage) => { /* Abaikan */ }
+  ).catch((err) => {
+    alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
+    scanButton.style.display = 'block';
+    document.getElementById('reader').style.display = 'none';
+  });
+}
+
+async function onScanSuccess(decodedText, decodedResult) {
+  if (decodedText !== validQRCodeText) { return; }
+
+  await html5QrCode.stop();
   const keperluan = document.getElementById('purposeInput').value;
-  if (!keperluan) {
-    alert('Harap isi keperluan Anda.');
+
+  if (!keperluan || keperluan.trim() === '') {
+    alert('Harap isi keperluan kunjungan Anda terlebih dahulu!');
+    document.querySelector('#scanAndPurposeView button').style.display = 'block';
+    document.getElementById('reader').style.display = 'none';
     return;
   }
 
-  document.getElementById('purposeView').style.display = 'none';
+  document.getElementById('scanAndPurposeView').style.display = 'none';
   const successDiv = document.getElementById('successMessage');
   successDiv.className = 'alert alert-info';
   successDiv.innerText = 'Mengirim data...';
@@ -126,78 +192,3 @@ async function submitPurpose() {
     successDiv.innerText = 'Gagal mengirim data: ' + error.message;
   }
 }
-
-
-// --- FUNGSI TAMPILAN DAN SCANNER (TIDAK ADA PERUBAHAN) ---
-// Semua fungsi di bawah ini tetap sama persis seperti kode Anda sebelumnya.
-// showLoginView, showRegisterView, showScanView, logout, startScanner, onScanSuccess, onScanError
-
-function showLoginView() {
-  document.getElementById('loginView').style.display = 'block';
-  document.getElementById('registerView').style.display = 'none';
-  document.getElementById('scanView').style.display = 'none';
-  document.getElementById('successView').style.display = 'none';
-  document.getElementById('registerSuccessView').style.display = 'none';
-  document.getElementById('purposeView').style.display = 'none';
-
-  const nimLoginInput = document.getElementById('nimInput');
-  nimLoginInput.addEventListener('input', function() {
-    document.getElementById('loginWarning').style.display = 'none';
-    nimLoginInput.classList.remove('is-invalid');
-  });
-}
-
-function showRegisterView() {
-  document.getElementById('loginView').style.display = 'none';
-  document.getElementById('registerView').style.display = 'block';
-  document.getElementById('scanView').style.display = 'none';
-  document.getElementById('registerSuccessView').style.display = 'none';
-
-  const nimInput = document.getElementById('nim_reg');
-  nimInput.addEventListener('input', function() {
-    document.getElementById('nimWarning').style.display = 'none';
-    nimInput.classList.remove('is-invalid');
-  });
-}
-
-function showScanView(nim, nama) {
-  document.getElementById('loginView').style.display = 'none';
-  document.getElementById('registerView').style.display = 'none';
-  document.getElementById('scanView').style.display = 'block';
-  document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
-  startScanner();
-}
-
-function logout() {
-  userNIM = null;
-  if (html5QrCode && html5QrCode.isScanning) {
-    html5QrCode.stop();
-  }
-  showLoginView();
-  document.getElementById('nimInput').value = '';
-  document.getElementById('passwordInput').value = ''; // Tambahkan ini untuk membersihkan field password
-}
-
-let html5QrCode;
-function startScanner() {
-  html5QrCode = new Html5Qrcode("reader");
-  html5QrCode.start(
-    { facingMode: "environment" },
-    { fps: 10 },
-    onScanSuccess,
-    (errorMessage) => { /* Abaikan */ }
-  ).catch((err) => {
-    alert("Kamera tidak dapat diakses. Pastikan Anda sudah memberikan izin.");
-  });
-}
-
-function onScanSuccess(decodedText, decodedResult) {
-  if (decodedText === validQRCodeText) {
-    html5QrCode.stop().then(ignore => {
-      document.getElementById('scanView').style.display = 'none';
-      document.getElementById('purposeView').style.display = 'block';
-    }).catch(err => console.error("Gagal menghentikan kamera.", err));
-  }
-}
-
-function onScanError(errorMessage) { /* abaikan */ }
