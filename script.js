@@ -126,6 +126,10 @@ function showScanAndPurposeView(nama) {
 
   document.querySelector('#scanAndPurposeView button').style.display = 'block';
   document.getElementById('reader').style.display = 'none';
+
+  setTimeout(() => {
+    document.getElementById('purposeInput').focus();
+  }, 200);
 }
 
 function logout() {
@@ -137,8 +141,6 @@ function logout() {
   document.getElementById('nimInput').value = '';
   document.getElementById('passwordInput').value = '';
 }
-
-// --- FUNGSI SCANNER ---
 
 // --- FUNGSI SCANNER ---
 
