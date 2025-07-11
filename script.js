@@ -55,6 +55,10 @@ async function registerUser() {
 }
 
 async function login(event) {
+  const nimInput = document.getElementById('nimInput');
+  nimInput.focus();
+  nimInput.blur();
+
   const nim = document.getElementById('nimInput').value;
   const password = document.getElementById('passwordInput').value;
   if (!nim || !password) {
