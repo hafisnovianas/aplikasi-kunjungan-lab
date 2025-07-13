@@ -144,6 +144,7 @@ function logout() {
 // --- FUNGSI SCANNER ---
 
 let html5QrCode;
+/*
 function startScanner() {
   const scanButton = document.querySelector('#scanAndPurposeView button');
   const readerDiv = document.getElementById('reader');
@@ -158,7 +159,7 @@ function startScanner() {
     html5QrCode.start(
       { facingMode: "environment" }, { fps: 10 },
       onScanSuccess,
-      (errorMessage) => { /* Abaikan */ }
+      (errorMessage) => { Abaikan }
     ).catch((err) => {
       // Jika gagal, kembalikan UI seperti semula
       alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
@@ -202,3 +203,4 @@ async function onScanSuccess(decodedText, decodedResult) {
     successDiv.innerText = 'Gagal mengirim data: ' + error.message;
   }
 }
+*/
