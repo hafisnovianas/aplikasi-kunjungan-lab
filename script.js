@@ -5,7 +5,6 @@ let userNIM = null;
 const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
 
 // --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
-
 async function callApi(action, payload) {
   const response = await fetch(API_URL, {
     method: 'POST',
