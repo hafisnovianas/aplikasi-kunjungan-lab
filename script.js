@@ -129,7 +129,7 @@ function showScanAndPurposeView(nama) {
   document.getElementById('welcomeMessageCombined').innerText = `Selamat Datang, ${nama}!`;
 
   document.querySelector('#scanAndPurposeView button').style.display = 'block';
-  document.getElementById('reader').style.display = 'none';
+  //document.getElementById('reader').style.display = 'none';
 }
 
 function logout() {
