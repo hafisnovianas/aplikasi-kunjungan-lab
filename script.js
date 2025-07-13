@@ -5,6 +5,7 @@ let userNIM = null;
 const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
 
 // --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
+
 async function callApi(action, payload) {
   const response = await fetch(API_URL, {
     method: 'POST',
@@ -54,10 +55,6 @@ async function registerUser() {
 }
 
 async function login(event) {
-  const nimInput = document.getElementById('nimInput');
-  nimInput.focus();
-  nimInput.blur();
-
   const nim = document.getElementById('nimInput').value;
   const password = document.getElementById('passwordInput').value;
   if (!nim || !password) {
@@ -125,10 +122,10 @@ function showScanAndPurposeView(nama) {
   document.getElementById('loginView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
   document.getElementById('scanAndPurposeView').style.display = 'block';
-  //document.getElementById('welcomeMessageCombined').innerText = `Selamat Datang, ${nama}!`;
+  document.getElementById('welcomeMessageCombined').innerText = `Selamat Datang, ${nama}!`;
 
-  //document.querySelector('#scanAndPurposeView button').style.display = 'none';
-  //document.getElementById('reader').style.display = 'none';
+  document.querySelector('#scanAndPurposeView button').style.display = 'block';
+  document.getElementById('reader').style.display = 'none';
 }
 
 function logout() {
@@ -144,7 +141,6 @@ function logout() {
 // --- FUNGSI SCANNER ---
 
 let html5QrCode;
-/*
 function startScanner() {
   const scanButton = document.querySelector('#scanAndPurposeView button');
   const readerDiv = document.getElementById('reader');
@@ -159,7 +155,7 @@ function startScanner() {
     html5QrCode.start(
       { facingMode: "environment" }, { fps: 10 },
       onScanSuccess,
-      (errorMessage) => { Abaikan }
+      (errorMessage) => { /* Abaikan */ }
     ).catch((err) => {
       // Jika gagal, kembalikan UI seperti semula
       alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
@@ -203,4 +199,3 @@ async function onScanSuccess(decodedText, decodedResult) {
     successDiv.innerText = 'Gagal mengirim data: ' + error.message;
   }
 }
-*/
