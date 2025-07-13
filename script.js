@@ -127,7 +127,7 @@ function showScanAndPurposeView(nama) {
   document.getElementById('scanAndPurposeView').style.display = 'block';
   document.getElementById('welcomeMessageCombined').innerText = `Selamat Datang, ${nama}!`;
 
-  document.querySelector('#scanAndPurposeView button').style.display = 'block';
+  document.querySelector('#scanAndPurposeView button').style.display = 'none';
   document.getElementById('reader').style.display = 'none';
 }
 
