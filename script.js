@@ -76,7 +76,7 @@ async function login(event) {
       userNIM = nim;
       nimInput.classList.remove('is-invalid');
       loginWarning.style.display = 'none';
-      showScanAndPurposeView(response.nama);
+      showScanView(response.nama); // Panggil halaman scan setelah login
     } else {
       nimInput.classList.add('is-invalid');
       loginWarning.innerText = response.message;
@@ -97,7 +97,8 @@ function showLoginView() {
   document.getElementById('registerView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
   document.getElementById('registerSuccessView').style.display = 'none';
-  document.getElementById('scanAndPurposeView').style.display = 'none';
+  document.getElementById('scanView').style.display = 'none';
+  document.getElementById('purposeView').style.display = 'none';
 
   const nimLoginInput = document.getElementById('nimInput');
   nimLoginInput.addEventListener('input', function() {
@@ -118,84 +119,91 @@ function showRegisterView() {
   });
 }
 
-function showScanAndPurposeView(nama) {
-  document.getElementById('loginView').style.display = 'none';
-  document.getElementById('successView').style.display = 'none';
-  document.getElementById('scanAndPurposeView').style.display = 'block';
-  document.getElementById('welcomeMessageCombined').innerText = `Selamat Datang, ${nama}!`;
+function showScanView(nama) {
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('purposeView').style.display = 'none';
+    document.getElementById('scanView').style.display = 'block';
+    document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
+}
 
-  document.querySelector('#scanAndPurposeViewx button').style.display = 'block';
-  document.getElementById('reader').style.display = 'none';
+async function submitPurpose() {
+    const keperluan = document.getElementById('purposeInput').value;
+    if (!keperluan.trim()) {
+        alert('Harap isi keperluan Anda!');
+        return;
+    }
+
+    document.getElementById('purposeView').style.display = 'none';
+    const successDiv = document.getElementById('successMessage');
+    successDiv.className = 'alert alert-info';
+    successDiv.innerText = 'Mengirim data...';
+    document.getElementById('successView').style.display = 'block';
+
+    try {
+        const payload = { nim: userNIM, keperluan: keperluan };
+        const response = await callApi('recordVisit', payload);
+        if (response.status === 'success') {
+            successDiv.className = 'alert alert-success';
+        } else {
+            successDiv.className = 'alert alert-danger';
+        }
+        successDiv.innerText = response.message;
+    } catch (error) {
+        successDiv.className = 'alert alert-danger';
+        successDiv.innerText = 'Gagal mengirim data: ' + error.message;
+    }
 }
 
 function logout() {
   userNIM = null;
   if (html5QrCode && html5QrCode.isScanning) {
-    html5QrCode.stop();
+    html5QrCode.stop().catch(err => console.error("Gagal menghentikan kamera saat logout.", err));
   }
   showLoginView();
   document.getElementById('nimInput').value = '';
   document.getElementById('passwordInput').value = '';
 }
 
-// --- FUNGSI SCANNER ---
+
+// --- FUNGSI SCANNER (Metode Live Camera) ---
 
 let html5QrCode;
 function startScanner() {
-  const scanButton = document.querySelector('#scanAndPurposeView button');
+  const scanButton = document.querySelector('#scanView button');
   const readerDiv = document.getElementById('reader');
 
-  // 1. Ubah tampilan UI terlebih dahulu
-  scanButton.style.display = 'none';
-  readerDiv.style.display = 'block';
+  scanButton.style.display = 'none'; // Sembunyikan tombol "Mulai Pindai"
+  readerDiv.style.display = 'block';  // Tampilkan area untuk video kamera
 
-  // 2. Beri jeda singkat sebelum meminta izin kamera
-  setTimeout(() => {
-    html5QrCode = new Html5Qrcode("reader");
-    html5QrCode.start(
-      { facingMode: "environment" }, { fps: 10 },
-      onScanSuccess,
-      (errorMessage) => { /* Abaikan */ }
-    ).catch((err) => {
-      // Jika gagal, kembalikan UI seperti semula
-      alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
-      scanButton.style.display = 'block';
-      readerDiv.style.display = 'none';
-    });
-  }, 200); // Jeda selama 0.2 detik
+  html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start(
+    { facingMode: "environment" }, { fps: 10 },
+    onScanSuccess, // Fungsi yang akan dipanggil jika scan berhasil
+    (errorMessage) => { /* Abaikan error selama scanning */ }
+  ).catch((err) => {
+    alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
+    scanButton.style.display = 'block';
+    readerDiv.style.display = 'none';
+  });
 }
 
-async function onScanSuccess(decodedText, decodedResult) {
-  if (decodedText !== validQRCodeText) { return; }
-
-  await html5QrCode.stop();
-  const keperluan = document.getElementById('purposeInput').value;
-
-  if (!keperluan || keperluan.trim() === '') {
-    alert('Harap isi keperluan kunjungan Anda terlebih dahulu!');
-    document.querySelector('#scanAndPurposeView button').style.display = 'block';
-    document.getElementById('reader').style.display = 'none';
+function onScanSuccess(decodedText, decodedResult) {
+  if (decodedText !== validQRCodeText) {
+    // Abaikan jika QR Code tidak cocok, biarkan scanner terus berjalan
     return;
   }
 
-  document.getElementById('scanAndPurposeView').style.display = 'none';
-  const successDiv = document.getElementById('successMessage');
-  successDiv.className = 'alert alert-info';
-  successDiv.innerText = 'Mengirim data...';
-  document.getElementById('successView').style.display = 'block';
-
-  try {
-    const payload = { nim: userNIM, keperluan: keperluan };
-    const response = await callApi('recordVisit', payload);
-
-    if (response.status === 'success') {
-      successDiv.className = 'alert alert-success';
-    } else {
-      successDiv.className = 'alert alert-danger';
-    }
-    successDiv.innerText = response.message;
-  } catch (error) {
-    successDiv.className = 'alert alert-danger';
-    successDiv.innerText = 'Gagal mengirim data: ' + error.message;
-  }
+  // Jika QR Code cocok, hentikan kamera
+  html5QrCode.stop().then(ignore => {
+    // Tampilkan halaman untuk mengisi keperluan
+    document.getElementById('scanView').style.display = 'none';
+    document.getElementById('purposeView').style.display = 'block';
+    // Fokuskan ke textarea agar keyboard langsung muncul
+    document.getElementById('purposeInput').focus();
+  }).catch(err => {
+    console.error("Gagal menghentikan kamera setelah scan.", err);
+    // Tetap lanjutkan meskipun kamera gagal berhenti
+    document.getElementById('scanView').style.display = 'none';
+    document.getElementById('purposeView').style.display = 'block';
+  });
 }

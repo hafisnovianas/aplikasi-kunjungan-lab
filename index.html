@@ -35,7 +35,7 @@
   </head>
   <body>
     <div class="container">
-      <h2 class="text-center mb-4">Aplikasi Kunjungan Labn</h2>
+      <h2 class="text-center mb-4">Aplikasi Kunjungan Labw</h2>
 
       <div id="loginView">
         <h4 class="mb-3">Login Mahasiswa</h4>
@@ -89,34 +89,24 @@
         <button class="btn btn-primary" onclick="showLoginView()">Ke Halaman Login</button>
       </div>
 
-      <div id="scanAndPurposeView" style="display:none;">
-        <h4 id="welcomeMessageCombined" class="mb-3"></h4>
-        
-        <div class="mb-3">
-          <label for="purposeInput" class="form-label"><b>Apa Keperluan Anda?</b></label>
-          <p class="form-text mt-0 mb-2">Silakan isi keperluan kunjungan Anda sebelum memindai QR.</p>
-          <textarea class="form-control" id="purposeInput" rows="3" placeholder="Contoh: Mengerjakan tugas akhir, praktikum, dll."></textarea>
-        </div>
-
-        <!--
+      <div id="scanView" style="display:none;">
+        <h4 id="welcomeMessage" class="mb-3"></h4>
+        <p>Arahkan kamera ke QR Code yang ada di Lab.</p>
         <div class="d-grid gap-2">
-          <button class="btn btn-success btn-lg" onclick="startScanner()">
-            Pindai QR Lab untuk Konfirmasi
-          </button>
+            <button class="btn btn-success btn-lg" onclick="startScanner()">Mulai Pindai QR</button>
         </div>
-        
-        <div id="reader" class="mt-3" style="display:none;"></div>
-      -->
+        <div id="reader" class="mt-3" style="display:none;"></div> 
       </div>
-
-      <div id="scanAndPurposeViewx" style="display:none;">
-        <div class="d-grid gap-2">
-          <button class="btn btn-success btn-lg" onclick="startScanner()">
-            Pindai QR Lab untuk Konfirmasi
-          </button>
-        </div>
-        
-        <div id="reader" class="mt-3" style="display:none;"></div>
+      
+      <div id="purposeView" style="display:none;">
+          <h4 class="mb-3">Scan Berhasil!</h4>
+          <p>Sekarang, silakan isi keperluan kunjungan Anda.</p>
+          <div class="mb-3">
+              <textarea class="form-control" id="purposeInput" rows="3" placeholder="Contoh: Mengerjakan tugas akhir, praktikum, dll."></textarea>
+          </div>
+          <div class="d-grid gap-2">
+              <button class="btn btn-primary" onclick="submitPurpose()">Submit Kunjungan</button>
+          </div>
       </div>
 
       <div id="successView" style="display:none;" class="text-center">
