@@ -193,21 +193,22 @@ function startScanner() {
 
 function onScanSuccess(decodedText, decodedResult) {
   if (decodedText !== validQRCodeText) {
-    // Abaikan jika QR Code tidak cocok, biarkan scanner terus berjalan
-    return;
+      return;
   }
 
-  // Jika QR Code cocok, hentikan kamera
   html5QrCode.stop().then(ignore => {
-    // Tampilkan halaman untuk mengisi keperluan
-    document.getElementById('scanView').style.display = 'none';
-    document.getElementById('purposeView').style.display = 'block';
-    // Fokuskan ke textarea agar keyboard langsung muncul
-    document.getElementById('purposeInput').focus();
+      document.getElementById('scanView').style.display = 'none';
+      document.getElementById('purposeView').style.display = 'block';
+
+      // --- PERBAIKAN FINAL DI SINI ---
+      // Beri jeda singkat untuk memastikan elemen sudah digambar sebelum difokuskan
+      setTimeout(() => {
+          document.getElementById('purposeInput').focus();
+      }, 100); // Jeda 0.1 detik sudah sangat aman
+      
   }).catch(err => {
-    console.error("Gagal menghentikan kamera setelah scan.", err);
-    // Tetap lanjutkan meskipun kamera gagal berhenti
-    document.getElementById('scanView').style.display = 'none';
-    document.getElementById('purposeView').style.display = 'block';
+      console.error("Gagal menghentikan kamera setelah scan.", err);
+      document.getElementById('scanView').style.display = 'none';
+      document.getElementById('purposeView').style.display = 'block';
   });
 }
