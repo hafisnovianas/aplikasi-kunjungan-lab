@@ -55,7 +55,11 @@ async function registerUser() {
 }
 
 async function login(event) {
-  const nim = document.getElementById('nimInput').value;
+  const nimInput = document.getElementById('nimInput');
+  nimInput.focus();
+  nimInput.blur();
+
+  const nim = nimInput.value;
   const password = document.getElementById('passwordInput').value;
   if (!nim || !password) {
     alert('NIM dan Password tidak boleh kosong.');
@@ -76,7 +80,7 @@ async function login(event) {
       userNIM = nim;
       nimInput.classList.remove('is-invalid');
       loginWarning.style.display = 'none';
-      showScanView(response.nama); // Panggil halaman scan setelah login
+      showScanView(response.nama);
     } else {
       nimInput.classList.add('is-invalid');
       loginWarning.innerText = response.message;
