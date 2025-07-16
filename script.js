@@ -55,11 +55,7 @@ async function registerUser() {
 }
 
 async function login(event) {
-  // Jurus 1: "Bangunkan" konteks keyboard di awal
   const nimInput = document.getElementById('nimInput');
-  nimInput.focus();
-  nimInput.blur();
-
   const nim = nimInput.value;
   const password = document.getElementById('passwordInput').value;
   if (!nim || !password) {
@@ -154,53 +150,53 @@ async function submitPurpose() {
 
 function logout() {
   userNIM = null;
-  if (html5QrCode && html5QrCode.isScanning) {
-    html5QrCode.stop().catch(err => console.error("Gagal menghentikan kamera saat logout.", err));
-  }
   showLoginView();
   document.getElementById('nimInput').value = '';
   document.getElementById('passwordInput').value = '';
 }
 
 
-// --- FUNGSI SCANNER (Metode Live Camera) ---
+// --- FUNGSI SCANNER (Metode File Capture) ---
 
-let html5QrCode;
-function startScanner() {
-  const scanButton = document.querySelector('#scanView button');
-  const readerDiv = document.getElementById('reader');
+const html5QrCode = new Html5Qrcode("reader");
 
-  scanButton.style.display = 'none';
-  readerDiv.style.display = 'block';
-
-  html5QrCode = new Html5Qrcode("reader");
-  html5QrCode.start(
-    { facingMode: "environment" }, { fps: 10 },
-    onScanSuccess,
-    (errorMessage) => { /* Abaikan */ }
-  ).catch((err) => {
-    alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
-    scanButton.style.display = 'block';
-    readerDiv.style.display = 'none';
-  });
+function triggerFileUpload() {
+    document.getElementById('qr-input-file').click();
 }
 
-function onScanSuccess(decodedText, decodedResult) {
-  if (decodedText !== validQRCodeText) { return; }
+document.getElementById('qr-input-file').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) { return; }
 
-  html5QrCode.stop().then(ignore => {
+    const scanButton = document.querySelector('#scanView button');
+    scanButton.disabled = true;
+    scanButton.innerText = 'Memproses Gambar...';
+
+    html5QrCode.scanFile(file, true)
+    .then(decodedText => {
+        handleSuccessfulScan(decodedText);
+    })
+    .catch(err => {
+        alert(`Error: Tidak dapat menemukan QR Code di gambar. Silakan coba lagi.`);
+        scanButton.disabled = false;
+        scanButton.innerText = 'Mulai Pindai QR';
+    });
+});
+
+function handleSuccessfulScan(decodedText) {
+    if (decodedText !== validQRCodeText) {
+        alert("QR Code tidak valid.");
+        const scanButton = document.querySelector('#scanView button');
+        scanButton.disabled = false;
+        scanButton.innerText = 'Mulai Pindai QR';
+        return;
+    }
+    
     document.getElementById('scanView').style.display = 'none';
     document.getElementById('purposeView').style.display = 'block';
-
-    // Jurus 2: Paksa fokus dengan jeda singkat untuk memastikan elemen siap
+    
+    // Memberi fokus ke textarea agar keyboard langsung muncul
     setTimeout(() => {
         document.getElementById('purposeInput').focus();
-    }, 100);
-
-  }).catch(err => {
-    console.error("Gagal menghentikan kamera setelah scan.", err);
-    // Tetap lanjutkan meskipun kamera gagal berhenti
-    document.getElementById('scanView').style.display = 'none';
-    document.getElementById('purposeView').style.display = 'block';
-  });
+    }, 100); 
 }
