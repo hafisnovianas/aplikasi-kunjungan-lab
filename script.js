@@ -169,6 +169,7 @@ function logout() {
   userNIM = null;
   showLoginView();
   document.getElementById('passwordInput').value = '';
+  document.getElementById('passwordInput').focus();
 
   const scanButton = document.querySelector('#scanView button');
   if (scanButton) {
