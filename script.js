@@ -168,7 +168,6 @@ async function submitPurpose() {
 function logout() {
   userNIM = null;
   showLoginView();
-  document.getElementById('nimInput').value = '';
   document.getElementById('passwordInput').value = '';
 
   const scanButton = document.querySelector('#scanView button');
