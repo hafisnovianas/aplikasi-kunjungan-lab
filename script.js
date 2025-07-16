@@ -124,31 +124,45 @@ function showScanView(nama) {
 }
 
 async function submitPurpose() {
-    const keperluan = document.getElementById('purposeInput').value;
-    if (!keperluan.trim()) {
-        alert('Harap isi keperluan Anda!');
-        return;
-    }
+  const keperluan = document.getElementById('purposeInput').value;
+  if (!keperluan.trim()) {
+      alert('Harap isi keperluan Anda!');
+      return;
+  }
 
-    document.getElementById('purposeView').style.display = 'none';
-    const successDiv = document.getElementById('successMessage');
-    successDiv.className = 'alert alert-info';
-    successDiv.innerText = 'Mengirim data...';
-    document.getElementById('successView').style.display = 'block';
+  // Ambil elemen tombol untuk dimanipulasi
+  const submitButton = document.querySelector('#purposeView button');
+  
+  // Non-aktifkan tombol dan textarea, lalu ubah teks tombol
+  submitButton.disabled = true;
+  submitButton.innerText = 'Mengirim data...';
+  document.getElementById('purposeInput').disabled = true;
 
-    try {
-        const payload = { nim: userNIM, keperluan: keperluan };
-        const response = await callApi('recordVisit', payload);
-        if (response.status === 'success') {
-            successDiv.className = 'alert alert-success';
-        } else {
-            successDiv.className = 'alert alert-danger';
-        }
-        successDiv.innerText = response.message;
-    } catch (error) {
-        successDiv.className = 'alert alert-danger';
-        successDiv.innerText = 'Gagal mengirim data: ' + error.message;
-    }
+  try {
+      const payload = { nim: userNIM, keperluan: keperluan };
+      const response = await callApi('recordVisit', payload);
+
+      if (response.status === 'success') {
+          // Jika berhasil, baru pindah ke halaman sukses
+          document.getElementById('purposeView').style.display = 'none';
+          const successDiv = document.getElementById('successMessage');
+          successDiv.className = 'alert alert-success';
+          successDiv.innerText = response.message;
+          document.getElementById('successView').style.display = 'block';
+      } else {
+          // Jika gagal dari server, tampilkan pesan error dan aktifkan kembali form
+          alert('Terjadi kesalahan: ' + response.message);
+          submitButton.disabled = false;
+          submitButton.innerText = 'Submit Kunjungan';
+          document.getElementById('purposeInput').disabled = false;
+      }
+  } catch (error) {
+      // Jika terjadi error koneksi, tampilkan pesan dan aktifkan kembali form
+      alert('Gagal terhubung ke server. Silakan coba lagi.');
+      submitButton.disabled = false;
+      submitButton.innerText = 'Submit Kunjungan';
+      document.getElementById('purposeInput').disabled = false;
+  }
 }
 
 function logout() {
