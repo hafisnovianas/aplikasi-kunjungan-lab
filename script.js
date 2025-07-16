@@ -76,6 +76,9 @@ async function login(event) {
       userNIM = nim;
       nimInput.classList.remove('is-invalid');
       loginWarning.style.display = 'none';
+
+      localStorage.setItem('lastUsedNIM', nim);
+
       showScanView(response.nama);
     } else {
       nimInput.classList.add('is-invalid');
@@ -210,3 +213,14 @@ function handleSuccessfulScan(decodedText) {
         document.getElementById('purposeInput').focus();
     }, 100); 
 }
+
+// --- LOGIKA SAAT HALAMAN DIMUAT ---
+document.addEventListener('DOMContentLoaded', () => {
+  const lastNIM = localStorage.getItem('lastUsedNIM');
+  if (lastNIM) {
+    const nimInput = document.getElementById('nimInput');
+    nimInput.value = lastNIM;
+    // Untuk kenyamanan, langsung fokuskan ke field password
+    document.getElementById('passwordInput').focus();
+  }
+});
