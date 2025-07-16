@@ -159,6 +159,8 @@ function logout() {
     scanButton.disabled = false;
     scanButton.innerText = 'Mulai Pindai QR';
   }
+
+  document.getElementById('qr-input-file').value = null;
 }
 
 
@@ -186,8 +188,11 @@ document.getElementById('qr-input-file').addEventListener('change', e => {
         alert(`Error: Tidak dapat menemukan QR Code di gambar. Silakan coba lagi.`);
         scanButton.disabled = false;
         scanButton.innerText = 'Mulai Pindai QR';
+    })
+    .finally(() => {
+      e.target.value = null;
     });
-});
+  });
 
 function handleSuccessfulScan(decodedText) {
     if (decodedText !== validQRCodeText) {
