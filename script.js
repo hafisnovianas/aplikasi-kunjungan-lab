@@ -1,4 +1,4 @@
-// !! PENTING !! Ganti dengan URL Web App Anda
+// !! PENTING !! URL Web App Anda
 const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLgrpu7FyZzw2Fl0PA_MupPItiX_y05sW-TaE_XSkyrY58s/exec'; 
 
 let userNIM = null;
@@ -55,6 +55,7 @@ async function registerUser() {
 }
 
 async function login(event) {
+  // Jurus 1: "Bangunkan" konteks keyboard di awal
   const nimInput = document.getElementById('nimInput');
   nimInput.focus();
   nimInput.blur();
@@ -73,7 +74,6 @@ async function login(event) {
   try {
     const payload = { nim, password };
     const response = await callApi('login', payload);
-    const nimInput = document.getElementById('nimInput');
     const loginWarning = document.getElementById('loginWarning');
 
     if (response.status === 'success') {
@@ -115,12 +115,6 @@ function showRegisterView() {
   document.getElementById('loginView').style.display = 'none';
   document.getElementById('registerView').style.display = 'block';
   document.getElementById('registerSuccessView').style.display = 'none';
-
-  const nimInput = document.getElementById('nim_reg');
-  nimInput.addEventListener('input', function() {
-    document.getElementById('nimWarning').style.display = 'none';
-    nimInput.classList.remove('is-invalid');
-  });
 }
 
 function showScanView(nama) {
@@ -176,14 +170,14 @@ function startScanner() {
   const scanButton = document.querySelector('#scanView button');
   const readerDiv = document.getElementById('reader');
 
-  scanButton.style.display = 'none'; // Sembunyikan tombol "Mulai Pindai"
-  readerDiv.style.display = 'block';  // Tampilkan area untuk video kamera
+  scanButton.style.display = 'none';
+  readerDiv.style.display = 'block';
 
   html5QrCode = new Html5Qrcode("reader");
   html5QrCode.start(
     { facingMode: "environment" }, { fps: 10 },
-    onScanSuccess, // Fungsi yang akan dipanggil jika scan berhasil
-    (errorMessage) => { /* Abaikan error selama scanning */ }
+    onScanSuccess,
+    (errorMessage) => { /* Abaikan */ }
   ).catch((err) => {
     alert("Gagal mengakses kamera. Pastikan Anda sudah memberikan izin.");
     scanButton.style.display = 'block';
@@ -192,23 +186,21 @@ function startScanner() {
 }
 
 function onScanSuccess(decodedText, decodedResult) {
-  if (decodedText !== validQRCodeText) {
-      return;
-  }
+  if (decodedText !== validQRCodeText) { return; }
 
   html5QrCode.stop().then(ignore => {
-      document.getElementById('scanView').style.display = 'none';
-      document.getElementById('purposeView').style.display = 'block';
+    document.getElementById('scanView').style.display = 'none';
+    document.getElementById('purposeView').style.display = 'block';
 
-      // --- PERBAIKAN FINAL DI SINI ---
-      // Beri jeda singkat untuk memastikan elemen sudah digambar sebelum difokuskan
-      setTimeout(() => {
-          document.getElementById('purposeInput').focus();
-      }, 100); // Jeda 0.1 detik sudah sangat aman
-      
+    // Jurus 2: Paksa fokus dengan jeda singkat untuk memastikan elemen siap
+    setTimeout(() => {
+        document.getElementById('purposeInput').focus();
+    }, 100);
+
   }).catch(err => {
-      console.error("Gagal menghentikan kamera setelah scan.", err);
-      document.getElementById('scanView').style.display = 'none';
-      document.getElementById('purposeView').style.display = 'block';
+    console.error("Gagal menghentikan kamera setelah scan.", err);
+    // Tetap lanjutkan meskipun kamera gagal berhenti
+    document.getElementById('scanView').style.display = 'none';
+    document.getElementById('purposeView').style.display = 'block';
   });
 }
