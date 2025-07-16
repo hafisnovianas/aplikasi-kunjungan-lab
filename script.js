@@ -166,8 +166,6 @@ function logout() {
 
 // --- FUNGSI SCANNER (Metode File Capture) ---
 
-const html5QrCode = new Html5Qrcode("reader");
-
 function triggerFileUpload() {
     document.getElementById('qr-input-file').click();
 }
@@ -180,6 +178,7 @@ document.getElementById('qr-input-file').addEventListener('change', e => {
     scanButton.disabled = true;
     scanButton.innerText = 'Memproses Gambar...';
 
+    const html5QrCode = new Html5Qrcode("reader");
     html5QrCode.scanFile(file, true)
     .then(decodedText => {
         handleSuccessfulScan(decodedText);
