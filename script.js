@@ -153,6 +153,12 @@ function logout() {
   showLoginView();
   document.getElementById('nimInput').value = '';
   document.getElementById('passwordInput').value = '';
+
+  const scanButton = document.querySelector('#scanView button');
+  if (scanButton) {
+    scanButton.disabled = false;
+    scanButton.innerText = 'Mulai Pindai QR';
+  }
 }
 
 
