@@ -22,7 +22,7 @@
   </head>
   <body>
     <div class="container">
-      <h2 class="text-center mb-4">Aplikasi Kunjungan Labv</h2>
+      <h2 class="text-center mb-4">Aplikasi Kunjungan Labz</h2>
 
       <div id="loginView">
         <h4 class="mb-3">Login Mahasiswa</h4>
@@ -79,7 +79,7 @@
           <p>Silakan pindai QR Code yang ada di Lab untuk melanjutkan.</p>
           <div class="d-grid gap-2">
               <button class="btn btn-success btn-lg" onclick="triggerFileUpload()">Mulai Pindai QR</button>
-              <input type="file" id="qr-input-file" accept="image/*" style="display:none">
+              <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
           </div>
           <div id="reader" style="display:none;"></div> 
       </div>
