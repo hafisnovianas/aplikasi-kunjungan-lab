@@ -117,43 +117,63 @@ function showScanView(nama) {
 }
 
 async function submitPurpose() {
-    const keperluan = document.getElementById('purposeInput').value;
-    if (!keperluan.trim()) {
-        alert('Harap isi keperluan Anda!');
-        return;
-    }
-    const submitButton = document.querySelector('#purposeView button');
-    submitButton.disabled = true;
-    submitButton.innerText = 'Mengirim data...';
-    document.getElementById('purposeInput').disabled = true;
+  const dropdown = document.getElementById('purposeDropdown');
+  const otherInput = document.getElementById('otherPurposeInput');
+  let keperluan = dropdown.value;
 
-    try {
-        const payload = { nim: userNIM, keperluan: keperluan };
-        const response = await callApi('recordVisit', payload);
-        if (response.status === 'success') {
-            document.getElementById('purposeView').style.display = 'none';
-            const successDiv = document.getElementById('successMessage');
-            successDiv.className = 'alert alert-success';
-            successDiv.innerText = response.message;
-            document.getElementById('successView').style.display = 'block';
-        } else {
-            alert('Terjadi kesalahan: ' + response.message);
-            submitButton.disabled = false;
-            submitButton.innerText = 'Submit Kunjungan';
-            document.getElementById('purposeInput').disabled = false;
-        }
-    } catch (error) {
-        alert('Gagal terhubung ke server. Silakan coba lagi.');
-        submitButton.disabled = false;
-        submitButton.innerText = 'Submit Kunjungan';
-        document.getElementById('purposeInput').disabled = false;
-    }
+  // Validasi pilihan dropdown
+  if (!keperluan) {
+      alert('Harap pilih salah satu keperluan dari daftar.');
+      return;
+  }
+
+  // Jika "Lainnya" dipilih, ambil nilai dari input teks
+  if (keperluan === 'Lainnya') {
+      keperluan = otherInput.value.trim();
+      // Validasi input teks "Lainnya"
+      if (!keperluan) {
+          alert('Harap isi keperluan Anda di kolom yang tersedia.');
+          return;
+      }
+  }
+
+  const submitButton = document.querySelector('#purposeView button');
+  submitButton.disabled = true;
+  submitButton.innerText = 'Mengirim data...';
+  dropdown.disabled = true;
+  otherInput.disabled = true;
+
+  try {
+      const payload = { nim: userNIM, keperluan: keperluan };
+      const response = await callApi('recordVisit', payload);
+
+      if (response.status === 'success') {
+          document.getElementById('purposeView').style.display = 'none';
+          const successDiv = document.getElementById('successMessage');
+          successDiv.className = 'alert alert-success';
+          successDiv.innerText = response.message;
+          document.getElementById('successView').style.display = 'block';
+      } else {
+          alert('Terjadi kesalahan: ' + response.message);
+          submitButton.disabled = false;
+          submitButton.innerText = 'Submit Kunjungan';
+          dropdown.disabled = false;
+          otherInput.disabled = false;
+      }
+  } catch (error) {
+      alert('Gagal terhubung ke server. Silakan coba lagi.');
+      submitButton.disabled = false;
+      submitButton.innerText = 'Submit Kunjungan';
+      dropdown.disabled = false;
+      otherInput.disabled = false;
+  }
 }
 
 function logout() {
   userNIM = null;
   showLoginView();
   
+  // Reset tombol pindai
   const scanButton = document.querySelector('#scanView button');
   if (scanButton) {
     scanButton.disabled = false;
@@ -161,11 +181,18 @@ function logout() {
   }
   document.getElementById('qr-input-file').value = null;
 
-  const purposeInput = document.getElementById('purposeInput');
+  // --- RESET FORM KEPERLUAN YANG BARU ---
+  const dropdown = document.getElementById('purposeDropdown');
+  const otherInput = document.getElementById('otherPurposeInput');
+  const otherContainer = document.getElementById('otherPurposeContainer');
   const submitButton = document.querySelector('#purposeView button');
-  if (purposeInput && submitButton) {
-    purposeInput.value = '';
-    purposeInput.disabled = false;
+  
+  if (dropdown && submitButton) {
+    dropdown.value = ""; // Kembali ke pilihan default
+    dropdown.disabled = false;
+    otherInput.value = "";
+    otherInput.disabled = false;
+    otherContainer.style.display = 'none'; // Sembunyikan lagi
     submitButton.disabled = false;
     submitButton.innerText = 'Submit Kunjungan';
   }
@@ -216,3 +243,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('passwordInput').focus();
   }
 });
+
+// TAMBAHKAN FUNGSI BARU INI
+function checkOtherOption() {
+  const dropdown = document.getElementById('purposeDropdown');
+  const otherContainer = document.getElementById('otherPurposeContainer');
+  if (dropdown.value === 'Lainnya') {
+      otherContainer.style.display = 'block';
+      document.getElementById('otherPurposeInput').focus(); // Langsung fokus
+  } else {
+      otherContainer.style.display = 'none';
+  }
+}

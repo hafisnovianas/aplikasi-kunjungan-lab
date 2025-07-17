@@ -88,8 +88,20 @@
           <h4 class="mb-3">Scan Berhasil!</h4>
           <p>Sekarang, silakan isi keperluan kunjungan Anda.</p>
           <div class="mb-3">
-              <textarea class="form-control" id="purposeInput" rows="3" placeholder="Contoh: Mengerjakan tugas akhir, praktikum, dll."></textarea>
+            <select class="form-select" id="purposeDropdown" onchange="checkOtherOption()">
+                <option selected disabled value="">-- Pilih Keperluan --</option>
+                <option value="Praktikum">Praktikum</option>
+                <option value="Kuliah">Kuliah</option>
+                <option value="Penelitian">Penelitian</option>
+                <option value="Lainnya">Lainnya...</option>
+            </select>
           </div>
+          
+          <div class="mb-3" id="otherPurposeContainer" style="display:none;">
+              <label for="otherPurposeInput" class="form-label">Keperluan Lainnya:</label>
+              <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda">
+          </div>
+          
           <div class="d-grid gap-2">
               <button class="btn btn-primary" onclick="submitPurpose()">Submit Kunjungan</button>
           </div>
