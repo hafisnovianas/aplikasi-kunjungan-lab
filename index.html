@@ -29,14 +29,15 @@
           <h4 class="mb-3">Login Mahasiswa</h4>
           <div class="mb-3">
             <label for="nimInput" class="form-label">NIM</label>
-            <input type="number" class="form-control" id="nimInput" placeholder="Masukkan NIM">
+            <input type="number" class="form-control" id="nimInput" placeholder="Masukkan NIM" required>
+            <div id="nimError" class="invalid-feedback"></div>
           </div>
           <div class="mb-3">
-            <label for="passwordInput" class="form-label">Password</label>
-            <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password">
+              <label for="passwordInput" class="form-label">Password</label>
+              <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
+              <div id="passwordError" class="invalid-feedback"></div>
           </div>
-          <div id="loginWarning" class="form-text text-danger" style="display: none;"></div>
-          <button class="btn btn-primary w-100" onclick="login(event)">Masuk</button>
+          <button type="submit" class="btn btn-primary w-100">Masuk</button>
         </form>
         <p class="mt-3 text-center">Belum punya akun? <a href="#" onclick="showRegisterView(); return false;">Daftar di sini</a></p>
       </div>

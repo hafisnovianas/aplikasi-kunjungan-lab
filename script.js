@@ -54,34 +54,47 @@ async function registerUser() {
   }
 }
 
+// Ganti fungsi login() Anda dengan yang ini
 async function login(event) {
   const nimInput = document.getElementById('nimInput');
+  const passwordInput = document.getElementById('passwordInput');
   const nim = nimInput.value;
-  const password = document.getElementById('passwordInput').value;
+  const password = passwordInput.value;
+
+  // Reset error-error sebelumnya setiap kali login ditekan
+  nimInput.classList.remove('is-invalid');
+  passwordInput.classList.remove('is-invalid');
+  document.getElementById('nimError').innerText = '';
+  document.getElementById('passwordError').innerText = '';
+
   if (!nim || !password) {
     alert('NIM dan Password tidak boleh kosong.');
     return;
   }
 
-  const loginButton = event.target;
+  const loginButton = document.querySelector('#loginForm button');
   loginButton.disabled = true;
   loginButton.innerText = 'Mengecek...';
 
   try {
     const payload = { nim, password };
     const response = await callApi('login', payload);
-    const loginWarning = document.getElementById('loginWarning');
 
     if (response.status === 'success') {
       userNIM = nim;
-      nimInput.classList.remove('is-invalid');
-      loginWarning.style.display = 'none';
       localStorage.setItem('lastUsedNIM', nim);
       showScanView(response.nama);
     } else {
-      nimInput.classList.add('is-invalid');
-      loginWarning.innerText = response.message;
-      loginWarning.style.display = 'block';
+      // Logika baru untuk menampilkan error yang lebih spesifik
+      if (response.message.toLowerCase().includes('password')) {
+        passwordInput.classList.add('is-invalid');
+        document.getElementById('passwordError').innerText = response.message;
+        passwordInput.focus();
+      } else {
+        nimInput.classList.add('is-invalid');
+        document.getElementById('nimError').innerText = response.message;
+        nimInput.focus();
+      }
     }
   } catch (error) {
     alert('Error saat validasi: ' + error.message);
@@ -236,12 +249,18 @@ function handleSuccessfulScan(decodedText) {
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', () => {
+  // Kode untuk mengingat NIM
   const lastNIM = localStorage.getItem('lastUsedNIM');
   if (lastNIM) {
-    const nimInput = document.getElementById('nimInput');
-    nimInput.value = lastNIM;
+    document.getElementById('nimInput').value = lastNIM;
     document.getElementById('passwordInput').focus();
   }
+
+  // Menangani submit form login (baik via klik tombol atau Enter)
+  document.getElementById('loginForm').addEventListener('submit', event => {
+    event.preventDefault(); // Mencegah halaman reload
+    login(event); // Panggil fungsi login yang sudah ada
+  });
 });
 
 // TAMBAHKAN FUNGSI BARU INI
