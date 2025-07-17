@@ -148,6 +148,16 @@ async function submitPurpose() {
           alert('Harap isi keperluan Anda di kolom yang tersedia.');
           return;
       }
+
+      try {
+        const history = JSON.parse(localStorage.getItem('purposeHistory')) || [];
+        const historySet = new Set(history); // Gunakan Set untuk menghindari duplikat
+        historySet.add(keperluan);
+        localStorage.setItem('purposeHistory', JSON.stringify(Array.from(historySet)));
+        loadPurposeHistory(); // Muat ulang datalist dengan data baru
+      } catch (e) {
+        console.error("Gagal menyimpan riwayat keperluan:", e);
+      }
   }
 
   const submitButton = document.querySelector('#purposeView button');
@@ -261,6 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault(); // Mencegah halaman reload
     login(event); // Panggil fungsi login yang sudah ada
   });
+
+  loadPurposeHistory(); 
 });
 
 // TAMBAHKAN FUNGSI BARU INI
@@ -273,4 +285,16 @@ function checkOtherOption() {
   } else {
       otherContainer.style.display = 'none';
   }
+}
+
+// Tambahkan fungsi ini di mana saja di script.js
+function loadPurposeHistory() {
+  const history = JSON.parse(localStorage.getItem('purposeHistory')) || [];
+  const datalist = document.getElementById('purpose-history');
+  datalist.innerHTML = ''; // Kosongkan daftar lama
+  history.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    datalist.appendChild(option);
+  });
 }
