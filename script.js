@@ -76,9 +76,7 @@ async function login(event) {
       userNIM = nim;
       nimInput.classList.remove('is-invalid');
       loginWarning.style.display = 'none';
-
       localStorage.setItem('lastUsedNIM', nim);
-
       showScanView(response.nama);
     } else {
       nimInput.classList.add('is-invalid');
@@ -102,12 +100,7 @@ function showLoginView() {
   document.getElementById('registerSuccessView').style.display = 'none';
   document.getElementById('scanView').style.display = 'none';
   document.getElementById('purposeView').style.display = 'none';
-
-  const nimLoginInput = document.getElementById('nimInput');
-  nimLoginInput.addEventListener('input', function() {
-    document.getElementById('loginWarning').style.display = 'none';
-    nimLoginInput.classList.remove('is-invalid');
-  });
+  document.getElementById('passwordInput').value = '';
 }
 
 function showRegisterView() {
@@ -124,64 +117,62 @@ function showScanView(nama) {
 }
 
 async function submitPurpose() {
-  const keperluan = document.getElementById('purposeInput').value;
-  if (!keperluan.trim()) {
-      alert('Harap isi keperluan Anda!');
-      return;
-  }
+    const keperluan = document.getElementById('purposeInput').value;
+    if (!keperluan.trim()) {
+        alert('Harap isi keperluan Anda!');
+        return;
+    }
+    const submitButton = document.querySelector('#purposeView button');
+    submitButton.disabled = true;
+    submitButton.innerText = 'Mengirim data...';
+    document.getElementById('purposeInput').disabled = true;
 
-  // Ambil elemen tombol untuk dimanipulasi
-  const submitButton = document.querySelector('#purposeView button');
-  
-  // Non-aktifkan tombol dan textarea, lalu ubah teks tombol
-  submitButton.disabled = true;
-  submitButton.innerText = 'Mengirim data...';
-  document.getElementById('purposeInput').disabled = true;
-
-  try {
-      const payload = { nim: userNIM, keperluan: keperluan };
-      const response = await callApi('recordVisit', payload);
-
-      if (response.status === 'success') {
-          // Jika berhasil, baru pindah ke halaman sukses
-          document.getElementById('purposeView').style.display = 'none';
-          const successDiv = document.getElementById('successMessage');
-          successDiv.className = 'alert alert-success';
-          successDiv.innerText = response.message;
-          document.getElementById('successView').style.display = 'block';
-      } else {
-          // Jika gagal dari server, tampilkan pesan error dan aktifkan kembali form
-          alert('Terjadi kesalahan: ' + response.message);
-          submitButton.disabled = false;
-          submitButton.innerText = 'Submit Kunjungan';
-          document.getElementById('purposeInput').disabled = false;
-      }
-  } catch (error) {
-      // Jika terjadi error koneksi, tampilkan pesan dan aktifkan kembali form
-      alert('Gagal terhubung ke server. Silakan coba lagi.');
-      submitButton.disabled = false;
-      submitButton.innerText = 'Submit Kunjungan';
-      document.getElementById('purposeInput').disabled = false;
-  }
+    try {
+        const payload = { nim: userNIM, keperluan: keperluan };
+        const response = await callApi('recordVisit', payload);
+        if (response.status === 'success') {
+            document.getElementById('purposeView').style.display = 'none';
+            const successDiv = document.getElementById('successMessage');
+            successDiv.className = 'alert alert-success';
+            successDiv.innerText = response.message;
+            document.getElementById('successView').style.display = 'block';
+        } else {
+            alert('Terjadi kesalahan: ' + response.message);
+            submitButton.disabled = false;
+            submitButton.innerText = 'Submit Kunjungan';
+            document.getElementById('purposeInput').disabled = false;
+        }
+    } catch (error) {
+        alert('Gagal terhubung ke server. Silakan coba lagi.');
+        submitButton.disabled = false;
+        submitButton.innerText = 'Submit Kunjungan';
+        document.getElementById('purposeInput').disabled = false;
+    }
 }
 
 function logout() {
   userNIM = null;
   showLoginView();
-  document.getElementById('passwordInput').value = '';
-  document.getElementById('passwordInput').focus();
-
+  
   const scanButton = document.querySelector('#scanView button');
   if (scanButton) {
     scanButton.disabled = false;
     scanButton.innerText = 'Mulai Pindai QR';
   }
-
   document.getElementById('qr-input-file').value = null;
+
+  const purposeInput = document.getElementById('purposeInput');
+  const submitButton = document.querySelector('#purposeView button');
+  if (purposeInput && submitButton) {
+    purposeInput.value = '';
+    purposeInput.disabled = false;
+    submitButton.disabled = false;
+    submitButton.innerText = 'Submit Kunjungan';
+  }
 }
 
-
 // --- FUNGSI SCANNER (Metode File Capture) ---
+const html5QrCode = new Html5Qrcode("reader");
 
 function triggerFileUpload() {
     document.getElementById('qr-input-file').click();
@@ -190,25 +181,18 @@ function triggerFileUpload() {
 document.getElementById('qr-input-file').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) { return; }
-
     const scanButton = document.querySelector('#scanView button');
     scanButton.disabled = true;
     scanButton.innerText = 'Memproses Gambar...';
-
-    const html5QrCode = new Html5Qrcode("reader");
     html5QrCode.scanFile(file, true)
-    .then(decodedText => {
-        handleSuccessfulScan(decodedText);
-    })
+    .then(decodedText => { handleSuccessfulScan(decodedText); })
     .catch(err => {
-        alert(`Error: Tidak dapat menemukan QR Code di gambar. Silakan coba lagi.`);
+        alert(`Error: Tidak dapat menemukan QR Code di gambar.`);
         scanButton.disabled = false;
         scanButton.innerText = 'Mulai Pindai QR';
     })
-    .finally(() => {
-      e.target.value = null;
-    });
-  });
+    .finally(() => { e.target.value = null; });
+});
 
 function handleSuccessfulScan(decodedText) {
     if (decodedText !== validQRCodeText) {
@@ -218,14 +202,9 @@ function handleSuccessfulScan(decodedText) {
         scanButton.innerText = 'Mulai Pindai QR';
         return;
     }
-    
     document.getElementById('scanView').style.display = 'none';
     document.getElementById('purposeView').style.display = 'block';
-    
-    // Memberi fokus ke textarea agar keyboard langsung muncul
-    setTimeout(() => {
-        document.getElementById('purposeInput').focus();
-    }, 100); 
+    setTimeout(() => { document.getElementById('purposeInput').focus(); }, 100); 
 }
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
@@ -234,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (lastNIM) {
     const nimInput = document.getElementById('nimInput');
     nimInput.value = lastNIM;
-    // Untuk kenyamanan, langsung fokuskan ke field password
     document.getElementById('passwordInput').focus();
   }
 });
