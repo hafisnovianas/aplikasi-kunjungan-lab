@@ -8,14 +8,21 @@
     <style>
       body { padding: 20px; }
       .container { max-width: 600px; }
+      /* Menghilangkan panah atas/bawah pada input type="number" */
       input[type=number]::-webkit-outer-spin-button,
-      input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-      input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+      input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2 class="text-center mb-4">Aplikasi Kunjungan Laboratorium</h2>
+      <h2 class="text-center mb-4">Aplikasi Kunjungan Laboratorium Fisika UMRI2</h2>
 
       <div id="loginView">
         <form id="loginForm">
@@ -26,9 +33,9 @@
             <div id="nimError" class="invalid-feedback"></div>
           </div>
           <div class="mb-3">
-            <label for="passwordInput" class="form-label">Password</label>
-            <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
-            <div id="passwordError" class="invalid-feedback"></div>
+              <label for="passwordInput" class="form-label">Password</label>
+              <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
+              <div id="passwordError" class="invalid-feedback"></div>
           </div>
           <button type="submit" class="btn btn-primary w-100">Masuk</button>
         </form>
@@ -41,7 +48,7 @@
           <div class="mb-3">
             <label for="nim_reg" class="form-label">NIM</label>
             <input type="number" class="form-control" id="nim_reg" required>
-            <div id="nimError_reg" class="invalid-feedback"></div>
+            <div id="nimWarning" class="form-text text-danger" style="display: none;"></div>
           </div>
           <div class="mb-3">
             <label for="nama_reg" class="form-label">Nama Lengkap</label>
@@ -58,13 +65,12 @@
           <div class="mb-3">
             <label for="confirm_password_reg" class="form-label">Konfirmasi Password</label>
             <input type="password" class="form-control" id="confirm_password_reg" required>
-            <div id="confirmPasswordError" class="invalid-feedback"></div>
           </div>
           <button type="submit" class="btn btn-success">Daftar</button>
           <button type="button" class="btn btn-secondary" onclick="showLoginView()">Kembali</button>
         </form>
       </div>
-      
+
       <div id="registerSuccessView" style="display:none;" class="text-center">
         <div class="alert alert-success" role="alert">Pendaftaran Berhasil!</div>
         <p>Silakan klik tombol di bawah untuk masuk ke halaman login.</p>
@@ -78,7 +84,6 @@
               <button class="btn btn-success btn-lg" onclick="triggerFileUpload()">Mulai Pindai QR</button>
               <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
           </div>
-          <div id="scanError" class="form-text text-danger text-center mt-2"></div>
           <div id="reader" style="display:none;"></div> 
       </div>
 
@@ -86,29 +91,31 @@
           <h4 class="mb-3">Scan Berhasil!</h4>
           <p>Sekarang, silakan isi keperluan kunjungan Anda.</p>
           <div class="mb-3">
-              <select class="form-select" id="purposeDropdown" onchange="checkOtherOption()">
-                  <option selected disabled value="">-- Pilih Keperluan --</option>
-                  <option value="Praktikum">Praktikum</option>
-                  <option value="Kuliah">Kuliah</option>
-                  <option value="Penelitian">Penelitian</option>
-                  <option value="Lainnya">Lainnya...</option>
-              </select>
-              <div id="purposeDropdownError" class="invalid-feedback"></div>
+            <select class="form-select" id="purposeDropdown" onchange="checkOtherOption()">
+                <option selected disabled value="">-- Pilih Keperluan --</option>
+                <option value="Praktikum">Praktikum</option>
+                <option value="Kuliah">Kuliah</option>
+                <option value="Penelitian">Penelitian</option>
+                <option value="Lainnya">Lainnya...</option>
+            </select>
           </div>
+          
           <div class="mb-3" id="otherPurposeContainer" style="display:none;">
               <label for="otherPurposeInput" class="form-label">Keperluan Lainnya:</label>
-              <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda">
-              <div id="otherPurposeError" class="invalid-feedback"></div>
+              <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda" list="purpose-history">
+              <datalist id="purpose-history"></datalist>
           </div>
+
           <div class="d-grid gap-2">
               <button class="btn btn-primary" onclick="submitPurpose()">Submit Kunjungan</button>
           </div>
       </div>
-      
+
       <div id="successView" style="display:none;" class="text-center">
         <div id="successMessage" class="alert alert-success" role="alert"></div>
         <button class="btn btn-primary mt-3" onclick="logout()">Selesai</button>
       </div>
+
     </div>
 
     <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
