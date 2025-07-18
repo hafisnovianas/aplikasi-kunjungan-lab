@@ -142,12 +142,13 @@ async function submitPurpose() {
 
   // Jika "Lainnya" dipilih, ambil nilai dari input teks
   if (keperluan === 'Lainnya') {
-      keperluan = otherInput.value.trim();
-      // Validasi input teks "Lainnya"
+      keperluan = otherInput.value.trim().toLowerCase();;
       if (!keperluan) {
           alert('Harap isi keperluan Anda di kolom yang tersedia.');
           return;
       }
+
+      localStorage.setItem('lastOtherPurpose', keperluan);
   }
 
   const submitButton = document.querySelector('#purposeView button');
@@ -262,14 +263,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// TAMBAHKAN FUNGSI BARU INI
 function checkOtherOption() {
   const dropdown = document.getElementById('purposeDropdown');
   const otherContainer = document.getElementById('otherPurposeContainer');
+  const otherInput = document.getElementById('otherPurposeInput');
+
   if (dropdown.value === 'Lainnya') {
-      otherContainer.style.display = 'block';
-      document.getElementById('otherPurposeInput').focus(); // Langsung fokus
+    otherContainer.style.display = 'block';
+    
+    // Cek dan isi dengan data terakhir yang tersimpan
+    const lastPurpose = localStorage.getItem('lastOtherPurpose');
+    if (lastPurpose) {
+      otherInput.value = lastPurpose;
+    }
+    
+    otherInput.focus();
   } else {
-      otherContainer.style.display = 'none';
+    otherContainer.style.display = 'none';
   }
 }
