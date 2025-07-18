@@ -278,7 +278,6 @@ function checkOtherOption() {
     if (lastPurpose) {
       otherInput.value = lastPurpose;
     }
-    
     otherInput.focus();
   } else {
     otherContainer.style.display = 'none';
