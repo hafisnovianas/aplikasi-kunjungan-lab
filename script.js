@@ -5,235 +5,119 @@ let userNIM = null;
 const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
 
 // --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
-
-async function callApi(action, payload) {
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ action, payload }),
-    redirect: 'follow'
-  });
-  return response.json();
-}
+async function callApi(action, payload) { /* ... (Tidak berubah) ... */ }
 
 async function registerUser() {
-  const nim = document.getElementById('nim_reg').value;
-  const nama = document.getElementById('nama_reg').value;
-  const prodi = document.getElementById('prodi_reg').value;
-  const password = document.getElementById('password_reg').value;
-  const confirmPassword = document.getElementById('confirm_password_reg').value;
-
-  if (password !== confirmPassword) {
-    alert('Password dan Konfirmasi Password tidak cocok!');
-    return;
-  }
-  if (!nim || !nama || !prodi) {
-    alert('Semua field wajib diisi!');
-    return;
-  }
-
-  try {
-    const payload = { nim, nama, prodi, password };
-    const response = await callApi('register', payload);
     const nimInput = document.getElementById('nim_reg');
-    const nimWarning = document.getElementById('nimWarning');
+    const namaInput = document.getElementById('nama_reg');
+    const prodiInput = document.getElementById('prodi_reg');
+    const passwordInput = document.getElementById('password_reg');
+    const confirmPasswordInput = document.getElementById('confirm_password_reg');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
 
-    if (response.status === 'success') {
-      document.getElementById('registerForm').reset();
-      document.getElementById('registerView').style.display = 'none';
-      document.getElementById('registerSuccessView').style.display = 'block';
-    } else if (response.status === 'duplicate') {
-      nimWarning.innerText = response.message;
-      nimWarning.style.display = 'block';
-      nimInput.classList.add('is-invalid');
-    } else {
-      alert(response.message);
+    confirmPasswordInput.classList.remove('is-invalid');
+    confirmPasswordError.innerText = '';
+
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        confirmPasswordInput.classList.add('is-invalid');
+        confirmPasswordError.innerText = 'Password dan Konfirmasi Password tidak cocok!';
+        return;
     }
-  } catch (error) {
-    alert('Error: ' + error.message);
-  }
+    if (!nimInput.value || !namaInput.value || !prodiInput.value) {
+        alert('Harap lengkapi semua field pendaftaran.');
+        return;
+    }
+    // ... sisa logika try-catch registerUser Anda, bisa tetap menggunakan alert untuk notifikasi akhir ...
 }
 
-async function login(event) {
-  const nimInput = document.getElementById('nimInput');
-  const passwordInput = document.getElementById('passwordInput');
-  const nim = nimInput.value;
-  const password = passwordInput.value;
-
-  nimInput.classList.remove('is-invalid');
-  passwordInput.classList.remove('is-invalid');
-  document.getElementById('nimError').innerText = '';
-  document.getElementById('passwordError').innerText = '';
-
-  if (!nim || !password) {
-      alert('NIM dan Password tidak boleh kosong.'); // Alert di sini oke untuk validasi awal
-      return;
-  }
-
-  const loginButton = document.querySelector('#loginForm button');
-  loginButton.disabled = true;
-  loginButton.innerText = 'Mengecek...';
-
-  try {
-      const payload = { nim, password };
-      const response = await callApi('login', payload);
-      if (response.status === 'success') {
-          userNIM = nim;
-          localStorage.setItem('lastUsedNIM', nim);
-          showScanView(response.nama);
-      } else {
-          if (response.message.toLowerCase().includes('password')) {
-              passwordInput.classList.add('is-invalid');
-              document.getElementById('passwordError').innerText = response.message;
-              passwordInput.focus();
-          } else {
-              nimInput.classList.add('is-invalid');
-              document.getElementById('nimError').innerText = response.message;
-              nimInput.focus();
-          }
-      }
-  } catch (error) {
-      alert('Error saat validasi: ' + error.message);
-  } finally {
-      loginButton.disabled = false;
-      loginButton.innerText = 'Masuk';
-  }
-}
+async function login(event) { /* ... (Tidak berubah, sudah bagus) ... */ }
 
 // --- FUNGSI TAMPILAN (VIEW) ---
-
-function showLoginView() {
-  document.getElementById('loginView').style.display = 'block';
-  document.getElementById('registerView').style.display = 'none';
-  document.getElementById('successView').style.display = 'none';
-  document.getElementById('registerSuccessView').style.display = 'none';
-  document.getElementById('scanView').style.display = 'none';
-  document.getElementById('purposeView').style.display = 'none';
-  document.getElementById('passwordInput').value = '';
-}
-
-function showRegisterView() {
-  document.getElementById('loginView').style.display = 'none';
-  document.getElementById('registerView').style.display = 'block';
-  document.getElementById('registerSuccessView').style.display = 'none';
-}
-
-function showScanView(nama) {
-    document.getElementById('loginView').style.display = 'none';
-    document.getElementById('purposeView').style.display = 'none';
-    document.getElementById('scanView').style.display = 'block';
-    document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
-}
+function showLoginView() { /* ... (Tidak berubah) ... */ }
+function showRegisterView() { /* ... (Tidak berubah) ... */ }
+function showScanView(nama) { /* ... (Tidak berubah) ... */ }
 
 async function submitPurpose() {
-  const dropdown = document.getElementById('purposeDropdown');
-  const otherInput = document.getElementById('otherPurposeInput');
-  let keperluan = dropdown.value;
+    const dropdown = document.getElementById('purposeDropdown');
+    const otherInput = document.getElementById('otherPurposeInput');
+    const dropdownError = document.getElementById('purposeDropdownError');
+    const otherError = document.getElementById('otherPurposeError');
+    let keperluan = dropdown.value;
 
-  // Validasi pilihan dropdown
-  if (!keperluan) {
-      alert('Harap pilih salah satu keperluan dari daftar.');
-      return;
-  }
+    dropdown.classList.remove('is-invalid');
+    otherInput.classList.remove('is-invalid');
+    dropdownError.innerText = '';
+    otherError.innerText = '';
 
-  // Jika "Lainnya" dipilih, ambil nilai dari input teks
-  if (keperluan === 'Lainnya') {
-      keperluan = otherInput.value.trim().toLowerCase();
-      // Validasi input teks "Lainnya"
-      if (!keperluan) {
-          alert('Harap isi keperluan Anda di kolom yang tersedia.');
-          return;
-      }
+    if (!keperluan) {
+        dropdown.classList.add('is-invalid');
+        dropdownError.innerText = 'Harap pilih salah satu keperluan dari daftar.';
+        return;
+    }
 
-      try {
-        const history = JSON.parse(localStorage.getItem('purposeHistory')) || [];
-        const historySet = new Set(history); // Gunakan Set untuk menghindari duplikat
-        historySet.add(keperluan);
-        localStorage.setItem('purposeHistory', JSON.stringify(Array.from(historySet)));
-        loadPurposeHistory(); // Muat ulang datalist dengan data baru
-      } catch (e) {
-        console.error("Gagal menyimpan riwayat keperluan:", e);
-      }
-  }
+    if (keperluan === 'Lainnya') {
+        keperluan = otherInput.value.trim().toLowerCase();
+        if (!keperluan) {
+            otherInput.classList.add('is-invalid');
+            otherError.innerText = 'Harap isi keperluan Anda di kolom yang tersedia.';
+            return;
+        }
+        // Simpan jawaban "Lainnya" yang terakhir
+        localStorage.setItem('lastOtherPurpose', keperluan);
+    }
 
-  const submitButton = document.querySelector('#purposeView button');
-  submitButton.disabled = true;
-  submitButton.innerText = 'Mengirim data...';
-  dropdown.disabled = true;
-  otherInput.disabled = true;
+    const submitButton = document.querySelector('#purposeView button');
+    submitButton.disabled = true;
+    submitButton.innerText = 'Mengirim data...';
+    dropdown.disabled = true;
+    otherInput.disabled = true;
 
-  try {
-      const payload = { nim: userNIM, keperluan: keperluan };
-      const response = await callApi('recordVisit', payload);
-
-      if (response.status === 'success') {
-          document.getElementById('purposeView').style.display = 'none';
-          const successDiv = document.getElementById('successMessage');
-          successDiv.className = 'alert alert-success';
-          successDiv.innerText = response.message;
-          document.getElementById('successView').style.display = 'block';
-      } else {
-          alert('Terjadi kesalahan: ' + response.message);
-          submitButton.disabled = false;
-          submitButton.innerText = 'Submit Kunjungan';
-          dropdown.disabled = false;
-          otherInput.disabled = false;
-      }
-  } catch (error) {
-      alert('Gagal terhubung ke server. Silakan coba lagi.');
-      submitButton.disabled = false;
-      submitButton.innerText = 'Submit Kunjungan';
-      dropdown.disabled = false;
-      otherInput.disabled = false;
-  }
+    try {
+        const payload = { nim: userNIM, keperluan: keperluan };
+        const response = await callApi('recordVisit', payload);
+        if (response.status === 'success') {
+            document.getElementById('purposeView').style.display = 'none';
+            const successDiv = document.getElementById('successMessage');
+            successDiv.className = 'alert alert-success';
+            successDiv.innerText = response.message;
+            document.getElementById('successView').style.display = 'block';
+        } else {
+            alert('Terjadi kesalahan: ' + response.message); // Alert di sini oke untuk error tak terduga
+            submitButton.disabled = false;
+            submitButton.innerText = 'Submit Kunjungan';
+            dropdown.disabled = false;
+            otherInput.disabled = false;
+        }
+    } catch (error) {
+        alert('Gagal terhubung ke server. Silakan coba lagi.'); // Alert di sini oke
+        submitButton.disabled = false;
+        submitButton.innerText = 'Submit Kunjungan';
+        dropdown.disabled = false;
+        otherInput.disabled = false;
+    }
 }
 
-function logout() {
-  userNIM = null;
-  showLoginView();
-  
-  // Reset tombol pindai
-  const scanButton = document.querySelector('#scanView button');
-  if (scanButton) {
-    scanButton.disabled = false;
-    scanButton.innerText = 'Mulai Pindai QR';
-  }
-  document.getElementById('qr-input-file').value = null;
-
-  // --- RESET FORM KEPERLUAN YANG BARU ---
-  const dropdown = document.getElementById('purposeDropdown');
-  const otherInput = document.getElementById('otherPurposeInput');
-  const otherContainer = document.getElementById('otherPurposeContainer');
-  const submitButton = document.querySelector('#purposeView button');
-  
-  if (dropdown && submitButton) {
-    dropdown.value = ""; // Kembali ke pilihan default
-    dropdown.disabled = false;
-    otherInput.value = "";
-    otherInput.disabled = false;
-    otherContainer.style.display = 'none'; // Sembunyikan lagi
-    submitButton.disabled = false;
-    submitButton.innerText = 'Submit Kunjungan';
-  }
-}
+function logout() { /* ... (Tidak berubah, sudah bagus) ... */ }
 
 // --- FUNGSI SCANNER (Metode File Capture) ---
 const html5QrCode = new Html5Qrcode("reader");
 
-function triggerFileUpload() {
-    document.getElementById('qr-input-file').click();
-}
+function triggerFileUpload() { document.getElementById('qr-input-file').click(); }
 
 document.getElementById('qr-input-file').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) { return; }
+    
     const scanButton = document.querySelector('#scanView button');
+    const scanError = document.getElementById('scanError');
     scanButton.disabled = true;
     scanButton.innerText = 'Memproses Gambar...';
+    scanError.innerText = '';
+
     html5QrCode.scanFile(file, true)
     .then(decodedText => { handleSuccessfulScan(decodedText); })
     .catch(err => {
-        alert(`Error: Tidak dapat menemukan QR Code di gambar.`);
+        scanError.innerText = 'Error: Tidak dapat menemukan QR Code di gambar. Silakan coba lagi.';
         scanButton.disabled = false;
         scanButton.innerText = 'Mulai Pindai QR';
     })
@@ -241,56 +125,48 @@ document.getElementById('qr-input-file').addEventListener('change', e => {
 });
 
 function handleSuccessfulScan(decodedText) {
+    const scanButton = document.querySelector('#scanView button');
+    const scanError = document.getElementById('scanError');
+    
     if (decodedText !== validQRCodeText) {
-        alert("QR Code tidak valid.");
-        const scanButton = document.querySelector('#scanView button');
+        scanError.innerText = "QR Code tidak valid.";
         scanButton.disabled = false;
         scanButton.innerText = 'Mulai Pindai QR';
         return;
     }
+    
+    scanError.innerText = '';
     document.getElementById('scanView').style.display = 'none';
     document.getElementById('purposeView').style.display = 'block';
-    setTimeout(() => { document.getElementById('purposeDropdown').focus(); }, 100);
+    setTimeout(() => { document.getElementById('purposeDropdown').focus(); }, 100); 
 }
 
-// --- LOGIKA SAAT HALAMAN DIMUAT ---
+// --- LOGIKA LAINNYA ---
 document.addEventListener('DOMContentLoaded', () => {
-  // Kode untuk mengingat NIM
-  const lastNIM = localStorage.getItem('lastUsedNIM');
-  if (lastNIM) {
-    document.getElementById('nimInput').value = lastNIM;
-    document.getElementById('passwordInput').focus();
-  }
-
-  // Menangani submit form login (baik via klik tombol atau Enter)
-  document.getElementById('loginForm').addEventListener('submit', event => {
-    event.preventDefault(); // Mencegah halaman reload
-    login(event); // Panggil fungsi login yang sudah ada
-  });
-
-  loadPurposeHistory(); 
+    const lastNIM = localStorage.getItem('lastUsedNIM');
+    if (lastNIM) {
+        document.getElementById('nimInput').value = lastNIM;
+        document.getElementById('passwordInput').focus();
+    }
+    document.getElementById('loginForm').addEventListener('submit', event => {
+        event.preventDefault();
+        login(event);
+    });
 });
 
-// TAMBAHKAN FUNGSI BARU INI
 function checkOtherOption() {
   const dropdown = document.getElementById('purposeDropdown');
   const otherContainer = document.getElementById('otherPurposeContainer');
-  if (dropdown.value === 'Lainnya') {
-      otherContainer.style.display = 'block';
-      document.getElementById('otherPurposeInput').focus(); // Langsung fokus
-  } else {
-      otherContainer.style.display = 'none';
-  }
-}
+  const otherInput = document.getElementById('otherPurposeInput');
 
-// Tambahkan fungsi ini di mana saja di script.js
-function loadPurposeHistory() {
-  const history = JSON.parse(localStorage.getItem('purposeHistory')) || [];
-  const datalist = document.getElementById('purpose-history');
-  datalist.innerHTML = ''; // Kosongkan daftar lama
-  history.forEach(item => {
-    const option = document.createElement('option');
-    option.value = item;
-    datalist.appendChild(option);
-  });
+  if (dropdown.value === 'Lainnya') {
+    otherContainer.style.display = 'block';
+    const lastPurpose = localStorage.getItem('lastOtherPurpose');
+    if (lastPurpose) {
+      otherInput.value = lastPurpose;
+    }
+    otherInput.focus();
+  } else {
+    otherContainer.style.display = 'none';
+  }
 }

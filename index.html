@@ -22,7 +22,7 @@
   </head>
   <body>
     <div class="container">
-      <h2 class="text-center mb-4">Aplikasi Kunjungan Laboratorium Fisika UMRI6</h2>
+      <h2 class="text-center mb-4">Aplikasi Kunjungan Laboratorium Fisika UMRI0</h2>
 
       <div id="loginView">
         <form id="loginForm">
@@ -65,6 +65,7 @@
           <div class="mb-3">
             <label for="confirm_password_reg" class="form-label">Konfirmasi Password</label>
             <input type="password" class="form-control" id="confirm_password_reg" required>
+            <div id="confirmPasswordError" class="invalid-feedback"></div>
           </div>
           <button type="submit" class="btn btn-success">Daftar</button>
           <button type="button" class="btn btn-secondary" onclick="showLoginView()">Kembali</button>
@@ -98,17 +99,19 @@
                 <option value="Penelitian">Penelitian</option>
                 <option value="Lainnya">Lainnya...</option>
             </select>
+            <div id="purposeDropdownError" class="invalid-feedback"></div>
           </div>
           
           <div class="mb-3" id="otherPurposeContainer" style="display:none;">
-              <label for="otherPurposeInput" class="form-label">Keperluan Lainnya:</label>
-              <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda" list="purpose-history" autocomplete="new-password">
-              <datalist id="purpose-history"></datalist>
+            <label for="otherPurposeInput" class="form-label">Keperluan Lainnya:</label>
+            <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda">
+            <div id="otherPurposeError" class="invalid-feedback"></div>
           </div>
 
           <div class="d-grid gap-2">
               <button class="btn btn-primary" onclick="submitPurpose()">Submit Kunjungan</button>
           </div>
+          <div id="scanError" class="form-text text-danger text-center mt-2"></div>
       </div>
 
       <div id="successView" style="display:none;" class="text-center">
