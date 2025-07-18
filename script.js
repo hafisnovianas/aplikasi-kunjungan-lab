@@ -213,6 +213,7 @@ function processVisit() {
   fileInput.click(); // Buka dialog kamera/file
 }
 
+/*
 document.getElementById('qr-input-file').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) { return; }
@@ -228,6 +229,7 @@ document.getElementById('qr-input-file').addEventListener('change', e => {
     })
     .finally(() => { e.target.value = null; });
 });
+*/
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', () => {
