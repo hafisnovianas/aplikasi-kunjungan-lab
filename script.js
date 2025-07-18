@@ -254,7 +254,6 @@ function handleSuccessfulScan(decodedText) {
     }
     document.getElementById('scanView').style.display = 'none';
     document.getElementById('purposeView').style.display = 'block';
-    setTimeout(() => { document.getElementById('purposeInput').focus(); }, 100); 
 }
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
