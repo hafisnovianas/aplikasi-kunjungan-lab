@@ -54,22 +54,20 @@ async function registerUser() {
   }
 }
 
-// Ganti fungsi login() Anda dengan yang ini
 async function login(event) {
   const nimInput = document.getElementById('nimInput');
   const passwordInput = document.getElementById('passwordInput');
   const nim = nimInput.value;
   const password = passwordInput.value;
 
-  // Reset error-error sebelumnya setiap kali login ditekan
   nimInput.classList.remove('is-invalid');
   passwordInput.classList.remove('is-invalid');
   document.getElementById('nimError').innerText = '';
   document.getElementById('passwordError').innerText = '';
 
   if (!nim || !password) {
-    alert('NIM dan Password tidak boleh kosong.');
-    return;
+      alert('NIM dan Password tidak boleh kosong.'); // Alert di sini oke untuk validasi awal
+      return;
   }
 
   const loginButton = document.querySelector('#loginForm button');
@@ -77,30 +75,28 @@ async function login(event) {
   loginButton.innerText = 'Mengecek...';
 
   try {
-    const payload = { nim, password };
-    const response = await callApi('login', payload);
-
-    if (response.status === 'success') {
-      userNIM = nim;
-      localStorage.setItem('lastUsedNIM', nim);
-      showScanView(response.nama);
-    } else {
-      // Logika baru untuk menampilkan error yang lebih spesifik
-      if (response.message.toLowerCase().includes('password')) {
-        passwordInput.classList.add('is-invalid');
-        document.getElementById('passwordError').innerText = response.message;
-        passwordInput.focus();
+      const payload = { nim, password };
+      const response = await callApi('login', payload);
+      if (response.status === 'success') {
+          userNIM = nim;
+          localStorage.setItem('lastUsedNIM', nim);
+          showScanView(response.nama);
       } else {
-        nimInput.classList.add('is-invalid');
-        document.getElementById('nimError').innerText = response.message;
-        nimInput.focus();
+          if (response.message.toLowerCase().includes('password')) {
+              passwordInput.classList.add('is-invalid');
+              document.getElementById('passwordError').innerText = response.message;
+              passwordInput.focus();
+          } else {
+              nimInput.classList.add('is-invalid');
+              document.getElementById('nimError').innerText = response.message;
+              nimInput.focus();
+          }
       }
-    }
   } catch (error) {
-    alert('Error saat validasi: ' + error.message);
+      alert('Error saat validasi: ' + error.message);
   } finally {
-    loginButton.disabled = false;
-    loginButton.innerText = 'Masuk';
+      loginButton.disabled = false;
+      loginButton.innerText = 'Masuk';
   }
 }
 
@@ -142,7 +138,7 @@ async function submitPurpose() {
 
   // Jika "Lainnya" dipilih, ambil nilai dari input teks
   if (keperluan === 'Lainnya') {
-      keperluan = otherInput.value.trim();
+      keperluan = otherInput.value.trim().toLowerCase();
       // Validasi input teks "Lainnya"
       if (!keperluan) {
           alert('Harap isi keperluan Anda di kolom yang tersedia.');
@@ -254,6 +250,7 @@ function handleSuccessfulScan(decodedText) {
     }
     document.getElementById('scanView').style.display = 'none';
     document.getElementById('purposeView').style.display = 'block';
+    setTimeout(() => { document.getElementById('purposeDropdown').focus(); }, 100);
 }
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
