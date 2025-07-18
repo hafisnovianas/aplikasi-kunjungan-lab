@@ -22,7 +22,7 @@
   </head>
   <body>
     <div class="container">
-      <h2 class="text-center mb-4">Aplikasi Kunjungan<br>Laboratorium Fisika UMRI</h2>
+      <h2 class="text-center mb-4">Aplikasi Kunjungan<br>Laboratorium Fisika UMRIx</h2>
 
       <div id="loginView">
         <form id="loginForm">
@@ -77,20 +77,12 @@
         <button class="btn btn-primary" onclick="showLoginView()">Ke Halaman Login</button>
       </div>
 
-      <div id="scanView" style="display:none;">
-          <h4 id="welcomeMessage" class="mb-3"></h4>
-          <p>Silakan pindai QR Code yang ada di Lab untuk melanjutkan.</p>
-          <div class="d-grid gap-2">
-              <button class="btn btn-success btn-lg" onclick="triggerFileUpload()">Mulai Pindai QR</button>
-              <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
-          </div>
-          <div id="reader" style="display:none;"></div> 
-      </div>
-
-      <div id="purposeView" style="display:none;">
-          <h4 class="mb-3">Scan Berhasil!</h4>
-          <p>Sekarang, silakan isi keperluan kunjungan Anda.</p>
-          <div class="mb-3">
+      <div id="visitView" style="display:none;">
+        <h4 id="welcomeMessage" class="mb-3"></h4>
+        <p>Silakan isi keperluan Anda, lalu pindai QR Code untuk mencatat kunjungan.</p>
+        
+        <div class="mb-3">
+            <label for="purposeDropdown" class="form-label"><b>Keperluan Kunjungan</b></label>
             <select class="form-select" id="purposeDropdown" onchange="checkOtherOption()">
                 <option selected disabled value="">-- Pilih Keperluan --</option>
                 <option value="Praktikum">Praktikum</option>
@@ -98,16 +90,17 @@
                 <option value="Penelitian">Penelitian</option>
                 <option value="Lainnya">Lainnya...</option>
             </select>
-          </div>
-          
-          <div class="mb-3" id="otherPurposeContainer" style="display:none;">
+        </div>
+        <div class="mb-3" id="otherPurposeContainer" style="display:none;">
             <label for="otherPurposeInput" class="form-label">Keperluan Lainnya:</label>
             <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda">
-          </div>
-
-          <div class="d-grid gap-2">
-              <button class="btn btn-primary" onclick="submitPurpose()">Submit Kunjungan</button>
-          </div>
+        </div>
+    
+        <div class="d-grid gap-2 mt-4">
+            <button class="btn btn-success btn-lg" onclick="processVisit()">Pindai QR & Submit Kunjungan</button>
+            <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
+        </div>
+        <div id="reader" style="display:none;"></div> 
       </div>
 
       <div id="successView" style="display:none;" class="text-center">

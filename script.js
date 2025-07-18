@@ -83,7 +83,7 @@ async function login(event) {
     if (response.status === 'success') {
       userNIM = nim;
       localStorage.setItem('lastUsedNIM', nim);
-      showScanView(response.nama);
+      showVisitView(response.nama);
     } else {
       // Logika baru untuk menampilkan error yang lebih spesifik
       if (response.message.toLowerCase().includes('password')) {
@@ -111,8 +111,7 @@ function showLoginView() {
   document.getElementById('registerView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
   document.getElementById('registerSuccessView').style.display = 'none';
-  document.getElementById('scanView').style.display = 'none';
-  document.getElementById('purposeView').style.display = 'none';
+  document.getElementById('visitView').style.display = 'none'; // Ganti ke visitView
   document.getElementById('passwordInput').value = '';
 }
 
@@ -122,101 +121,96 @@ function showRegisterView() {
   document.getElementById('registerSuccessView').style.display = 'none';
 }
 
-function showScanView(nama) {
-    document.getElementById('loginView').style.display = 'none';
-    document.getElementById('purposeView').style.display = 'none';
-    document.getElementById('scanView').style.display = 'block';
-    document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
-}
-
-async function submitPurpose() {
-  const dropdown = document.getElementById('purposeDropdown');
-  const otherInput = document.getElementById('otherPurposeInput');
-  let keperluan = dropdown.value;
-
-  // Validasi pilihan dropdown
-  if (!keperluan) {
-      alert('Harap pilih salah satu keperluan dari daftar.');
-      return;
-  }
-
-  // Jika "Lainnya" dipilih, ambil nilai dari input teks
-  if (keperluan === 'Lainnya') {
-      keperluan = otherInput.value.trim().toLowerCase();;
-      if (!keperluan) {
-          alert('Harap isi keperluan Anda di kolom yang tersedia.');
-          return;
-      }
-
-      localStorage.setItem('lastOtherPurpose', keperluan);
-  }
-
-  const submitButton = document.querySelector('#purposeView button');
-  submitButton.disabled = true;
-  submitButton.innerText = 'Mengirim data...';
-  dropdown.disabled = true;
-  otherInput.disabled = true;
-
-  try {
-      const payload = { nim: userNIM, keperluan: keperluan };
-      const response = await callApi('recordVisit', payload);
-
-      if (response.status === 'success') {
-          document.getElementById('purposeView').style.display = 'none';
-          const successDiv = document.getElementById('successMessage');
-          successDiv.className = 'alert alert-success';
-          successDiv.innerText = response.message;
-          document.getElementById('successView').style.display = 'block';
-      } else {
-          alert('Terjadi kesalahan: ' + response.message);
-          submitButton.disabled = false;
-          submitButton.innerText = 'Submit Kunjungan';
-          dropdown.disabled = false;
-          otherInput.disabled = false;
-      }
-  } catch (error) {
-      alert('Gagal terhubung ke server. Silakan coba lagi.');
-      submitButton.disabled = false;
-      submitButton.innerText = 'Submit Kunjungan';
-      dropdown.disabled = false;
-      otherInput.disabled = false;
-  }
+function showVisitView(nama) {
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('visitView').style.display = 'block';
+  document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
 }
 
 function logout() {
   userNIM = null;
   showLoginView();
   
-  // Reset tombol pindai
-  const scanButton = document.querySelector('#scanView button');
-  if (scanButton) {
-    scanButton.disabled = false;
-    scanButton.innerText = 'Mulai Pindai QR';
-  }
-  document.getElementById('qr-input-file').value = null;
-
-  // --- RESET FORM KEPERLUAN YANG BARU ---
-  const dropdown = document.getElementById('purposeDropdown');
-  const otherInput = document.getElementById('otherPurposeInput');
-  const otherContainer = document.getElementById('otherPurposeContainer');
-  const submitButton = document.querySelector('#purposeView button');
+  // Reset form keperluan
+  document.getElementById('purposeDropdown').value = "";
+  document.getElementById('otherPurposeInput').value = "";
+  document.getElementById('otherPurposeContainer').style.display = 'none';
   
-  if (dropdown && submitButton) {
-    dropdown.value = ""; // Kembali ke pilihan default
-    dropdown.disabled = false;
-    otherInput.value = "";
-    otherInput.disabled = false;
-    otherContainer.style.display = 'none'; // Sembunyikan lagi
-    submitButton.disabled = false;
-    submitButton.innerText = 'Submit Kunjungan';
+  // Reset tombol di visitView
+  const visitButton = document.querySelector('#visitView button');
+  if(visitButton) {
+    visitButton.disabled = false;
+    visitButton.innerText = 'Pindai QR & Submit Kunjungan';
   }
 }
 
 // --- FUNGSI SCANNER (Metode File Capture) ---
 const html5QrCode = new Html5Qrcode("reader");
 
-function triggerFileUpload() {
-    document.getElementById('qr-input-file').click();
+function processVisit() {
+  // 1. Validasi Input Keperluan
+  const dropdown = document.getElementById('purposeDropdown');
+  const otherInput = document.getElementById('otherPurposeInput');
+  let keperluan = dropdown.value;
+
+  if (!keperluan) {
+      alert('Harap pilih salah satu keperluan dari daftar.');
+      return;
+  }
+
+  if (keperluan === 'Lainnya') {
+      keperluan = otherInput.value.trim().toLowerCase();
+      if (!keperluan) {
+          alert('Harap isi keperluan Anda di kolom yang tersedia.');
+          return;
+      }
+      localStorage.setItem('lastOtherPurpose', keperluan);
+  }
+  
+  // 2. Memicu Kamera (File Capture)
+  const fileInput = document.getElementById('qr-input-file');
+  
+  // Buat event listener sekali pakai untuk menangani file yang dipilih
+  fileInput.onchange = e => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const visitButton = document.querySelector('#visitView button');
+      visitButton.disabled = true;
+      visitButton.innerText = 'Memproses...';
+
+      // 3. Pindai QR dari file
+      html5QrCode.scanFile(file, true)
+      .then(decodedText => {
+          if (decodedText !== validQRCodeText) {
+              throw new Error("QR Code tidak valid.");
+          }
+          // 4. Kirim semua data ke server
+          return callApi('recordVisit', { nim: userNIM, keperluan: keperluan });
+      })
+      .then(response => {
+          // 5. Tampilkan Halaman Sukses
+          if (response.status === 'success') {
+              document.getElementById('visitView').style.display = 'none';
+              const successDiv = document.getElementById('successMessage');
+              successDiv.className = 'alert alert-success';
+              successDiv.innerText = response.message;
+              document.getElementById('successView').style.display = 'block';
+          } else {
+              throw new Error(response.message);
+          }
+      })
+      .catch(err => {
+          alert('Error: ' + err.message);
+          visitButton.disabled = false;
+          visitButton.innerText = 'Pindai QR & Submit Kunjungan';
+      })
+      .finally(() => {
+          fileInput.value = null; // Reset input file
+      });
+  };
+  
+  fileInput.click(); // Buka dialog kamera/file
 }
 
 document.getElementById('qr-input-file').addEventListener('change', e => {
@@ -234,21 +228,6 @@ document.getElementById('qr-input-file').addEventListener('change', e => {
     })
     .finally(() => { e.target.value = null; });
 });
-
-function handleSuccessfulScan(decodedText) {
-    if (decodedText !== validQRCodeText) {
-        alert("QR Code tidak valid.");
-        const scanButton = document.querySelector('#scanView button');
-        scanButton.disabled = false;
-        scanButton.innerText = 'Mulai Pindai QR';
-        return;
-    }
-    document.getElementById('scanView').style.display = 'none';
-    document.getElementById('purposeView').style.display = 'block';
-    const dropdown = document.getElementById('purposeDropdown');
-    dropdown.focus();
-    checkOtherOption();
-}
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', () => {
