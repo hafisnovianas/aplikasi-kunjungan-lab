@@ -248,31 +248,6 @@ function handleSuccessfulScan(decodedText) {
     const dropdown = document.getElementById('purposeDropdown');
     dropdown.focus();
     checkOtherOption();
-    const otherInput = document.getElementById('otherPurposeInput');
-    otherInput.addEventListener('input', checkOtherOption);
-    otherInput.addEventListener('change', checkOtherOption);
-    otherInput.addEventListener('blur', checkOtherOption);
-    otherInput.addEventListener('focus', checkOtherOption);
-    otherInput.addEventListener('keydown', checkOtherOption);
-    otherInput.addEventListener('keyup', checkOtherOption);
-    otherInput.addEventListener('keypress', checkOtherOption);
-    otherInput.addEventListener('paste', checkOtherOption);
-    otherInput.addEventListener('cut', checkOtherOption);
-    otherInput.addEventListener('copy', checkOtherOption);
-    otherInput.addEventListener('cut', checkOtherOption);
-    otherInput.addEventListener('select', checkOtherOption);
-    otherInput.addEventListener('mouseup', checkOtherOption);
-    otherInput.addEventListener('mousedown', checkOtherOption);
-    otherInput.addEventListener('mouseenter', checkOtherOption);
-    otherInput.addEventListener('mouseleave', checkOtherOption);
-    otherInput.addEventListener('mouseover', checkOtherOption);
-    otherInput.addEventListener('mouseout', checkOtherOption);
-    otherInput.addEventListener('mousemove', checkOtherOption);
-    otherInput.addEventListener('wheel', checkOtherOption);
-    otherInput.addEventListener('scroll', checkOtherOption);
-    otherInput.addEventListener('resize', checkOtherOption);
-    otherInput.addEventListener('focusin', checkOtherOption);
-    otherInput.addEventListener('focusout', checkOtherOption);
 }
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
