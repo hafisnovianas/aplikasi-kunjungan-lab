@@ -213,24 +213,6 @@ function processVisit() {
   fileInput.click(); // Buka dialog kamera/file
 }
 
-/*
-document.getElementById('qr-input-file').addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) { return; }
-    const scanButton = document.querySelector('#scanView button');
-    scanButton.disabled = true;
-    scanButton.innerText = 'Memproses Gambar...';
-    html5QrCode.scanFile(file, true)
-    .then(decodedText => { handleSuccessfulScan(decodedText); })
-    .catch(err => {
-        alert(`Error: Tidak dapat menemukan QR Code di gambar.`);
-        scanButton.disabled = false;
-        scanButton.innerText = 'Mulai Pindai QR';
-    })
-    .finally(() => { e.target.value = null; });
-});
-*/
-
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', () => {
   // Kode untuk mengingat NIM
