@@ -2,7 +2,7 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLgrpu7FyZzw2Fl0PA_MupPItiX_y05sW-TaE_XSkyrY58s/exec'; 
 
 let userNIM = null;
-const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
+//const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
 
 // --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
 
@@ -169,24 +169,26 @@ function processVisit() {
   
   // 2. Memicu Kamera (File Capture)
   const fileInput = document.getElementById('qr-input-file');
+  const visitButton = document.querySelector('#visitView button');
   
   // Buat event listener sekali pakai untuk menangani file yang dipilih
   fileInput.onchange = e => {
       const file = e.target.files[0];
       if (!file) return;
 
-      const visitButton = document.querySelector('#visitView button');
       visitButton.disabled = true;
       visitButton.innerText = 'Memproses...';
 
       // 3. Pindai QR dari file
       html5QrCode.scanFile(file, true)
       .then(decodedText => {
-          if (decodedText !== validQRCodeText) {
-              throw new Error("QR Code tidak valid.");
-          }
           // 4. Kirim semua data ke server
-          return callApi('recordVisit', { nim: userNIM, keperluan: keperluan });
+          const payload = { 
+            nim: userNIM, 
+            keperluan: keperluan, 
+            qrData: decodedText // <-- data QR dikirim
+          };
+          return callApi('recordVisit', payload);
       })
       .then(response => {
           // 5. Tampilkan Halaman Sukses
