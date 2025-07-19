@@ -2,10 +2,8 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLgrpu7FyZzw2Fl0PA_MupPItiX_y05sW-TaE_XSkyrY58s/exec'; 
 
 let userNIM = null;
-//const validQRCodeText = 'KUNJUNGAN_LAB_KOMPUTER_2025';
 
 // --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
-
 async function callApi(action, payload) {
   const response = await fetch(API_URL, {
     method: 'POST',
