@@ -228,7 +228,7 @@ function processVisit() {
 async function checkLoginSession() {
   const storedToken = localStorage.getItem('kunjunganLabToken');
   const loadingView = document.getElementById('loadingView');
-  
+  console.log("masuk");
   if (storedToken) {
     // Jika ada token, kita tidak langsung percaya. Validasi dulu ke server.
     try {
@@ -239,7 +239,7 @@ async function checkLoginSession() {
         showVisitView(response.nama); // Langsung ke halaman utama
       } else {
         // Token tidak valid (kedaluwarsa/salah), hapus dari penyimpanan
-        console.error("masuk");
+        
         localStorage.removeItem('kunjunganLabToken');
         showLoginView()
       }
