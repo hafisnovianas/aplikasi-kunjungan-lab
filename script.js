@@ -105,7 +105,6 @@ async function login(event) {
 // --- FUNGSI TAMPILAN (VIEW) ---
 
 function showLoginView() {
-  document.getElementById('loadingView').style.display = 'none';
   document.getElementById('loginView').style.display = 'block';
   document.getElementById('registerView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
@@ -121,6 +120,7 @@ function showRegisterView() {
 }
 
 function showVisitView(nama) {
+  document.getElementById('loadingView').style.display = 'none';
   document.getElementById('loginView').style.display = 'none';
   document.getElementById('visitView').style.display = 'block';
   document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
