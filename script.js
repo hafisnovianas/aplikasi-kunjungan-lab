@@ -105,6 +105,7 @@ async function login(event) {
 // --- FUNGSI TAMPILAN (VIEW) ---
 
 function showLoginView() {
+  document.getElementById('loadingView').style.display = 'none';
   document.getElementById('loginView').style.display = 'block';
   document.getElementById('registerView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
