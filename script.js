@@ -239,6 +239,7 @@ async function checkLoginSession() {
         showVisitView(response.nama); // Langsung ke halaman utama
       } else {
         // Token tidak valid (kedaluwarsa/salah), hapus dari penyimpanan
+        console.error("masuk");
         localStorage.removeItem('kunjunganLabToken');
         showLoginView()
       }
