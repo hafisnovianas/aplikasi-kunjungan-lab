@@ -146,7 +146,6 @@ function logout() {
 
 // --- FUNGSI SCANNER (Metode File Capture) ---
 const html5QrCode = new Html5Qrcode("reader");
-
 function processVisit() {
   // 1. Validasi Input Keperluan
   const dropdown = document.getElementById('purposeDropdown');
@@ -224,8 +223,36 @@ function processVisit() {
   fileInput.click(); // Buka dialog kamera/file
 }
 
+// --- FUNGSI PEMERIKSA SESI (BARU & LEBIH BAIK) ---
+async function checkLoginSession() {
+  const storedToken = localStorage.getItem('kunjunganLabToken');
+  
+  if (storedToken) {
+    // Jika ada token, kita tidak langsung percaya. Validasi dulu ke server.
+    try {
+      const response = await callApi('validateToken', { token: storedToken });
+      
+      if (response.status === 'success') {
+        // Token terbukti valid oleh server
+        userNIM = response.nim; // Set variabel global NIM
+        showVisitView(response.nama); // Langsung ke halaman utama
+      } else {
+        // Token tidak valid (kedaluwarsa/salah), hapus dari penyimpanan
+        localStorage.removeItem('kunjunganLabToken');
+        // Biarkan aplikasi menampilkan halaman login secara default
+      }
+    } catch (error) {
+      console.error("Gagal memvalidasi token:", error);
+      // Jika ada error jaringan, biarkan di halaman login
+    }
+  }
+}
+
+
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', () => {
+  checkLoginSession();
+  
   // Kode untuk mengingat NIM
   const lastNIM = localStorage.getItem('lastUsedNIM');
   if (lastNIM) {
