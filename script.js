@@ -79,8 +79,8 @@ async function login(event) {
     const response = await callApi('login', payload);
 
     if (response.status === 'success') {
-      userNIM = nim;
       localStorage.setItem('lastUsedNIM', nim);
+      localStorage.setItem('kunjunganLabToken', response.token);
       showVisitView(response.nama);
     } else {
       // Logika baru untuk menampilkan error yang lebih spesifik
@@ -127,6 +127,8 @@ function showVisitView(nama) {
 
 function logout() {
   userNIM = null;
+  // Hapus token dari penyimpanan
+  localStorage.removeItem('kunjunganLabToken');
   showLoginView();
   
   // Reset form keperluan
@@ -180,9 +182,18 @@ function processVisit() {
       // 3. Pindai QR dari file
       html5QrCode.scanFile(file, true)
       .then(decodedText => {
+          // Ambil token dari penyimpanan
+          const token = localStorage.getItem('kunjunganLabToken');
+          if (!token) {
+              // Jika tidak ada token, paksa logout
+              alert('Sesi Anda tidak ditemukan. Silakan login kembali.');
+              logout();
+              throw new Error("Sesi tidak ditemukan.");
+          }
+
           // 4. Kirim semua data ke server
           const payload = { 
-            nim: userNIM, 
+            token: token,
             keperluan: keperluan, 
             qrData: decodedText // <-- data QR dikirim
           };
