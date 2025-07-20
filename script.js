@@ -105,6 +105,7 @@ async function login(event) {
 // --- FUNGSI TAMPILAN (VIEW) ---
 
 function showLoginView() {
+  document.getElementById('loadingView').style.display = 'none';
   document.getElementById('loginView').style.display = 'block';
   document.getElementById('registerView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
@@ -226,6 +227,7 @@ function processVisit() {
 // --- FUNGSI PEMERIKSA SESI (BARU & LEBIH BAIK) ---
 async function checkLoginSession() {
   const storedToken = localStorage.getItem('kunjunganLabToken');
+  const loadingView = document.getElementById('loadingView');
   
   if (storedToken) {
     // Jika ada token, kita tidak langsung percaya. Validasi dulu ke server.
@@ -233,18 +235,18 @@ async function checkLoginSession() {
       const response = await callApi('validateToken', { token: storedToken });
       
       if (response.status === 'success') {
-        // Token terbukti valid oleh server
         userNIM = response.nim; // Set variabel global NIM
         showVisitView(response.nama); // Langsung ke halaman utama
       } else {
         // Token tidak valid (kedaluwarsa/salah), hapus dari penyimpanan
         localStorage.removeItem('kunjunganLabToken');
-        // Biarkan aplikasi menampilkan halaman login secara default
+        showLoginView()
       }
     } catch (error) {
       console.error("Gagal memvalidasi token:", error);
-      // Jika ada error jaringan, biarkan di halaman login
+      showLoginView();
     }
+    loadingView.style.display = 'none';
   }
 }
 
@@ -252,7 +254,7 @@ async function checkLoginSession() {
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', () => {
   checkLoginSession();
-  
+
   // Kode untuk mengingat NIM
   const lastNIM = localStorage.getItem('lastUsedNIM');
   if (lastNIM) {
