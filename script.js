@@ -207,6 +207,10 @@ function processVisit() {
               successDiv.className = 'alert alert-success';
               successDiv.innerText = response.message;
               document.getElementById('successView').style.display = 'block';
+          } else if (response.message && response.message.toLowerCase().includes('sesi')) {
+            // Jika error spesifik tentang sesi, beri tahu pengguna lalu logout
+            alert(response.message); 
+            logout();
           } else {
               throw new Error(response.message);
           }
