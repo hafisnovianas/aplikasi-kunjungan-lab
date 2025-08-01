@@ -142,7 +142,7 @@ function logout() {
   const visitButton = document.querySelector('#visitView button');
   if(visitButton) {
     visitButton.disabled = false;
-    visitButton.innerText = 'Pindai QR & Submit Kunjungan';
+    visitButton.innerText = 'Pindai QR';
   }
 }
 
