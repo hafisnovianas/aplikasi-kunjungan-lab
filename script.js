@@ -285,7 +285,7 @@ function checkOtherOption() {
     
     const lastPurpose = localStorage.getItem('lastOtherPurpose');
     if (lastPurpose) {
-      otherInput.value = lastPurpose;
+      //otherInput.value = lastPurpose;
     }
     otherInput.focus();
   } else {
