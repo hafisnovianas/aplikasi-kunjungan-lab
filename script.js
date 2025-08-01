@@ -260,7 +260,8 @@ async function checkLoginSession() {
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', () => {
   checkLoginSession();
-
+  populatePurposeDropdown();
+  
   // Kode untuk mengingat NIM
   const lastNIM = localStorage.getItem('lastUsedNIM');
   if (lastNIM) {
@@ -290,5 +291,29 @@ function checkOtherOption() {
     otherInput.focus();
   } else {
     otherContainer.style.display = 'none';
+  }
+}
+
+async function populatePurposeDropdown() {
+  try {
+    const response = await callApi('getOptions');
+    if (response.status === 'success') {
+      const dropdown = document.getElementById('purposeDropdown');
+      // Kosongkan opsi "memuat..."
+      dropdown.innerHTML = '<option selected disabled value="">-- Pilih Keperluan --</option>';
+      
+      // Tambahkan setiap opsi dari server
+      response.data.forEach(optionText => {
+        const option = document.createElement('option');
+        option.value = optionText;
+        option.innerText = optionText;
+        dropdown.appendChild(option);
+      });
+    }
+  } catch (error) {
+    console.error("Gagal memuat opsi keperluan:", error);
+    // Jika gagal, tampilkan pesan di dropdown
+    const dropdown = document.getElementById('purposeDropdown');
+    dropdown.innerHTML = '<option selected disabled value="">-- Gagal memuat --</option>';
   }
 }
