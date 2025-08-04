@@ -124,6 +124,7 @@ function hideAll() {
   document.getElementById('registerSuccessView').style.display = 'none';
   document.getElementById('visitView').style.display = 'none';
   document.getElementById('otherPurposeContainer').style.display = 'none';
+  document.getElementById('historyView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
 }
 
@@ -219,7 +220,7 @@ function processVisit() {
       .catch(err => {
           alert('Error: ' + err.message);
           visitButton.disabled = false;
-          visitButton.innerText = 'Pindai QR & Submit Kunjungan';
+          visitButton.innerText = 'Pindai QR';
       })
       .finally(() => {
           fileInput.value = null; // Reset input file
