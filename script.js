@@ -81,6 +81,7 @@ async function login(event) {
       localStorage.setItem('lastUsedNIM', nim);
       localStorage.setItem('kunjunganLabToken', response.token);
       showVisitView(response.nama);
+      reset();
     } else {
       // Logika baru untuk menampilkan error yang lebih spesifik
       if (response.message.toLowerCase().includes('password')) {
@@ -99,7 +100,6 @@ async function login(event) {
     loginButton.disabled = false;
     loginButton.innerText = 'Masuk';
   }
-  reset();
 }
 
 // --- FUNGSI TAMPILAN (VIEW) ---
