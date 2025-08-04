@@ -52,7 +52,6 @@ async function registerUser() {
   }
 }
 
-// Ganti fungsi login() Anda dengan yang ini
 async function login(event) {
   const nimInput = document.getElementById('nimInput');
   const passwordInput = document.getElementById('passwordInput');
@@ -100,6 +99,7 @@ async function login(event) {
     loginButton.disabled = false;
     loginButton.innerText = 'Masuk';
   }
+  reset();
 }
 
 // --- FUNGSI TAMPILAN (VIEW) ---
