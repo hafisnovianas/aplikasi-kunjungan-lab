@@ -128,17 +128,22 @@ function showVisitView(nama) {
 }
 
 function logout() {
-  userNIM = null;
-  // Hapus token dari penyimpanan
   localStorage.removeItem('kunjunganLabToken');
   showLoginView();
-  
-  // Reset form keperluan
+  reset();
+}
+
+function finish() {
+  checkLoginSession();
+  reset();
+}
+
+function reset() {
+  userNIM = null;
   document.getElementById('purposeDropdown').value = "";
   document.getElementById('otherPurposeInput').value = "";
   document.getElementById('otherPurposeContainer').style.display = 'none';
   
-  // Reset tombol di visitView
   const visitButton = document.querySelector('#visitView button');
   if(visitButton) {
     visitButton.disabled = false;
