@@ -238,9 +238,9 @@ function processVisit() {
 async function checkLoginSession() {
   const storedToken = localStorage.getItem('kunjunganLabToken');
   const loadingView = document.getElementById('loadingView');
+  loadingView.style.display = 'block';
 
   if (storedToken) {
-    // Jika ada token, kita tidak langsung percaya. Validasi dulu ke server.
     try {
       const response = await callApi('validateToken', { token: storedToken });
       
@@ -248,7 +248,6 @@ async function checkLoginSession() {
         userNIM = response.nim; // Set variabel global NIM
         showVisitView(response.nama); // Langsung ke halaman utama
       } else {
-        // Token tidak valid (kedaluwarsa/salah), hapus dari penyimpanan
         localStorage.removeItem('kunjunganLabToken');
         showLoginView()
       }
@@ -259,6 +258,7 @@ async function checkLoginSession() {
   } else {
     showLoginView();
   }
+  loadingView.style.display = 'none';
 }
 
 // --- LOGIKA SAAT HALAMAN DIMUAT ---
