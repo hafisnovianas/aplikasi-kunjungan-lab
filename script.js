@@ -322,3 +322,49 @@ async function populatePurposeDropdown() {
     dropdown.innerHTML = '<option selected disabled value="">-- Gagal memuat --</option>';
   }
 }
+
+async function showHistoryView() {
+    hideAll();
+    document.getElementById('historyView').style.display = 'block';
+    
+    const historyContent = document.getElementById('historyContent');
+    historyContent.innerHTML = '<p class="text-center">Memuat riwayat...</p>';
+
+    try {
+        const token = localStorage.getItem('kunjunganLabToken');
+        if (!token) throw new Error("Token tidak ditemukan.");
+
+        const response = await callApi('getHistory', { token: token });
+
+        if (response.status === 'success') {
+            historyContent.innerHTML = '';
+            if (response.data.length === 0) {
+                historyContent.innerHTML = '<p class="text-center">Anda belum memiliki riwayat kunjungan.</p>';
+            } else {
+                response.data.forEach(visit => {
+                    const visitDate = new Date(visit.timestamp);
+                    const formattedDate = visitDate.toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
+
+                    const item = document.createElement('div');
+                    item.className = 'list-group-item list-group-item-action flex-column align-items-start';
+                    item.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${visit.purpose}</h5>
+                            <small>${formattedDate}</small>
+                        </div>
+                    `;
+                    historyContent.appendChild(item);
+                });
+            }
+        } else {
+            throw new Error(response.message);
+        }
+    } catch (error) {
+        historyContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat: ${error.message}</p>`;
+    }
+}
+
+// Fungsi untuk kembali dari halaman riwayat
+function backToVisitView() {
+    checkLoginSession(); // Panggil ini untuk kembali ke halaman utama dengan benar
+}
