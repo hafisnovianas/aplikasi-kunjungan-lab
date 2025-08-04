@@ -1,6 +1,4 @@
-// !! PENTING !! URL Web App Anda
 const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLgrpu7FyZzw2Fl0PA_MupPItiX_y05sW-TaE_XSkyrY58s/exec'; 
-
 let userNIM = null;
 
 // --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
@@ -80,7 +78,7 @@ async function login(event) {
     if (response.status === 'success') {
       localStorage.setItem('lastUsedNIM', nim);
       localStorage.setItem('kunjunganLabToken', response.token);
-      showVisitView(response.nama);
+      showDashboardView(response.nama);
     } else {
       // Logika baru untuk menampilkan error yang lebih spesifik
       if (response.message.toLowerCase().includes('password')) {
@@ -112,10 +110,9 @@ function showRegisterView() {
   document.getElementById('registerView').style.display = 'block';
 }
 
-function showVisitView(nama) {
+function showVisitView() {
   reset();
   document.getElementById('visitView').style.display = 'block';
-  document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
 }
 
 function hideAll() {
@@ -124,7 +121,7 @@ function hideAll() {
   document.getElementById('registerSuccessView').style.display = 'none';
   document.getElementById('visitView').style.display = 'none';
   document.getElementById('otherPurposeContainer').style.display = 'none';
-  document.getElementById('historyView').style.display = 'none';
+  document.getElementById('dashboardView').style.display = 'none';
   document.getElementById('successView').style.display = 'none';
 }
 
@@ -184,10 +181,8 @@ function processVisit() {
       // 3. Pindai QR dari file
       html5QrCode.scanFile(file, true)
       .then(decodedText => {
-          // Ambil token dari penyimpanan
           const token = localStorage.getItem('kunjunganLabToken');
           if (!token) {
-              // Jika tidak ada token, paksa logout
               alert('Sesi Anda tidak ditemukan. Silakan login kembali.');
               logout();
               throw new Error("Sesi tidak ditemukan.");
@@ -197,7 +192,7 @@ function processVisit() {
           const payload = { 
             token: token,
             keperluan: keperluan, 
-            qrData: decodedText // <-- data QR dikirim
+            qrData: decodedText
           };
           return callApi('recordVisit', payload);
       })
@@ -243,7 +238,7 @@ async function checkLoginSession() {
       
       if (response.status === 'success') {
         userNIM = response.nim; // Set variabel global NIM
-        showVisitView(response.nama); // Langsung ke halaman utama
+        showDashboardView(response.nama);
       } else {
         localStorage.removeItem('kunjunganLabToken');
         showLoginView()
@@ -324,10 +319,23 @@ async function populatePurposeDropdown() {
   }
 }
 
-async function showHistoryView() {
+// Fungsi baru untuk menampilkan dashboard
+function showDashboardView(nama) {
     hideAll();
-    document.getElementById('historyView').style.display = 'block';
-    
+    document.getElementById('dashboardView').style.display = 'block';
+    document.getElementById('dashboardWelcome').innerText = `Selamat Datang, ${nama}!`;
+    // Langsung muat riwayat saat dashboard ditampilkan
+    loadHistory();
+}
+
+// Fungsi untuk pindah dari dashboard ke halaman kunjungan
+function goToVisitView() {
+    hideAll();
+    showVisitView();
+}
+
+// Tambahkan fungsi baru ini di dekat fungsi scanner atau view
+async function loadHistory() {
     const historyContent = document.getElementById('historyContent');
     historyContent.innerHTML = '<p class="text-center">Memuat riwayat...</p>';
 
@@ -342,15 +350,15 @@ async function showHistoryView() {
             if (response.data.length === 0) {
                 historyContent.innerHTML = '<p class="text-center">Anda belum memiliki riwayat kunjungan.</p>';
             } else {
-                response.data.forEach(visit => {
+                // Hanya tampilkan 5 riwayat terakhir di dashboard
+                response.data.slice(0, 5).forEach(visit => {
                     const visitDate = new Date(visit.timestamp);
                     const formattedDate = visitDate.toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
-
                     const item = document.createElement('div');
-                    item.className = 'list-group-item list-group-item-action flex-column align-items-start';
+                    item.className = 'list-group-item';
                     item.innerHTML = `
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">${visit.purpose}</h5>
+                            <p class="mb-1"><b>${visit.purpose}</b></p>
                             <small>${formattedDate}</small>
                         </div>
                     `;
@@ -361,11 +369,6 @@ async function showHistoryView() {
             throw new Error(response.message);
         }
     } catch (error) {
-        historyContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat: ${error.message}</p>`;
+        historyContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat.</p>`;
     }
-}
-
-// Fungsi untuk kembali dari halaman riwayat
-function backToVisitView() {
-    checkLoginSession(); // Panggil ini untuk kembali ke halaman utama dengan benar
 }
