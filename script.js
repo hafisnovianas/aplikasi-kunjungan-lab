@@ -105,31 +105,30 @@ async function login(event) {
 // --- FUNGSI TAMPILAN (VIEW) ---
 
 function showLoginView() {
-  //document.getElementById('loadingView').style.display = 'none';
   document.getElementById('loginView').style.display = 'block';
-  document.getElementById('registerView').style.display = 'none';
-  document.getElementById('successView').style.display = 'none';
-  document.getElementById('registerSuccessView').style.display = 'none';
-  document.getElementById('visitView').style.display = 'none'; // Ganti ke visitView
-  document.getElementById('passwordInput').value = '';
 }
 
 function showRegisterView() {
-  document.getElementById('loginView').style.display = 'none';
   document.getElementById('registerView').style.display = 'block';
-  document.getElementById('registerSuccessView').style.display = 'none';
 }
 
 function showVisitView(nama) {
-  //document.getElementById('loadingView').style.display = 'none';
-  document.getElementById('loginView').style.display = 'none';
   document.getElementById('visitView').style.display = 'block';
   document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
 }
 
+function hideAll() {
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('registerView').style.display = 'none';
+  document.getElementById('registerSuccessView').style.display = 'none';
+  document.getElementById('visitView').style.display = 'none';
+  document.getElementById('otherPurposeContainer').style.display = 'none';
+  document.getElementById('successView').style.display = 'none';
+}
+
 function logout() {
   localStorage.removeItem('kunjunganLabToken');
-  showLoginView();
+  checkLoginSession();
   reset();
 }
 
@@ -139,11 +138,12 @@ function finish() {
 }
 
 function reset() {
+  hideAll();
   userNIM = null;
   document.getElementById('purposeDropdown').value = "";
   document.getElementById('otherPurposeInput').value = "";
-  document.getElementById('otherPurposeContainer').style.display = 'none';
-  
+  document.getElementById('passwordInput').value = '';
+
   const visitButton = document.querySelector('#visitView button');
   if(visitButton) {
     visitButton.disabled = false;
@@ -275,8 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Menangani submit form login (baik via klik tombol atau Enter)
   document.getElementById('loginForm').addEventListener('submit', event => {
-    event.preventDefault(); // Mencegah halaman reload
-    login(event); // Panggil fungsi login yang sudah ada
+    event.preventDefault();
+    login(event);
   });
 });
 
