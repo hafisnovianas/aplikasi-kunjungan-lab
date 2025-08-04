@@ -231,6 +231,7 @@ function processVisit() {
 
 // --- FUNGSI PEMERIKSA SESI (BARU & LEBIH BAIK) ---
 async function checkLoginSession() {
+  hideAll()
   const storedToken = localStorage.getItem('kunjunganLabToken');
   const loadingView = document.getElementById('loadingView');
   loadingView.style.display = 'block';
