@@ -81,7 +81,6 @@ async function login(event) {
       localStorage.setItem('lastUsedNIM', nim);
       localStorage.setItem('kunjunganLabToken', response.token);
       showVisitView(response.nama);
-      reset();
     } else {
       // Logika baru untuk menampilkan error yang lebih spesifik
       if (response.message.toLowerCase().includes('password')) {
@@ -102,17 +101,19 @@ async function login(event) {
   }
 }
 
-// --- FUNGSI TAMPILAN (VIEW) ---
-
+// --- FUNGSI TAMPILAN (VIEW) --//
 function showLoginView() {
+  reset();
   document.getElementById('loginView').style.display = 'block';
 }
 
 function showRegisterView() {
+  reset();
   document.getElementById('registerView').style.display = 'block';
 }
 
 function showVisitView(nama) {
+  reset();
   document.getElementById('visitView').style.display = 'block';
   document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${nama}!`;
 }
@@ -129,12 +130,6 @@ function hideAll() {
 function logout() {
   localStorage.removeItem('kunjunganLabToken');
   checkLoginSession();
-  reset();
-}
-
-function finish() {
-  checkLoginSession();
-  reset();
 }
 
 function reset() {
