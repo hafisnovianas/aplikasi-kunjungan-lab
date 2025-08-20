@@ -319,22 +319,18 @@ async function populatePurposeDropdown() {
   }
 }
 
-// Fungsi baru untuk menampilkan dashboard
 function showDashboardView(nama) {
     hideAll();
     document.getElementById('dashboardView').style.display = 'block';
     document.getElementById('dashboardWelcome').innerText = `Selamat Datang, ${nama}!`;
-    // Langsung muat riwayat saat dashboard ditampilkan
     loadHistory();
 }
 
-// Fungsi untuk pindah dari dashboard ke halaman kunjungan
 function goToVisitView() {
     hideAll();
     showVisitView();
 }
 
-// Tambahkan fungsi baru ini di dekat fungsi scanner atau view
 async function loadHistory() {
     const historyContent = document.getElementById('historyContent');
     historyContent.innerHTML = '<p class="text-center">Memuat riwayat...</p>';
@@ -357,10 +353,8 @@ async function loadHistory() {
                     const item = document.createElement('div');
                     item.className = 'list-group-item';
                     item.innerHTML = `
-                        <div class="d-flex w-100 justify-content-between">
-                            <p class="mb-1"><b>${visit.purpose}</b></p>
-                            <small>${formattedDate}</small>
-                        </div>
+                      <h6><b>${visit.purpose}</b></h6>
+                      <small>${formattedDate}</small>
                     `;
                     historyContent.appendChild(item);
                 });
