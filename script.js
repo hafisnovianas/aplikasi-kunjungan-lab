@@ -322,7 +322,8 @@ async function populatePurposeDropdown() {
 function showDashboardView(nama) {
     hideAll();
     document.getElementById('dashboardView').style.display = 'block';
-    document.getElementById('dashboardWelcome').innerText = `Selamat Datang, ${nama}!`;
+    document.getElementById('dashboardWelcome').innerText = `Selamat Datang!`;
+    document.getElementById('dashboardUserName').innerText = `${nama}`;
     loadHistory();
 }
 

@@ -1,0 +1,79 @@
+:root {
+    --dongker-fisika: #2e3192;
+    --kuning-fisika: #E6C767;
+    --kuning-emas: rgba(230, 199, 103, 0.7);
+    --abu-abu: #223134;
+    --putih: #f4f6f8;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+body { 
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--putih);
+}
+
+header {
+  position: fixed;
+  top: 0;
+  background-color: rgba(244, 246, 248, 0.8);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 100%;
+}
+
+header .logo {
+  display: flex;
+  background-color: var(--abu-abu);
+  width: 46px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px 3px 0;
+}
+
+.hero {
+  background-image: linear-gradient(rgba(230, 199, 103, 0.4), rgba(244, 246, 248, 0.5)), url("../public/hero-image_7.jpg");
+  display: flex;
+  min-height: 200px;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  background-size: cover;
+}
+
+.hero-inner {
+  padding: 110px 50px 0px 50px;
+  border-radius: 10px;
+}
+
+.hero-title {
+  color: var(--abu-abu);
+  font-weight:700;
+  text-align: center;
+  font-size: 24px;
+  line-height: 1;
+}
+
+main { 
+  max-width: 600px; 
+}
+
+/* Menghilangkan panah atas/bawah pada input type="number" */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
