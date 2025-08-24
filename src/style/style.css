@@ -39,18 +39,18 @@ header .logo {
 }
 
 .hero {
-  background-image: linear-gradient(rgba(230, 199, 103, 0.4), rgba(244, 246, 248, 0.5)), url("../public/hero-image_7.jpg");
+  background-image: linear-gradient(rgba(230, 199, 103, 0.8), rgba(244, 246, 248, 0.5)), url("../public/lab.png");
+  background-position: top center;
+  background-size: cover;
   display: flex;
   min-height: 200px;
   align-items: center;
   justify-content: center;
-  background-position: center;
-  background-size: cover;
+  margin-bottom: 10px;
 }
 
 .hero-inner {
-  padding: 110px 100px 0px 100px;
-  border-radius: 10px;
+  padding: 0px 50px 0px 50px;
 }
 
 .hero-title {
@@ -62,7 +62,7 @@ header .logo {
 }
 
 main { 
-  max-width: 600px; 
+  max-width: 600px;
 }
 
 /* Menghilangkan panah atas/bawah pada input type="number" */
