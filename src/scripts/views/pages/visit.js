@@ -8,7 +8,7 @@ const VisitPage = {
         
         <div class="mb-3">
             <label for="purposeDropdown" class="form-label"><b>Keperluan Kunjungan</b></label>
-            <select class="form-select" id="purposeDropdown" onchange="checkOtherOption()">
+            <select class="form-select" id="purposeDropdown">
                 <option selected disabled value="">-- Pilih Keperluan --</option>
             </select>
         </div>
@@ -27,9 +27,16 @@ const VisitPage = {
   },
 
   async afterRender() {
-    populatePurposeDropdown();
-    document.getElementById('visitView').querySelector('button').addEventListener('click',()=>{
+    await populatePurposeDropdown();
+
+    const visitViewElement = document.getElementById('visitView')
+
+    visitViewElement.querySelector('button').addEventListener('click', () => {
       processVisit();
+    })
+
+    visitViewElement.querySelector('select').addEventListener('change', () => {
+      checkOtherOption();
     })
   }
 };
