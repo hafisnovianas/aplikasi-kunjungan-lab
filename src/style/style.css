@@ -1,9 +1,10 @@
 :root {
-    --dongker-fisika: #2e3192;
+    --dongker-fisika: #203264;
     --kuning-fisika: #E6C767;
     --kuning-emas: rgba(230, 199, 103, 0.7);
     --abu-abu: #223134;
     --putih: #f4f6f8;
+    --light-grey: #6c757d;
 }
 
 * {
@@ -26,43 +27,143 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   width: 100%;
+  height: 64px;
+  padding-inline: 25px;
+
+  display: flex;
+  justify-content: space-between;
 }
 
-header .logo {
+.logo {
   display: flex;
-  background-color: var(--abu-abu);
-  width: 46px;
-  height: 50px;
+  height: 64px;
   align-items: center;
   justify-content: center;
   padding: 0 3px 3px 0;
 }
 
-.hero {
-  background-image: linear-gradient(rgba(230, 199, 103, 0.8), rgba(244, 246, 248, 0.5)), url("../public/lab.png");
-  background-position: top center;
-  background-size: cover;
+.header-button {
   display: flex;
-  min-height: 200px;
+  height: 64px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  padding: 0 3px 3px 0;
+  border: none;
+  background-color: transparent;
+  color: var(--dongker-fisika);
+  font-weight: 700;
+}
+
+.header-button a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero {
+  background-image: linear-gradient(rgba(230, 199, 103, 0.6), rgba(34, 49, 52, 0.8)), url("../public/lab-small.jpg");
+  background-position: center center;
+  background-size: cover;
+  display: flex;
+  min-height: 300px;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-inner {
-  padding: 0px 50px 0px 50px;
+  padding: 150px 0 0;
+  max-width: 300px;
 }
 
 .hero-title {
-  color: var(--abu-abu);
+  color: white;
   font-weight:700;
   text-align: center;
-  font-size: 24px;
+  font-size: 30px;
   line-height: 1;
 }
 
 main { 
   max-width: 600px;
+  margin: 0 25px 25px;
+}
+
+.page {
+  margin-top: 75px;
+}
+
+.card {
+  border: 2px solid var(--abu-abu);
+  border-radius: 8px;
+  min-height: 200px;
+  background-color: var(--putih);
+  color: var(--dongker-fisika);
+}
+
+.total-visit-card {
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.total-visit-card__value {
+  font-size: 120px;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+  line-height: 1;
+}
+
+.total-visit-card__label {
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+}
+
+.daily-visit-card {
+  padding: 20px 20px 0;
+}
+
+.daily-visit-card__title {
+  text-align: center;
+  font-weight: 600;
+}
+
+.daily-visit-card__list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+.visit-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0; 
+  border-bottom: 1px solid var(--abu-abu);
+}
+
+.visit-list-item:last-child {
+  border-bottom: none;
+}
+
+.visit-list-item__name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.visit-list-item__purpose {
+  font-size: 0.8rem;
+  margin: 0;
+  color: var(--light-grey);
+}
+
+.visit-list-item__time {
+  background-color: var(--dongker-fisika);
+  color: var(--putih);
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
 }
 
 /* Menghilangkan panah atas/bawah pada input type="number" */

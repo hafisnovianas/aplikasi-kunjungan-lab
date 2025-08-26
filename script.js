@@ -103,6 +103,8 @@ async function login(event) {
 function showLoginView() {
   reset();
   document.getElementById('loginView').style.display = 'block';
+  document.getElementById('loginButton').style.display = 'none';
+  document.getElementById('homeButton').style.display = 'block';
 }
 
 function showRegisterView() {
@@ -122,7 +124,9 @@ function hideAll() {
   document.getElementById('visitView').style.display = 'none';
   document.getElementById('otherPurposeContainer').style.display = 'none';
   document.getElementById('dashboardView').style.display = 'none';
-  document.getElementById('successView').style.display = 'none';
+
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('home').style.display = 'none';
 }
 
 function logout() {
@@ -238,39 +242,20 @@ async function checkLoginSession() {
       
       if (response.status === 'success') {
         userNIM = response.nim; // Set variabel global NIM
-        showDashboardView(response.nama);
+        //showDashboardView(response.nama);
       } else {
         localStorage.removeItem('kunjunganLabToken');
-        showLoginView()
+        //showLoginView()
       }
     } catch (error) {
       console.error("Gagal memvalidasi token:", error);
-      showLoginView();
+      //showLoginView();
     } 
   } else {
-    showLoginView();
+    //showLoginView();
   }
   loadingView.style.display = 'none';
 }
-
-// --- LOGIKA SAAT HALAMAN DIMUAT ---
-document.addEventListener('DOMContentLoaded', () => {
-  checkLoginSession();
-  populatePurposeDropdown();
-
-  // Kode untuk mengingat NIM
-  const lastNIM = localStorage.getItem('lastUsedNIM');
-  if (lastNIM) {
-    document.getElementById('nimInput').value = lastNIM;
-    document.getElementById('passwordInput').focus();
-  }
-
-  // Menangani submit form login (baik via klik tombol atau Enter)
-  document.getElementById('loginForm').addEventListener('submit', event => {
-    event.preventDefault();
-    login(event);
-  });
-});
 
 function checkOtherOption() {
   const dropdown = document.getElementById('purposeDropdown');
@@ -290,42 +275,42 @@ function checkOtherOption() {
   }
 }
 
-async function populatePurposeDropdown() {
-  try {
-    const response = await callApi('getOptions');
-    if (response.status === 'success') {
-      const dropdown = document.getElementById('purposeDropdown');
-      dropdown.innerHTML = '<option selected disabled value="">-- Pilih Keperluan --</option>';
+// async function populatePurposeDropdown() {
+//   try {
+//     const response = await callApi('getOptions');
+//     if (response.status === 'success') {
+//       const dropdown = document.getElementById('purposeDropdown');
+//       dropdown.innerHTML = '<option selected disabled value="">-- Pilih Keperluan --</option>';
       
-      // Tambahkan setiap opsi dari server
-      response.data.forEach(optionText => {
-        const option = document.createElement('option');
-        option.value = optionText;
-        option.innerText = optionText;
-        dropdown.appendChild(option);
-      });
+//       // Tambahkan setiap opsi dari server
+//       response.data.forEach(optionText => {
+//         const option = document.createElement('option');
+//         option.value = optionText;
+//         option.innerText = optionText;
+//         dropdown.appendChild(option);
+//       });
 
-      // Tambahkan opsi "Lainnya" secara manual di akhir
-      const otherOption = document.createElement('option');
-      otherOption.value = 'Lainnya';
-      otherOption.innerText = 'Lainnya...';
-      dropdown.appendChild(otherOption);
-    }
-  } catch (error) {
-    console.error("Gagal memuat opsi keperluan:", error);
+//       // Tambahkan opsi "Lainnya" secara manual di akhir
+//       const otherOption = document.createElement('option');
+//       otherOption.value = 'Lainnya';
+//       otherOption.innerText = 'Lainnya...';
+//       dropdown.appendChild(otherOption);
+//     }
+//   } catch (error) {
+//     console.error("Gagal memuat opsi keperluan:", error);
 
-    const dropdown = document.getElementById('purposeDropdown');
-    dropdown.innerHTML = '<option selected disabled value="">-- Gagal memuat --</option>';
-  }
-}
+//     const dropdown = document.getElementById('purposeDropdown');
+//     dropdown.innerHTML = '<option selected disabled value="">-- Gagal memuat --</option>';
+//   }
+// }
 
-function showDashboardView(nama) {
-    hideAll();
-    document.getElementById('dashboardView').style.display = 'block';
-    document.getElementById('dashboardWelcome').innerText = `Selamat Datang!`;
-    document.getElementById('dashboardUserName').innerText = `${nama}`;
-    loadHistory();
-}
+// function showDashboardView(nama) {
+//     hideAll();
+//     document.getElementById('dashboardView').style.display = 'block';
+//     document.getElementById('dashboardWelcome').innerText = `Selamat Datang!`;
+//     document.getElementById('dashboardUserName').innerText = `${nama}`;
+//     loadHistory();
+// }
 
 function goToVisitView() {
     hideAll();
@@ -367,3 +352,68 @@ async function loadHistory() {
         historyContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat.</p>`;
     }
 }
+
+// async function loadDailyHistory() {
+//     const todaysHistoryContent = document.getElementById('dailyVisitList');
+//     const totalVisitElement = document.getElementById('totalVisit')
+//     todaysHistoryContent.innerHTML = '<p class="text-center">Memuat...</p>';
+
+//     try {
+//         const response = await callApi('getDailyHistory');
+
+//         if (response.status === 'success') {
+//             todaysHistoryContent.innerHTML = ''; // Kosongkan loading
+//             if (response.data.length === 0) {
+//                 todaysHistoryContent.innerHTML = '<p class="text-center">Belum ada kunjungan hari ini.</p>';
+//             } else {
+//                 totalVisitElement.textContent = response.data.length;
+//                 response.data.forEach(visit => {
+//                     const item = document.createElement('li');
+//                     item.className = 'visit-list-item';
+//                     item.innerHTML = `
+//                       <div class="visit-list-item__main">
+//                         <h6 class="visit-list-item__name">${visit.name}</h6>
+//                         <p class="visit-list-item__purpose">${visit.purpose}</p>
+//                       </div>
+//                       <span class="visit-list-item__time">${visit.time}</span>
+//                     `;
+//                     todaysHistoryContent.appendChild(item);
+//                 });
+//             }
+//         } else {
+//             throw new Error(response.message);
+//         }
+//     } catch (error) {
+//         todaysHistoryContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat hari ini.</p>`;
+//     }
+// }
+
+// --- LOGIKA SAAT HALAMAN DIMUAT ---
+
+document.addEventListener('DOMContentLoaded', () => {
+  populatePurposeDropdown();
+  loadDailyHistory();
+
+  // Kode untuk mengingat NIM
+  const lastNIM = localStorage.getItem('lastUsedNIM');
+  if (lastNIM) {
+    document.getElementById('nimInput').value = lastNIM;
+    document.getElementById('passwordInput').focus();
+  }
+
+  // Menangani submit form login (baik via klik tombol atau Enter)
+  document.getElementById('loginForm').addEventListener('submit', event => {
+    event.preventDefault();
+    login(event);
+  });
+
+  document.getElementById('loginButton').addEventListener('click', event => {
+    hideAll();
+    showLoginView();
+  })
+
+  document.getElementById('homeButton').addEventListener('click', event => {
+    hideAll();
+    showLoginView();
+  })
+});

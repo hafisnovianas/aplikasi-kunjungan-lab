@@ -1,0 +1,87 @@
+import CallApi from "../../../data/api.js";
+
+const LoginPage = {
+  async render() {
+    return `
+      <div id="loginView" class="page">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="nimInput" class="form-label">NIM</label>
+            <input type="number" class="form-control" id="nimInput" placeholder="Masukkan NIM" required>
+            <div id="nimError" class="invalid-feedback"></div>
+          </div>
+          <div class="mb-3">
+              <label for="passwordInput" class="form-label">Password</label>
+              <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
+              <div id="passwordError" class="invalid-feedback"></div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Masuk</button>
+        </form>
+        <p class="mt-3 text-center">Belum punya akun? <a href="#" onclick="showRegisterView(); return false;">Daftar di sini</a></p>
+      </div>
+    `
+  },
+
+  async afterRender() {
+    document.getElementById('loginForm').addEventListener('submit', event => {
+      event.preventDefault();
+      login(event);
+    });
+
+
+  }
+};
+
+export default LoginPage;
+
+async function login(event) {
+  const nimInput = document.getElementById('nimInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const nim = nimInput.value;
+  const password = passwordInput.value;
+  const nama = '';
+
+  // Reset error-error sebelumnya setiap kali login ditekan
+  nimInput.classList.remove('is-invalid');
+  passwordInput.classList.remove('is-invalid');
+  document.getElementById('nimError').innerText = '';
+  document.getElementById('passwordError').innerText = '';
+
+  if (!nim || !password) {
+    alert('NIM dan Password tidak boleh kosong.');
+    return;
+  }
+
+  const loginButton = document.querySelector('#loginForm button');
+  loginButton.disabled = true;
+  loginButton.innerText = 'Mengecek...';
+
+  try {
+    const payload = { nim, password };
+    const response = await CallApi.callApi('login', payload);
+    console.log(response)
+
+    if (response.status === 'success') {
+      localStorage.setItem('lastUsedNIM', nim);
+      localStorage.setItem('lastUsedName', response.nama);
+      localStorage.setItem('kunjunganLabToken', response.token);
+
+      window.location.hash = '#/dashboard';
+    } else {
+      if (response.message.toLowerCase().includes('password')) {
+        passwordInput.classList.add('is-invalid');
+        document.getElementById('passwordError').innerText = response.message;
+        passwordInput.focus();
+      } else {
+        nimInput.classList.add('is-invalid');
+        document.getElementById('nimError').innerText = response.message;
+        nimInput.focus();
+      }
+    }
+  } catch (error) {
+    alert('Error saat validasi: ' + error.message);
+  } finally {
+    loginButton.disabled = false;
+    loginButton.innerText = 'Masuk';
+  }
+}
