@@ -36,16 +36,27 @@ const VisitPage = {
   },
 
   async afterRender() {
+    resetInput()
     fillPurposeDropdown();
-    const visitViewElement = document.getElementById('visitView')
 
+    const visitViewElement = document.getElementById('visitView')
     visitViewElement.querySelector('button').addEventListener('click', processVisit)
     visitViewElement.querySelector('select').addEventListener('change', checkOtherOption)
+    
     document.getElementById('successView').querySelector('button').addEventListener('click', checkLoginSession)
   }
 };
 
 export default VisitPage;
+function resetInput () {
+  document.getElementById('purposeDropdown').value = "";
+  document.getElementById('otherPurposeInput').value = "";
+  const visitButton = document.querySelector('#visitView button');
+  if(visitButton) {
+    visitButton.disabled = false;
+    visitButton.innerText = 'Pindai QR';
+  }
+}
 
 function processVisit() {
   const html5QrCode = new window.Html5Qrcode("reader");

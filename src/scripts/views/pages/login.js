@@ -17,24 +17,29 @@ const LoginPage = {
           </div>
           <button type="submit" class="btn btn-primary w-100">Masuk</button>
         </form>
-        <p class="mt-3 text-center">Belum punya akun? <a href="#" onclick="showRegisterView(); return false;">Daftar di sini</a></p>
+        <p class="mt-3 text-center">Belum punya akun? <a href="#/register" return false;">Daftar di sini</a></p>
       </div>
     `
   },
 
   async afterRender() {
+    document.getElementById('passwordInput').value = '';
+    const lastNIM = localStorage.getItem('lastUsedNIM');
+    if (lastNIM) {
+      document.getElementById('nimInput').value = lastNIM;
+      document.getElementById('passwordInput').focus();
+    }
+    
     document.getElementById('loginForm').addEventListener('submit', event => {
       event.preventDefault();
-      login(event);
+      login();
     });
-
-
   }
 };
 
 export default LoginPage;
 
-async function login(event) {
+async function login() {
   const nimInput = document.getElementById('nimInput');
   const passwordInput = document.getElementById('passwordInput');
   const nim = nimInput.value;

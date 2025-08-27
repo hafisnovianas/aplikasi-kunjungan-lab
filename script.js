@@ -2,15 +2,15 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLg
 let userNIM = null;
 
 // --- FUNGSI UTAMA (LOGIN, REGISTER, API) ---
-// async function callApi(action, payload) {
-//   const response = await fetch(API_URL, {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-//     body: JSON.stringify({ action, payload }),
-//     redirect: 'follow'
-//   });
-//   return response.json();
-// }
+async function callApi(action, payload) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action, payload }),
+    redirect: 'follow'
+  });
+  return response.json();
+}
 
 async function registerUser() {
   const nim = document.getElementById('nim_reg').value;
@@ -100,12 +100,12 @@ async function registerUser() {
 // }
 
 // --- FUNGSI TAMPILAN (VIEW) --//
-function showLoginView() {
-  reset();
-  document.getElementById('loginView').style.display = 'block';
-  document.getElementById('loginButton').style.display = 'none';
-  document.getElementById('homeButton').style.display = 'block';
-}
+// function showLoginView() {
+//   reset();
+//   document.getElementById('loginView').style.display = 'block';
+//   document.getElementById('loginButton').style.display = 'none';
+//   document.getElementById('homeButton').style.display = 'block';
+// }
 
 function showRegisterView() {
   reset();
@@ -149,7 +149,7 @@ function reset() {
 }
 
 // --- FUNGSI SCANNER (Metode File Capture) ---
-const html5QrCode = new Html5Qrcode("reader");
+// const html5QrCode = new Html5Qrcode("reader");
 // function processVisit() {
 //   // 1. Validasi Input Keperluan
 //   const dropdown = document.getElementById('purposeDropdown');
@@ -229,52 +229,50 @@ const html5QrCode = new Html5Qrcode("reader");
 //   fileInput.click(); // Buka dialog kamera/file
 // }
 
-// --- FUNGSI PEMERIKSA SESI (BARU & LEBIH BAIK) ---
+// async function checkLoginSession() {
+//   hideAll()
+//   const storedToken = localStorage.getItem('kunjunganLabToken');
+//   const loadingView = document.getElementById('loadingView');
+//   loadingView.style.display = 'block';
 
-async function checkLoginSession() {
-  hideAll()
-  const storedToken = localStorage.getItem('kunjunganLabToken');
-  const loadingView = document.getElementById('loadingView');
-  loadingView.style.display = 'block';
-
-  if (storedToken) {
-    try {
-      const response = await callApi('validateToken', { token: storedToken });
+//   if (storedToken) {
+//     try {
+//       const response = await callApi('validateToken', { token: storedToken });
       
-      if (response.status === 'success') {
-        userNIM = response.nim; // Set variabel global NIM
-        //showDashboardView(response.nama);
-      } else {
-        localStorage.removeItem('kunjunganLabToken');
-        //showLoginView()
-      }
-    } catch (error) {
-      console.error("Gagal memvalidasi token:", error);
-      //showLoginView();
-    } 
-  } else {
-    //showLoginView();
-  }
-  loadingView.style.display = 'none';
-}
+//       if (response.status === 'success') {
+//         userNIM = response.nim; // Set variabel global NIM
+//         //showDashboardView(response.nama);
+//       } else {
+//         localStorage.removeItem('kunjunganLabToken');
+//         //showLoginView()
+//       }
+//     } catch (error) {
+//       console.error("Gagal memvalidasi token:", error);
+//       //showLoginView();
+//     } 
+//   } else {
+//     //showLoginView();
+//   }
+//   loadingView.style.display = 'none';
+// }
 
-function checkOtherOption() {
-  const dropdown = document.getElementById('purposeDropdown');
-  const otherContainer = document.getElementById('otherPurposeContainer');
-  const otherInput = document.getElementById('otherPurposeInput');
+// function checkOtherOption() {
+//   const dropdown = document.getElementById('purposeDropdown');
+//   const otherContainer = document.getElementById('otherPurposeContainer');
+//   const otherInput = document.getElementById('otherPurposeInput');
 
-  if (dropdown.value === 'Lainnya') {
-    otherContainer.style.display = 'block';
+//   if (dropdown.value === 'Lainnya') {
+//     otherContainer.style.display = 'block';
     
-    const lastPurpose = localStorage.getItem('lastOtherPurpose');
-    if (lastPurpose) {
-      //otherInput.value = lastPurpose;
-    }
-    otherInput.focus();
-  } else {
-    otherContainer.style.display = 'none';
-  }
-}
+//     const lastPurpose = localStorage.getItem('lastOtherPurpose');
+//     if (lastPurpose) {
+//       //otherInput.value = lastPurpose;
+//     }
+//     otherInput.focus();
+//   } else {
+//     otherContainer.style.display = 'none';
+//   }
+// }
 
 // async function populatePurposeDropdown() {
 //   try {
@@ -313,46 +311,46 @@ function checkOtherOption() {
 //     loadHistory();
 // }
 
-function goToVisitView() {
-    hideAll();
-    showVisitView();
-}
+// function goToVisitView() {
+//     hideAll();
+//     showVisitView();
+// }
 
-async function loadHistory() {
-    const historyContent = document.getElementById('historyContent');
-    historyContent.innerHTML = '<p class="text-center">Memuat riwayat...</p>';
+// async function loadHistory() {
+//     const historyContent = document.getElementById('historyContent');
+//     historyContent.innerHTML = '<p class="text-center">Memuat riwayat...</p>';
 
-    try {
-        const token = localStorage.getItem('kunjunganLabToken');
-        if (!token) throw new Error("Token tidak ditemukan.");
+//     try {
+//         const token = localStorage.getItem('kunjunganLabToken');
+//         if (!token) throw new Error("Token tidak ditemukan.");
 
-        const response = await callApi('getHistory', { token: token });
+//         const response = await callApi('getHistory', { token: token });
 
-        if (response.status === 'success') {
-            historyContent.innerHTML = '';
-            if (response.data.length === 0) {
-                historyContent.innerHTML = '<p class="text-center">Anda belum memiliki riwayat kunjungan.</p>';
-            } else {
-                // Hanya tampilkan 5 riwayat terakhir di dashboard
-                response.data.slice(0, 5).forEach(visit => {
-                    const visitDate = new Date(visit.timestamp);
-                    const formattedDate = visitDate.toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
-                    const item = document.createElement('div');
-                    item.className = 'list-group-item';
-                    item.innerHTML = `
-                      <h6><b>${visit.purpose}</b></h6>
-                      <small>${formattedDate}</small>
-                    `;
-                    historyContent.appendChild(item);
-                });
-            }
-        } else {
-            throw new Error(response.message);
-        }
-    } catch (error) {
-        historyContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat.</p>`;
-    }
-}
+//         if (response.status === 'success') {
+//             historyContent.innerHTML = '';
+//             if (response.data.length === 0) {
+//                 historyContent.innerHTML = '<p class="text-center">Anda belum memiliki riwayat kunjungan.</p>';
+//             } else {
+//                 // Hanya tampilkan 5 riwayat terakhir di dashboard
+//                 response.data.slice(0, 5).forEach(visit => {
+//                     const visitDate = new Date(visit.timestamp);
+//                     const formattedDate = visitDate.toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
+//                     const item = document.createElement('div');
+//                     item.className = 'list-group-item';
+//                     item.innerHTML = `
+//                       <h6><b>${visit.purpose}</b></h6>
+//                       <small>${formattedDate}</small>
+//                     `;
+//                     historyContent.appendChild(item);
+//                 });
+//             }
+//         } else {
+//             throw new Error(response.message);
+//         }
+//     } catch (error) {
+//         historyContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat.</p>`;
+//     }
+// }
 
 // async function loadDailyHistory() {
 //     const todaysHistoryContent = document.getElementById('dailyVisitList');
@@ -389,32 +387,30 @@ async function loadHistory() {
 //     }
 // }
 
-// --- LOGIKA SAAT HALAMAN DIMUAT ---
+// document.addEventListener('DOMContentLoaded', () => {
+//   populatePurposeDropdown();
+//   loadDailyHistory();
 
-document.addEventListener('DOMContentLoaded', () => {
-  populatePurposeDropdown();
-  loadDailyHistory();
+//   // Kode untuk mengingat NIM
+//   // const lastNIM = localStorage.getItem('lastUsedNIM');
+//   // if (lastNIM) {
+//   //   document.getElementById('nimInput').value = lastNIM;
+//   //   document.getElementById('passwordInput').focus();
+//   // }
 
-  // Kode untuk mengingat NIM
-  const lastNIM = localStorage.getItem('lastUsedNIM');
-  if (lastNIM) {
-    document.getElementById('nimInput').value = lastNIM;
-    document.getElementById('passwordInput').focus();
-  }
+//   // Menangani submit form login (baik via klik tombol atau Enter)
+//   // document.getElementById('loginForm').addEventListener('submit', event => {
+//   //   event.preventDefault();
+//   //   login(event);
+//   // });
 
-  // Menangani submit form login (baik via klik tombol atau Enter)
-  document.getElementById('loginForm').addEventListener('submit', event => {
-    event.preventDefault();
-    login(event);
-  });
+//   document.getElementById('loginButton').addEventListener('click', event => {
+//     hideAll();
+//     showLoginView();
+//   })
 
-  document.getElementById('loginButton').addEventListener('click', event => {
-    hideAll();
-    showLoginView();
-  })
-
-  document.getElementById('homeButton').addEventListener('click', event => {
-    hideAll();
-    showLoginView();
-  })
-});
+//   document.getElementById('homeButton').addEventListener('click', event => {
+//     hideAll();
+//     showLoginView();
+//   })
+// });
