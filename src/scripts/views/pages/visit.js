@@ -2,7 +2,7 @@ import CallApi from "../../../data/api.js";
 
 const VisitPage = {
   async render() {
-    await populatePurposeDropdown();
+    // await populatePurposeDropdown(); //bikin lambat
 
     return `
       <div id="visitView">
@@ -136,7 +136,16 @@ function processVisit() {
 }
 
 async function fillPurposeDropdown() {
-  const purposeDropdownItems = JSON.parse(localStorage.getItem('purposeDropdownItems'));
+  //const purposeDropdownItems = JSON.parse(localStorage.getItem('purposeDropdownItems'));
+  const purposeDropdownItems = [
+    "Praktikum",
+    "Kuliah",
+    "Penelitian",
+    "Mengerjakan Tugas",
+    "Mengerjakan Projek",
+    "Bimbingan",
+    "Asistensi"
+  ]
 
   const dropdown = document.getElementById('purposeDropdown');
   dropdown.innerHTML = '<option selected disabled value="">-- Pilih Keperluan --</option>';
