@@ -59,7 +59,6 @@ async function login(event) {
   try {
     const payload = { nim, password };
     const response = await CallApi.callApi('login', payload);
-    console.log(response)
 
     if (response.status === 'success') {
       localStorage.setItem('lastUsedNIM', nim);

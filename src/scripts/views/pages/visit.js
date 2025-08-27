@@ -14,6 +14,7 @@ const VisitPage = {
                 <option selected disabled value="">-- Pilih Keperluan --</option>
             </select>
         </div>
+
         <div class="mb-3" id="otherPurposeContainer" style="display:none;">
             <label for="otherPurposeInput" class="form-label">Keperluan Lainnya:</label>
             <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda">
@@ -23,7 +24,13 @@ const VisitPage = {
             <button class="btn btn-success btn-lg">Pindai QR</button>
             <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
         </div>
+
         <div id="reader" style="display:none;"></div>
+      </div>
+
+      <div id="successView" class="text-center" style="display:none;">
+        <div id="successMessage" class="alert alert-success" role="alert"></div>
+        <button class="btn btn-primary mt-3">kembali</button>
       </div>
     `
   },
@@ -32,19 +39,17 @@ const VisitPage = {
     fillPurposeDropdown();
     const visitViewElement = document.getElementById('visitView')
 
-    visitViewElement.querySelector('button').addEventListener('click', () => {
-      processVisit();
-    })
-
-    visitViewElement.querySelector('select').addEventListener('change', () => {
-      checkOtherOption();
-    })
+    visitViewElement.querySelector('button').addEventListener('click', processVisit)
+    visitViewElement.querySelector('select').addEventListener('change', checkOtherOption)
+    document.getElementById('successView').querySelector('button').addEventListener('click', checkLoginSession)
   }
 };
 
 export default VisitPage;
 
 function processVisit() {
+  const html5QrCode = new window.Html5Qrcode("reader");
+
   // 1. Validasi Input Keperluan
   const dropdown = document.getElementById('purposeDropdown');
   const otherInput = document.getElementById('otherPurposeInput');
@@ -92,16 +97,12 @@ function processVisit() {
             keperluan: keperluan, 
             qrData: decodedText
           };
-          return callApi('recordVisit', payload);
+          return CallApi.callApi('recordVisit', payload);
       })
       .then(response => {
           // 5. Tampilkan Halaman Sukses
           if (response.status === 'success') {
-              document.getElementById('visitView').style.display = 'none';
-              const successDiv = document.getElementById('successMessage');
-              successDiv.className = 'alert alert-success';
-              successDiv.innerText = response.message;
-              document.getElementById('successView').style.display = 'block';
+            showSuccessView(response.message)
           } else if (response.message && response.message.toLowerCase().includes('sesi')) {
             // Jika error spesifik tentang sesi, beri tahu pengguna lalu logout
             alert(response.message); 
@@ -124,7 +125,8 @@ function processVisit() {
 }
 
 async function fillPurposeDropdown() {
-  const purposeDropdownItems = localStorage.getItem('purposeDropdownItems');
+  const purposeDropdownItems = JSON.parse(localStorage.getItem('purposeDropdownItems'));
+
   const dropdown = document.getElementById('purposeDropdown');
   dropdown.innerHTML = '<option selected disabled value="">-- Pilih Keperluan --</option>';
   
@@ -150,11 +152,11 @@ async function populatePurposeDropdown() {
   try {
     const response = await CallApi.callApi('getOptions');
     if (response.status === 'success') {
-      localStorage.setItem(purposeDropdownItems,response.data)
+      localStorage.setItem('purposeDropdownItems',JSON.stringify(response.data))
     }
   } catch (error) {
     console.error("Gagal memuat opsi keperluan:", error);
-    localStorage.setItem(purposeDropdownItems,null)
+    localStorage.setItem('purposeDropdownItems',null)
   }
 }
 
@@ -174,4 +176,38 @@ function checkOtherOption() {
   } else {
     otherContainer.style.display = 'none';
   }
+}
+
+function showSuccessView (message) {
+  const successDiv = document.getElementById('successMessage');
+  successDiv.className = 'alert alert-success';
+  successDiv.innerText = message;
+
+  document.getElementById('visitView').style.display = 'none';
+  document.getElementById('successView').style.display = 'block';
+}
+
+async function checkLoginSession() {
+  const storedToken = localStorage.getItem('kunjunganLabToken');
+  //const loadingView = document.getElementById('loadingView');
+  //loadingView.style.display = 'block';
+
+  if (storedToken) {
+    try {
+      const response = await CallApi.callApi('validateToken', { token: storedToken });
+      if (response.status === 'success') {
+        localStorage.setItem('lastUsedNIM', response.nim);
+        window.location.hash = '#/dashboard'
+      } else {
+        localStorage.removeItem('kunjunganLabToken');
+        window.location.hash = '#/login'
+      }
+    } catch (error) {
+      console.error("Gagal memvalidasi token:", error);
+      window.location.hash = '#/login'
+    } 
+  } else {
+    window.location.hash = '#/login'
+  }
+  //loadingView.style.display = 'none';
 }

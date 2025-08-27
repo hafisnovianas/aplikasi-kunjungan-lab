@@ -5,7 +5,7 @@ const DashboardPage = {
     return `
       <div id="dashboardView">
         <div class="dashboardWelcome_container">
-          <h5 id="dashboardWelcome"></h5>
+          <h5 id="dashboardWelcome">Selamat Datang</h5>
           <h4 id="dashboardUserName" class="mb-3"></h4>
         </div>
 
@@ -23,7 +23,8 @@ const DashboardPage = {
   },
 
   async afterRender() {
-    showDashboardView(localStorage.getItem('lastUsedName'))
+    document.getElementById('dashboardUserName').innerText = localStorage.getItem('lastUsedName');
+    loadHistory();
 
     document.getElementById('dashboardView').querySelector('button').addEventListener('click', ()=> {
       window.location.hash = '#/visit';
@@ -32,13 +33,6 @@ const DashboardPage = {
 };
 
 export default DashboardPage;
-
-function showDashboardView(name) {
-    document.getElementById('dashboardView').style.display = 'block';
-    document.getElementById('dashboardWelcome').innerText = `Selamat Datang!`;
-    document.getElementById('dashboardUserName').innerText = `${name}`;
-    loadHistory();
-}
 
 async function loadHistory() {
     const historyContent = document.getElementById('historyContent');
