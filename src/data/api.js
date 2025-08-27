@@ -2,7 +2,9 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLg
 
 class CallApi {
   static async callApi(action, payload) {
-    const response = await fetch(API_URL, {
+    document.getElementById('loadingOverlay').style.display = 'flex';
+
+    let response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action, payload }),
@@ -13,7 +15,9 @@ class CallApi {
       throw new Error('Tidak dapat menampilkan data restoran karena sedang offline');
     }
 
-    return await response.json();
+    response = await response.json();
+    document.getElementById('loadingOverlay').style.display = 'none';
+    return response
   }
 }
 

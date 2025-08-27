@@ -15,9 +15,11 @@ const DashboardPage = {
           </button>
         </div>
 
-        <h5>Riwayat Kunjungan Terakhir</h5>
-        <div id="historyContent" class="list-group">
-        </div>
+        <section class="visit-card card">
+          <h4 class="visit-card__title">Riwayat Kunjungan Anda</h4>
+          <ul id="historyVisitList" class="visit-card__list">
+          </ul>
+        </section>
       </div>
     `
   },
@@ -35,7 +37,7 @@ const DashboardPage = {
 export default DashboardPage;
 
 async function loadHistory() {
-    const historyContent = document.getElementById('historyContent');
+    const historyContent = document.getElementById('historyVisitList');
     historyContent.innerHTML = '<p class="text-center">Memuat riwayat...</p>';
 
     try {
@@ -49,18 +51,20 @@ async function loadHistory() {
             if (response.data.length === 0) {
                 historyContent.innerHTML = '<p class="text-center">Anda belum memiliki riwayat kunjungan.</p>';
             } else {
-                // Hanya tampilkan 5 riwayat terakhir di dashboard
-                response.data.slice(0, 5).forEach(visit => {
-                    const visitDate = new Date(visit.timestamp);
-                    const formattedDate = visitDate.toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
-                    const item = document.createElement('div');
-                    item.className = 'list-group-item';
-                    item.innerHTML = `
-                      <h6><b>${visit.purpose}</b></h6>
-                      <small>${formattedDate}</small>
-                    `;
-                    historyContent.appendChild(item);
-                });
+              response.data.forEach(visit => {
+                const visitDate = new Date(visit.timestamp);
+                
+                const formattedDate = visitDate.toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
+                const item = document.createElement('li');
+                item.className = 'visit-list-item';
+                item.innerHTML = `
+                  <div class="visit-list-item__main">
+                    <h6 class="visit-list-item__name">${visit.purpose}</h6>
+                    <p class="visit-list-item__purpose">${formattedDate}</p>
+                  </div>
+                `;
+                historyContent.appendChild(item);
+              });
             }
         } else {
             throw new Error(response.message);
