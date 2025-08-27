@@ -2,6 +2,8 @@ import CallApi from "../../../data/api.js";
 
 const VisitPage = {
   async render() {
+    await populatePurposeDropdown();
+
     return `
       <div id="visitView">
         <p>Silakan isi keperluan Anda, lalu pindai QR Code untuk mencatat kunjungan.</p>
@@ -27,8 +29,7 @@ const VisitPage = {
   },
 
   async afterRender() {
-    await populatePurposeDropdown();
-
+    fillPurposeDropdown();
     const visitViewElement = document.getElementById('visitView')
 
     visitViewElement.querySelector('button').addEventListener('click', () => {
@@ -122,32 +123,38 @@ function processVisit() {
   fileInput.click(); // Buka dialog kamera/file
 }
 
+async function fillPurposeDropdown() {
+  const purposeDropdownItems = localStorage.getItem('purposeDropdownItems');
+  const dropdown = document.getElementById('purposeDropdown');
+  dropdown.innerHTML = '<option selected disabled value="">-- Pilih Keperluan --</option>';
+  
+  if (!purposeDropdownItems) {
+    dropdown.innerHTML = '<option selected disabled value="">-- Gagal memuat --</option>';
+    return
+  }
+
+  purposeDropdownItems.forEach(optionText => {
+    const option = document.createElement('option');
+    option.value = optionText;
+    option.innerText = optionText;
+    dropdown.appendChild(option);
+  });
+
+  const otherOption = document.createElement('option');
+  otherOption.value = 'Lainnya';
+  otherOption.innerText = 'Lainnya...';
+  dropdown.appendChild(otherOption);
+}
+
 async function populatePurposeDropdown() {
   try {
     const response = await CallApi.callApi('getOptions');
     if (response.status === 'success') {
-      const dropdown = document.getElementById('purposeDropdown');
-      dropdown.innerHTML = '<option selected disabled value="">-- Pilih Keperluan --</option>';
-      
-      // Tambahkan setiap opsi dari server
-      response.data.forEach(optionText => {
-        const option = document.createElement('option');
-        option.value = optionText;
-        option.innerText = optionText;
-        dropdown.appendChild(option);
-      });
-
-      // Tambahkan opsi "Lainnya" secara manual di akhir
-      const otherOption = document.createElement('option');
-      otherOption.value = 'Lainnya';
-      otherOption.innerText = 'Lainnya...';
-      dropdown.appendChild(otherOption);
+      localStorage.setItem(purposeDropdownItems,response.data)
     }
   } catch (error) {
     console.error("Gagal memuat opsi keperluan:", error);
-
-    const dropdown = document.getElementById('purposeDropdown');
-    dropdown.innerHTML = '<option selected disabled value="">-- Gagal memuat --</option>';
+    localStorage.setItem(purposeDropdownItems,null)
   }
 }
 
