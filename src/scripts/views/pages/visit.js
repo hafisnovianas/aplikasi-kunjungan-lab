@@ -2,8 +2,6 @@ import CallApi from "../../../data/api.js";
 
 const VisitPage = {
   async render() {
-    // await populatePurposeDropdown(); //bikin lambat
-
     return `
       <div id="visitView">
         <p>Silakan isi keperluan Anda, lalu pindai QR Code untuk mencatat kunjungan.</p>
@@ -43,7 +41,9 @@ const VisitPage = {
     visitViewElement.querySelector('button').addEventListener('click', processVisit)
     visitViewElement.querySelector('select').addEventListener('change', checkOtherOption)
     
-    document.getElementById('successView').querySelector('button').addEventListener('click', checkLoginSession)
+    document.getElementById('successView').querySelector('button').addEventListener('click', ()=>{
+      window.location.hash = '#/dashboard'
+    })
   }
 };
 
@@ -115,11 +115,10 @@ function processVisit() {
           if (response.status === 'success') {
             showSuccessView(response.message)
           } else if (response.message && response.message.toLowerCase().includes('sesi')) {
-            // Jika error spesifik tentang sesi, beri tahu pengguna lalu logout
             alert(response.message); 
             logout();
           } else {
-              throw new Error(response.message);
+            throw new Error(response.message);
           }
       })
       .catch(err => {
@@ -136,7 +135,6 @@ function processVisit() {
 }
 
 async function fillPurposeDropdown() {
-  //const purposeDropdownItems = JSON.parse(localStorage.getItem('purposeDropdownItems'));
   const purposeDropdownItems = [
     "Praktikum",
     "Kuliah",
@@ -168,18 +166,6 @@ async function fillPurposeDropdown() {
   dropdown.appendChild(otherOption);
 }
 
-async function populatePurposeDropdown() {
-  try {
-    const response = await CallApi.callApi('getOptions');
-    if (response.status === 'success') {
-      localStorage.setItem('purposeDropdownItems',JSON.stringify(response.data))
-    }
-  } catch (error) {
-    console.error("Gagal memuat opsi keperluan:", error);
-    localStorage.setItem('purposeDropdownItems',null)
-  }
-}
-
 function checkOtherOption() {
   const dropdown = document.getElementById('purposeDropdown');
   const otherContainer = document.getElementById('otherPurposeContainer');
@@ -205,29 +191,4 @@ function showSuccessView (message) {
 
   document.getElementById('visitView').style.display = 'none';
   document.getElementById('successView').style.display = 'block';
-}
-
-async function checkLoginSession() {
-  const storedToken = localStorage.getItem('kunjunganLabToken');
-  //const loadingView = document.getElementById('loadingView');
-  //loadingView.style.display = 'block';
-
-  if (storedToken) {
-    try {
-      const response = await CallApi.callApi('validateToken', { token: storedToken });
-      if (response.status === 'success') {
-        localStorage.setItem('lastUsedNIM', response.nim);
-        window.location.hash = '#/dashboard'
-      } else {
-        localStorage.removeItem('kunjunganLabToken');
-        window.location.hash = '#/login'
-      }
-    } catch (error) {
-      console.error("Gagal memvalidasi token:", error);
-      window.location.hash = '#/login'
-    } 
-  } else {
-    window.location.hash = '#/login'
-  }
-  //loadingView.style.display = 'none';
 }
