@@ -2,7 +2,7 @@ import CallApi from "../../../data/api.js";
 
 const LoginPage = {
   async render() {
-    if (!localStorage.getItem('kunjunganLabToken')) {
+    if (localStorage.getItem('kunjunganLabToken')) {
       window.location.hash = '#/dashboard';
       return;
     }
