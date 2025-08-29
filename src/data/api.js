@@ -3,7 +3,6 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLg
 class CallApi {
   static async callApi(action, payload) {
     try {
-      console.log(action)
       let response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain; charset=utf-8' },
@@ -11,14 +10,13 @@ class CallApi {
         redirect: 'follow'
       });
 
-      data = await response.json();
-      
+      const data = await response.json();
+
       if (!response.ok) {
-        console.log('apa')
         const errorMessage = data.message || `Terjadi galat HTTP: ${response.status}`;
         throw new Error(errorMessage);
       }
-      console.log('mengapa')
+
       if (data.message && data.message.toLowerCase().includes('sesi')) {
         alert(data.message);
         localStorage.removeItem('kunjunganLabToken');
@@ -27,7 +25,7 @@ class CallApi {
       }
 
       return data;
-    } catch (err) {
+    } catch (error) {
       console.error('Panggilan API gagal:', error.message);
       throw new Error('Gagal terhubung ke server. Periksa kembali koneksi internet Anda.');
     }
