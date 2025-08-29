@@ -2,19 +2,35 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzdHLktOBjXDRTE1snxpqLg
 
 class CallApi {
   static async callApi(action, payload) {
-    let response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action, payload }),
-      redirect: 'follow'
-    });
+    try {
+      console.log(action)
+      let response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+        body: JSON.stringify({ action, payload }),
+        redirect: 'follow'
+      });
 
-    if (!(response.status >= 200 && response.status < 300)) {
-      throw new Error('Tidak dapat menampilkan data restoran karena sedang offline');
+      data = await response.json();
+      
+      if (!response.ok) {
+        console.log('apa')
+        const errorMessage = data.message || `Terjadi galat HTTP: ${response.status}`;
+        throw new Error(errorMessage);
+      }
+      console.log('mengapa')
+      if (data.message && data.message.toLowerCase().includes('sesi')) {
+        alert(data.message);
+        localStorage.removeItem('kunjunganLabToken');
+        window.location.hash = '#/login';
+        return;
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Panggilan API gagal:', error.message);
+      throw new Error('Gagal terhubung ke server. Periksa kembali koneksi internet Anda.');
     }
-
-    response = await response.json();
-    return response
   }
 }
 

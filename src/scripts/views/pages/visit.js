@@ -114,9 +114,6 @@ function processVisit() {
           // 5. Tampilkan Halaman Sukses
           if (response.status === 'success') {
             showSuccessView(response.message)
-          } else if (response.message && response.message.toLowerCase().includes('sesi')) {
-            alert(response.message); 
-            logout();
           } else {
             throw new Error(response.message);
           }

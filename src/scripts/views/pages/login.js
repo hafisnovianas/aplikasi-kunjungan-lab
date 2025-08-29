@@ -49,7 +49,6 @@ async function login() {
   const passwordInput = document.getElementById('passwordInput');
   const nim = nimInput.value;
   const password = passwordInput.value;
-  const nama = '';
 
   // Reset error-error sebelumnya setiap kali login ditekan
   nimInput.classList.remove('is-invalid');
