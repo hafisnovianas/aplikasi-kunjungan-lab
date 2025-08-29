@@ -39,12 +39,17 @@ header {
   justify-content: space-between;
 }
 
-.logo {
+.logo-container {
   display: flex;
   height: 64px;
   align-items: center;
   justify-content: center;
   padding: 0 3px 3px 0;
+}
+
+.logo {
+  height: 36px;
+  width: auto;
 }
 
 .header-button {
