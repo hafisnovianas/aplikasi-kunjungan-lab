@@ -108,7 +108,8 @@ header {
 
 main { 
   max-width: 600px;
-  margin: 25px;
+  padding: 25px;
+  margin: auto;
 }
 
 .card {
