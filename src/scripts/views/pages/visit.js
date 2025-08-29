@@ -59,9 +59,7 @@ function resetInput () {
 }
 
 function processVisit() {
-  const html5QrCode = new window.Html5Qrcode("reader");
-
-  // 1. Validasi Input Keperluan
+    // 1. Validasi Input Keperluan
   const dropdown = document.getElementById('purposeDropdown');
   const otherInput = document.getElementById('otherPurposeInput');
   let keperluan = dropdown.value;
@@ -85,7 +83,7 @@ function processVisit() {
   const visitButton = document.querySelector('#visitView button');
   
   // Buat event listener sekali pakai untuk menangani file yang dipilih
-  fileInput.onchange = e => {
+  fileInput.onchange = async (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
@@ -93,42 +91,45 @@ function processVisit() {
       visitButton.innerText = 'Memproses...';
 
       // 3. Pindai QR dari file
-      html5QrCode.scanFile(file, true)
-      .then(decodedText => {
-          const token = localStorage.getItem('kunjunganLabToken');
-          if (!token) {
-              alert('Sesi Anda tidak ditemukan. Silakan login kembali.');
-              logout();
-              throw new Error("Sesi tidak ditemukan.");
-          }
+      await scanHandle(file, keperluan);
 
-          // 4. Kirim semua data ke server
-          const payload = { 
-            token: token,
-            keperluan: keperluan, 
-            qrData: decodedText
-          };
-          return CallApi.callApi('recordVisit', payload);
-      })
-      .then(response => {
-          // 5. Tampilkan Halaman Sukses
-          if (response.status === 'success') {
-            showSuccessView(response.message)
-          } else {
-            throw new Error(response.message);
-          }
-      })
-      .catch(err => {
-          alert('Error: ' + err.message);
-          visitButton.disabled = false;
-          visitButton.innerText = 'Pindai QR';
-      })
-      .finally(() => {
-          fileInput.value = null; // Reset input file
-      });
+      visitButton.disabled = false;
+      visitButton.innerText = 'Pindai QR'; 
+      fileInput.value = null; // Reset input file
   };
   
   fileInput.click(); // Buka dialog kamera/file
+}
+
+async function scanHandle(file, keperluan) {
+  const html5QrCode = new window.Html5Qrcode("reader");
+  try {
+    const decodedText = await html5QrCode.scanFile(file, true);
+    const token = localStorage.getItem('kunjunganLabToken');
+
+    if (!token) {
+      window.location.hash = '#/login';
+      throw new Error("Sesi Anda tidak ditemukan. Silakan login kembali.");
+    }
+
+    const payload = { 
+      token: token,
+      keperluan: keperluan, 
+      qrData: decodedText
+    };
+
+    const response = await CallApi.callApi('recordVisit', payload);
+
+    if (response.status === 'success') {
+      console.log('sukses woi')
+      showSuccessView(response.message)
+    } else {
+      console.log(response.message)
+      throw new Error(response.message);
+    }
+  } catch (error) {
+    alert('Error: ' + error.message);
+  }
 }
 
 async function fillPurposeDropdown() {

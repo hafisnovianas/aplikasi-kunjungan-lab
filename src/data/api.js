@@ -10,21 +10,26 @@ class CallApi {
         redirect: 'follow'
       });
 
-      const data = await response.json();
+      const responseJson = await response.json();
+
+      console.log('response ok:', response.ok)
+      console.log('responsejson ok:', responseJson.ok)
+      console.log('response message:', response.message)
+      console.log('responsejson message:', responseJson.message)
+      console.log('response status:', response.status)
+      console.log('responsejson status:', responseJson.status)
 
       if (!response.ok) {
-        const errorMessage = data.message || `Terjadi galat HTTP: ${response.status}`;
+        const errorMessage = responseJson.message || `Terjadi galat HTTP: ${response.status}`;
         throw new Error(errorMessage);
       }
 
-      if (data.message && data.message.toLowerCase().includes('sesi')) {
-        alert(data.message);
+      if (responseJson.message && responseJson.message.toLowerCase().includes('sesi')) {
         localStorage.removeItem('kunjunganLabToken');
         window.location.hash = '#/login';
-        return;
       }
 
-      return data;
+      return responseJson;
     } catch (error) {
       console.error('Panggilan API gagal:', error.message);
       throw new Error('Gagal terhubung ke server. Periksa kembali koneksi internet Anda.');

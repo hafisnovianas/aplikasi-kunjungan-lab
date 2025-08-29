@@ -13,7 +13,6 @@ window.addEventListener('load', async () => {
 
 async function renderPage() {
   const url = UrlParser.parseActiveUrlWithCombiner();
-  console.log(url)
   const page = routes[url];
 
   document.getElementById('maincontent').innerHTML = await page.render();
