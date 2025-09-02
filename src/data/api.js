@@ -12,12 +12,12 @@ class CallApi {
 
       const responseJson = await response.json();
 
-      console.log('response ok:', response.ok)
-      console.log('responsejson ok:', responseJson.ok)
-      console.log('response message:', response.message)
-      console.log('responsejson message:', responseJson.message)
-      console.log('response status:', response.status)
-      console.log('responsejson status:', responseJson.status)
+      // console.log('response ok:', response.ok)
+      // console.log('responsejson ok:', responseJson.ok)
+      // console.log('response message:', response.message)
+      // console.log('responsejson message:', responseJson.message)
+      // console.log('response status:', response.status)
+      // console.log('responsejson status:', responseJson.status)
 
       if (!response.ok) {
         const errorMessage = responseJson.message || `Terjadi galat HTTP: ${response.status}`;

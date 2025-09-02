@@ -1,21 +1,17 @@
-import UrlParser from './routes/url-parser.js';
-import routes from './routes/routes.js';
+import App from "./views/app.js";
+
+const app = new App ({
+  button: document.getElementById("menuButton"),
+  drawer: document.getElementById("drawer"),
+  content: document.getElementById("maincontent")
+})
 
 window.addEventListener('hashchange', () => {
   const hash = window.location.hash.slice(1);
   if (hash === 'home') return;
-  renderPage();
+  app.renderPage();
 })
 
 window.addEventListener('load', async () => {
-  renderPage();
+  app.renderPage();
 });
-
-async function renderPage() {
-  const url = UrlParser.parseActiveUrlWithCombiner();
-  const page = routes[url];
-
-  document.getElementById('maincontent').innerHTML = await page.render();
-
-  await page.afterRender();
-};

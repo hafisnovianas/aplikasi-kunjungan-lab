@@ -42,7 +42,10 @@ async function loadHistory() {
 
     try {
         const token = localStorage.getItem('kunjunganLabToken');
-        if (!token) throw new Error("Token tidak ditemukan.");
+        if (!token) {
+          window.location.hash = '#/login';
+          throw new Error("Sesi Anda tidak ditemukan. Silakan login kembali.");
+        }
 
         const response = await CallApi.callApi('getHistory', { token: token });
 
