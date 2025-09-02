@@ -3,8 +3,10 @@ import CallApi from "../../../data/api.js";
 const LoginPage = {
   async render() {
     if (localStorage.getItem('kunjunganLabToken')) {
+      document.getElementById('menuButton').style.display= "flex";
+      document.getElementById('loginButton').style.display = "none";
       window.location.hash = '#/dashboard';
-      return;
+      return false;
     }
     
     return `
@@ -74,6 +76,8 @@ async function login() {
       localStorage.setItem('lastUsedName', response.nama);
       localStorage.setItem('kunjunganLabToken', response.token);
 
+      document.getElementById('menuButton').style.display= "flex";
+      document.getElementById('loginButton').style.display = "none";
       window.location.hash = '#/dashboard';
     } else {
       if (response.message.toLowerCase().includes('password')) {

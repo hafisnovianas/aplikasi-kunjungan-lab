@@ -2,6 +2,11 @@ import CallApi from "../../../data/api.js";
 
 const DashboardPage = {
   async render() {
+    if (localStorage.getItem('kunjunganLabToken')) {
+      document.getElementById('menuButton').style.display= "flex";
+      document.getElementById('loginButton').style.display = "none";
+    }
+    
     return `
       <div id="dashboardView">
         <div class="dashboardWelcome_container">
