@@ -28,6 +28,10 @@ class App {
       this._content.innerHTML = content;
       await page.afterRender();
     }
+
+    if (localStorage.getItem('lastUsedName')) {
+      this._drawer.querySelector('.nav-title').textContent = 'Hai ' + localStorage.getItem('lastUsedName').split(' ')[0] + '!';
+    }
   };
 }
 
