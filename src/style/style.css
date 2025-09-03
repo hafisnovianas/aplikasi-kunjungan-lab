@@ -90,7 +90,7 @@ header {
   position: fixed;
   top: 64px;
   right: 0;
-  height: 100vh;
+  min-width: 250
 
   background-color: rgba(244, 246, 248, 0.8);
   transform: translateX(100%);
