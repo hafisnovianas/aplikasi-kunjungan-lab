@@ -20,12 +20,16 @@ class App {
   }
 
   async renderPage() {
+    const url = UrlParser.parseActiveUrlWithCombiner();
+
     if (localStorage.getItem('kunjunganLabToken')) {
       document.getElementById('menuButton').style.display= "flex";
       document.getElementById('loginButton').style.display = "none";
+      if (url === '#/login') {
+        return;
+      }
     }
 
-    const url = UrlParser.parseActiveUrlWithCombiner();
     const page = routes[url];
     const content = await page.render();
 
