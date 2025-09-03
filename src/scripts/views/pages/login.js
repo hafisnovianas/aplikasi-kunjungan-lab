@@ -2,11 +2,6 @@ import CallApi from "../../../data/api.js";
 
 const LoginPage = {
   async render() {
-    if (localStorage.getItem('kunjunganLabToken')) {
-      window.location.hash = '#/dashboard';
-      return false;
-    }
-    
     return `
       <div id="loginView" class="page">
         <form id="loginForm">
