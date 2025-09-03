@@ -3,8 +3,6 @@ import CallApi from "../../../data/api.js";
 const LoginPage = {
   async render() {
     if (localStorage.getItem('kunjunganLabToken')) {
-      document.getElementById('menuButton').style.display= "flex";
-      document.getElementById('loginButton').style.display = "none";
       window.location.hash = '#/dashboard';
       return false;
     }
