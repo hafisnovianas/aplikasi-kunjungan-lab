@@ -26,6 +26,7 @@ class App {
       document.getElementById('menuButton').style.display= "flex";
       document.getElementById('loginButton').style.display = "none";
       if (url === '#/login') {
+        window.location.hash = '#/dashboard';
         return;
       }
     }
