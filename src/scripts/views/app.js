@@ -20,6 +20,11 @@ class App {
   }
 
   async renderPage() {
+    if (localStorage.getItem('kunjunganLabToken')) {
+      document.getElementById('menuButton').style.display= "flex";
+      document.getElementById('loginButton').style.display = "none";
+    }
+
     const url = UrlParser.parseActiveUrlWithCombiner();
     const page = routes[url];
     const content = await page.render();
