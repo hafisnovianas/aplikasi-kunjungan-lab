@@ -23,7 +23,7 @@ class App {
     const url = UrlParser.parseActiveUrlWithCombiner();
 
     if (localStorage.getItem('kunjunganLabToken')) {
-      document.getElementById('menuButton').style.display= "flex";
+      this._button.style.display= "flex";
       document.getElementById('loginButton').style.display = "none";
       if (url === '/login') {
         window.location.hash = '#/dashboard';
