@@ -1,4 +1,5 @@
 @import url('partials/_forms.css');
+@import url('partials/_utility.css');
 
 :root {
     --dongker-fisika: #203264;
@@ -267,12 +268,10 @@ input[type=number] {
   appearance: textfield;
 }
 
-#loginView {
+.pageView {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
 
 footer {

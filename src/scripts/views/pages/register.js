@@ -3,30 +3,36 @@ import CallApi from "../../../data/api.js";
 const RegisterPage = {
   async render() {
     return `
-      <div id="registerView">
-        <h4 class="mb-3">Pendaftaran Mahasiswa</h4>
-        <form id="registerForm">
-          <div class="mb-3">
+      <div id="registerView" class="formPage">
+        <h1 class="form-title">Daftar</h1>
+
+        <form id="registerForm" class="form-container">
+          <div class="form-group">
             <label for="nim_reg" class="form-label">NIM</label>
             <input type="number" class="form-control" id="nim_reg" required>
-            <div id="nimWarning" class="form-text text-danger" style="display: none;"></div>
+            <div id="nimWarning" class="invalid-feedback" style="display:none;"></div>
           </div>
-          <div class="mb-3">
+
+          <div class="form-group">
             <label for="nama_reg" class="form-label">Nama Lengkap</label>
             <input type="text" class="form-control" id="nama_reg" required>
           </div>
-          <div class="mb-3">
+
+          <div class="form-group">
             <label for="prodi_reg" class="form-label">Program Studi</label>
             <input type="text" class="form-control" id="prodi_reg" value="Fisika" required>
           </div>
-          <div class="mb-3">
+
+          <div class="form-group">
             <label for="password_reg" class="form-label">Password</label>
             <input type="password" class="form-control" id="password_reg" required>
           </div>
-          <div class="mb-3">
+
+          <div class="form-group">
             <label for="confirm_password_reg" class="form-label">Konfirmasi Password</label>
             <input type="password" class="form-control" id="confirm_password_reg" required>
           </div>
+
           <button type="submit" class="btn btn-success">Daftar</button>
         </form>
       </div>
@@ -64,6 +70,10 @@ async function registerUser() {
     alert('Semua field wajib diisi!');
     return;
   }
+
+  const registerButton = document.querySelector('.form-container button');
+  registerButton.disabled = true;
+  registerButton.innerText = 'Mendaftar...';
 
   try {
     const payload = { nim, nama, prodi, password };

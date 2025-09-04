@@ -3,7 +3,7 @@ import CallApi from "../../../data/api.js";
 const HomePage = {
   async render() {
     return `
-      <div id="home">
+      <div id="home" class="pageView">
         <figure class="total-visit-card card">
           <p id="totalVisit" class="total-visit-card__value">...</p>
           <figcaption class="total-visit-card__label">Kunjungan Hari Ini</figcaption>

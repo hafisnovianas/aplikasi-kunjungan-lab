@@ -3,10 +3,10 @@ import CallApi from "../../../data/api.js";
 const LoginPage = {
   async render() {
     return `
-      <div id="loginView">
+      <div id="loginView" class="formPage">
         <h1 class="form-title">Login</h1>
 
-        <form id="loginForm">
+        <form id="loginForm" class="form-container">
           <div class="form-group">
             <label for="nimInput">NIM</label>
             <input type="number" id="nimInput" placeholder="Masukkan NIM" required>
@@ -22,7 +22,7 @@ const LoginPage = {
           <button type="submit" class="submit-button">Masuk</button>
         </form>
 
-        <p class="mt-3 text-center">Belum punya akun? <a href="#/register" return false;">Daftar di sini</a></p>
+        <p class="text-center">Belum punya akun? <a href="#/register" return false;">Daftar di sini</a></p>
       </div>
     `
   },
@@ -61,7 +61,7 @@ async function login() {
     return;
   }
 
-  const loginButton = document.querySelector('#loginForm button');
+  const loginButton = document.querySelector('.form-container button');
   loginButton.disabled = true;
   loginButton.innerText = 'Mengecek...';
 

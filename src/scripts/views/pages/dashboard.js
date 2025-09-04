@@ -3,7 +3,7 @@ import CallApi from "../../../data/api.js";
 const DashboardPage = {
   async render() {
     return `
-      <div id="dashboardView">
+      <div id="dashboardView" class="pageView">
         <div class="dashboardWelcome_container">
           <h5 id="dashboardWelcome">Selamat Datang</h5>
           <h4 id="dashboardUserName" class="mb-3"></h4>

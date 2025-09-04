@@ -1,23 +1,25 @@
+.form-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .form-title {
   text-align: center;
   font-weight: 400;
 }
 
-#loginForm {
+.form-container {
   display: flex;
-  align-items: end;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  width: 100%;
+  gap: 0.7rem;
   padding: 10px;
 }
 
 .form-group {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .form-group label {
@@ -34,10 +36,10 @@
 .form-group .invalid-feedback {
   color: #e74c3c;
   font-size: 0.8rem;
-  margin-top: 4px;
 }
 
-#loginForm button {
+.form-container button {
+  align-self: flex-end;
   padding: 0.7rem 1rem;
   font-size: 0.9rem;
   font-weight: 700;
@@ -48,7 +50,7 @@
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-#loginForm button:hover, #loginForm button:active {
+.form-container button:hover, .form-container button:active {
   background-color: var(--kuning-fisika);
   border-color: var(--kuning-fisika);
   cursor: pointer;
