@@ -3,20 +3,25 @@ import CallApi from "../../../data/api.js";
 const LoginPage = {
   async render() {
     return `
-      <div id="loginView" class="page">
+      <div id="loginView">
+        <h1 class="form-title">Login</h1>
+
         <form id="loginForm">
-          <div class="mb-3">
-            <label for="nimInput" class="form-label">NIM</label>
-            <input type="number" class="form-control" id="nimInput" placeholder="Masukkan NIM" required>
+          <div class="form-group">
+            <label for="nimInput">NIM</label>
+            <input type="number" id="nimInput" placeholder="Masukkan NIM" required>
             <div id="nimError" class="invalid-feedback"></div>
           </div>
-          <div class="mb-3">
-              <label for="passwordInput" class="form-label">Password</label>
-              <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
-              <div id="passwordError" class="invalid-feedback"></div>
+
+          <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input type="password" id="passwordInput" placeholder="Masukkan Password" required>
+            <div id="passwordError" class="invalid-feedback"></div>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Masuk</button>
+        
+          <button type="submit" class="submit-button">Masuk</button>
         </form>
+
         <p class="mt-3 text-center">Belum punya akun? <a href="#/register" return false;">Daftar di sini</a></p>
       </div>
     `

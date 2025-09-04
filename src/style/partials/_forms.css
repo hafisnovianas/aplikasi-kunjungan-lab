@@ -1,0 +1,55 @@
+.form-title {
+  text-align: center;
+  font-weight: 400;
+}
+
+#loginForm {
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 10px;
+}
+
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 1.2rem;
+}
+
+.form-group input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid var(--abu-abu-terang);
+  border-radius: 5px;
+}
+
+.form-group .invalid-feedback {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+#loginForm button {
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--dongker-fisika);
+  border: 1px solid var(--dongker-fisika);
+  border-radius: 5px;
+  background-color: transparent;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#loginForm button:hover, #loginForm button:active {
+  background-color: var(--kuning-fisika);
+  border-color: var(--kuning-fisika);
+  cursor: pointer;
+}
