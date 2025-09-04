@@ -23,9 +23,11 @@ button a {
   text-decoration: none;
 }
 
-body { 
+body {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   background-color: var(--putih);
 }
 
@@ -176,9 +178,11 @@ header {
 }
 
 main { 
+  width: 100%;
   max-width: 600px;
   padding: 25px;
   margin: auto;
+  flex-grow: 1;
 }
 
 .card {
@@ -271,7 +275,7 @@ input[type=number] {
 .pageView {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 25px;
 }
 
 footer {
@@ -280,4 +284,6 @@ footer {
   background-color: var(--putih);
   box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
 }

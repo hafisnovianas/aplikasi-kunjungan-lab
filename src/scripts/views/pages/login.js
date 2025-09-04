@@ -3,7 +3,7 @@ import CallApi from "../../../data/api.js";
 const LoginPage = {
   async render() {
     return `
-      <div id="loginView" class="formPage">
+      <div id="loginView" class="form-page">
         <h1 class="form-title">Login</h1>
 
         <form id="loginForm" class="form-container">
