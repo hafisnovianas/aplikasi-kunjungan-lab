@@ -28,7 +28,6 @@ const RegisterPage = {
             <input type="password" class="form-control" id="confirm_password_reg" required>
           </div>
           <button type="submit" class="btn btn-success">Daftar</button>
-          <button type="button" class="btn btn-secondary"><a href="#/home">Kembali</a></button>
         </form>
       </div>
 

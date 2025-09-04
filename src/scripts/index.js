@@ -1,7 +1,8 @@
 import App from "./views/app.js";
 
 const app = new App ({
-  button: document.getElementById("menuButton"),
+  loginButton: document.getElementById('loginButton'),
+  menuButton: document.getElementById("menuButton"),
   drawer: document.getElementById("drawer"),
   content: document.getElementById("maincontent")
 })

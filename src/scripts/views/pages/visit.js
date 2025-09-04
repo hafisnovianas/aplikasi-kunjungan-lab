@@ -28,7 +28,7 @@ const VisitPage = {
 
       <div id="successView" class="text-center" style="display:none;">
         <div id="successMessage" class="alert alert-success" role="alert"></div>
-        <button class="btn btn-primary mt-3">kembali</button>
+        <button class="btn btn-primary mt-3"><a href="#/dashboard">kembali</a></button>
       </div>
     `
   },
@@ -174,7 +174,7 @@ function checkOtherOption() {
     
     const lastPurpose = localStorage.getItem('lastOtherPurpose');
     if (lastPurpose) {
-      //otherInput.value = lastPurpose;
+      otherInput.value = lastPurpose;
     }
     otherInput.focus();
   } else {

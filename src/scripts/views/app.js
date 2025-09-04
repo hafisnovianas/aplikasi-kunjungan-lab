@@ -3,8 +3,9 @@ import UrlParser from '../routes/url-parser.js';
 import routes from '../routes/routes.js';
 
 class App {
-  constructor({ button, drawer, content}) {
-    this._button = button;
+  constructor({ loginButton, menuButton, drawer, content}) {
+    this._loginButton = loginButton;
+    this._menuButton = menuButton;
     this._drawer = drawer;
     this._content = content;
 
@@ -13,7 +14,7 @@ class App {
 
   _initialAppShell() {
     DrawerInitiator.init({
-      button: this._button,
+      menuButton: this._menuButton,
       drawer: this._drawer,
       content: this._content
     })
@@ -21,27 +22,41 @@ class App {
 
   async renderPage() {
     const url = UrlParser.parseActiveUrlWithCombiner();
+    const token = localStorage.getItem('kunjunganLabToken');
 
-    if (localStorage.getItem('kunjunganLabToken')) {
-      this._button.style.display= "flex";
-      document.getElementById('loginButton').style.display = "none";
-      if (url === '/login') {
+    if (token) {
+      this._menuButton.style.display= "flex";
+      this._loginButton.style.display = "none";
+
+      if (url === '/login' || url === '/register') {
         window.location.hash = '#/dashboard';
         return;
+      }
+
+      const lastUsedName = localStorage.getItem('lastUsedName');
+      if (lastUsedName) {
+        const navTitle = 'Hai ' + localStorage.getItem('lastUsedName').split(' ')[0] + '!';
+        this._drawer.querySelector('.nav-title').textContent = navTitle;
+      }
+    } else {
+      this._menuButton.style.display= "none";
+      this._loginButton.style.display = "flex";
+
+      if (url === '/login') {
+        this._loginButton.style.display = 'none';
+      } 
+      
+      const publicPages = ['/login','/register','/home','/']
+      if (!publicPages.includes(url)) {
+        window.location.hash = '#/login';
+        return
       }
     }
 
     const page = routes[url];
     const content = await page.render();
-
-    if (content !== false) {
-      this._content.innerHTML = content;
-      await page.afterRender();
-    }
-
-    if (localStorage.getItem('lastUsedName')) {
-      this._drawer.querySelector('.nav-title').textContent = 'Hai ' + localStorage.getItem('lastUsedName').split(' ')[0] + '!';
-    }
+    this._content.innerHTML = content;
+    await page.afterRender();
   };
 }
 
