@@ -3,7 +3,7 @@ import CallApi from "../../../data/api.js";
 const RegisterPage = {
   async render() {
     return `
-      <div id="registerView" class="form-page">
+      <div id="registerView" class="page-view">
         <h1 class="form-title">Daftar</h1>
 
         <form id="registerForm" class="form-container">

@@ -1,0 +1,52 @@
+.visit-card {
+  padding: 20px 20px 0;
+}
+
+.visit-card__title {
+  text-align: center;
+  font-weight: 600;
+}
+
+.visit-card__list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+.visit-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0; 
+  border-bottom: 1px solid var(--abu-abu);
+}
+
+.visit-list-item:last-child {
+  border-bottom: none;
+}
+
+.visit-list-item__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.visit-list-item__name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.visit-list-item__purpose {
+  font-size: 0.8rem;
+  color: var(--light-grey);
+}
+
+.visit-list-item__time {
+  background-color: var(--dongker-fisika);
+  color: var(--putih);
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+}

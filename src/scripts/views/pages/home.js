@@ -3,16 +3,15 @@ import CallApi from "../../../data/api.js";
 const HomePage = {
   async render() {
     return `
-      <div id="home" class="pageView">
+      <div id="home" class="page-view">
         <figure class="total-visit-card card">
           <p id="totalVisit" class="total-visit-card__value">...</p>
           <figcaption class="total-visit-card__label">Kunjungan Hari Ini</figcaption>
         </figure>
 
         <section class="visit-card card">
-          <h4 class="visit-card__title">Riwayat Kunjungan Hari Ini</h4>
-          <ul id="dailyVisitList" class="visit-card__list">
-          </ul>
+          <h3 class="visit-card__title">Riwayat Kunjungan Hari Ini</h3>
+          <ul id="dailyVisitList" class="visit-card__list"></ul>
         </section>
       </div>
     `

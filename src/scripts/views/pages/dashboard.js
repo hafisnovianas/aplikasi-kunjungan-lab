@@ -3,22 +3,21 @@ import CallApi from "../../../data/api.js";
 const DashboardPage = {
   async render() {
     return `
-      <div id="dashboardView" class="pageView">
+      <div id="dashboardView" class="page-view">
         <div class="dashboardWelcome_container">
           <h5 id="dashboardWelcome">Selamat Datang</h5>
           <h4 id="dashboardUserName" class="mb-3"></h4>
         </div>
 
-        <div class="d-grid gap-2 mb-4">
+        <div>
           <button class="btn btn-primary btn-lg">
             Catat Kunjungan Baru
           </button>
         </div>
 
         <section class="visit-card card">
-          <h4 class="visit-card__title">Riwayat Kunjungan Anda</h4>
-          <ul id="historyVisitList" class="visit-card__list">
-          </ul>
+          <h3 class="visit-card__title">Riwayat Kunjungan Anda</h3>
+          <ul id="historyVisitList" class="visit-card__list"></ul>
         </section>
       </div>
     `

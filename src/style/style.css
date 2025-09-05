@@ -1,5 +1,6 @@
 @import url('partials/_forms.css');
 @import url('partials/_utility.css');
+@import url('partials/_visit-card.css');
 
 :root {
     --dongker-fisika: #203264;
@@ -50,8 +51,10 @@ header {
   display: flex;
   height: 64px;
   align-items: center;
-  justify-content: center;
-  padding: 0 3px 3px 0;
+}
+
+.logo-container:hover {
+  cursor: pointer;
 }
 
 .logo {
@@ -212,54 +215,6 @@ main {
   text-align: center;
 }
 
-.visit-card {
-  padding: 20px 20px 0;
-}
-
-.visit-card__title {
-  text-align: center;
-  font-weight: 600;
-}
-
-.visit-card__list {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 15px;
-}
-
-.visit-list-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0; 
-  border-bottom: 1px solid var(--abu-abu);
-}
-
-.visit-list-item:last-child {
-  border-bottom: none;
-}
-
-.visit-list-item__name {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.visit-list-item__purpose {
-  font-size: 0.8rem;
-  margin: 0;
-  color: var(--light-grey);
-}
-
-.visit-list-item__time {
-  background-color: var(--dongker-fisika);
-  color: var(--putih);
-  font-size: 0.7rem;
-  text-align: center;
-  padding: 5px 10px;
-  display: flex;
-  align-items: center;
-}
-
 /* Menghilangkan panah atas/bawah pada input type="number" */
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
@@ -272,7 +227,7 @@ input[type=number] {
   appearance: textfield;
 }
 
-.pageView {
+.page-view {
   display: flex;
   flex-direction: column;
   gap: 25px;

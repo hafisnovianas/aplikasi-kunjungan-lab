@@ -3,7 +3,7 @@ import CallApi from "../../../data/api.js";
 const VisitPage = {
   async render() {
     return `
-      <div id="visitView" class="pageView">
+      <div id="visitView" class="page-view">
         <p>Silakan isi keperluan Anda, lalu pindai QR Code untuk mencatat kunjungan.</p>
         
         <div class="mb-3">
