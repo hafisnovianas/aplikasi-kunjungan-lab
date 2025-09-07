@@ -4,14 +4,14 @@ const DashboardPage = {
   async render() {
     return `
       <div id="dashboardView" class="page-view">
-        <div class="dashboardWelcome_container">
-          <h5 id="dashboardWelcome">Selamat Datang</h5>
-          <h4 id="dashboardUserName" class="mb-3"></h4>
+        <div class="dashboard-welcome">
+          <h5 id="dashboard-welcome__text">Selamat Datang</h5>
+          <h4 id="dashboard-welcome__username"></h4>
         </div>
 
         <div>
-          <button class="btn btn-primary btn-lg">
-            Catat Kunjungan Baru
+          <button>
+            ➕ Catat Kunjungan Baru
           </button>
         </div>
 
@@ -24,7 +24,7 @@ const DashboardPage = {
   },
 
   async afterRender() {
-    document.getElementById('dashboardUserName').innerText = localStorage.getItem('lastUsedName');
+    document.getElementById('dashboard-welcome__username').innerText = localStorage.getItem('lastUsedName');
     loadHistory();
 
     document.getElementById('dashboardView').querySelector('button').addEventListener('click', ()=> {

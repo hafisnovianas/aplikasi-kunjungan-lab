@@ -1,0 +1,22 @@
+.hero {
+  background-image: linear-gradient(rgba(230, 199, 103, 0.6), rgba(34, 49, 52, 0.8)), url("../../public/lab-small.jpg");
+  background-position: center center;
+  background-size: cover;
+  display: flex;
+  min-height: 300px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-inner {
+  padding: 150px 0 0;
+  max-width: 300px;
+}
+
+.hero-title {
+  color: white;
+  font-weight:700;
+  text-align: center;
+  font-size: 30px;
+  line-height: 1;
+}
