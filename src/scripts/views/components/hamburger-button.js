@@ -77,6 +77,7 @@ class HamburgerButton extends HTMLElement {
       span:nth-child(2) {
         top: 50%;
         transform: translateY(-50%);
+        transition: none;
       }
 
       span:nth-child(3) {
