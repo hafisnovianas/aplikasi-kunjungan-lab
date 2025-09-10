@@ -1,5 +1,6 @@
 import App from "./views/app.js";
 import Helper from "./utils/helper.js";
+import './views/components/components.js';
 
 const app = new App ({
   loginButton: document.getElementById('loginButton'),

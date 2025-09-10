@@ -19,16 +19,16 @@ const VisitPage = {
         </div>
     
         <div>
-            <button>Pindai QR</button>
+            <button class="btn-primary">Pindai QR</button>
             <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
         </div>
 
         <div id="reader" style="display:none;"></div>
       </div>
 
-      <div id="successView" style="display:none;">
-        <div id="successMessage" role="alert"></div>
-        <button><a href="#/dashboard">kembali</a></button>
+      <div id="successView" class="page-view" style="display:none">
+        <div id="successMessage">jack</div>
+        <a class="btn-primary" href="#/dashboard">kembali</a>
       </div>
     `
   },
@@ -40,10 +40,6 @@ const VisitPage = {
     const visitViewElement = document.getElementById('visitView')
     visitViewElement.querySelector('button').addEventListener('click', processVisit)
     visitViewElement.querySelector('select').addEventListener('change', checkOtherOption)
-    
-    document.getElementById('successView').querySelector('button').addEventListener('click', ()=>{
-      window.location.hash = '#/dashboard'
-    })
   }
 };
 
@@ -188,5 +184,5 @@ function showSuccessView (message) {
   successDiv.innerText = message;
 
   document.getElementById('visitView').style.display = 'none';
-  document.getElementById('successView').style.display = 'block';
+  document.getElementById('successView').style.display = 'flex';
 }

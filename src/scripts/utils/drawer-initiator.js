@@ -1,21 +1,27 @@
 const DrawerInitiator = {
   init({ menuButton, drawer, content }) {
-    menuButton.addEventListener('click', (event) => {
-      this._toggleDrawer(event, drawer);
+    menuButton.addEventListener('toggle', (event) => {
+      if (event.detail.active) {
+        this._openDrawer(event, drawer);
+      } else {
+        this._closeDrawer(event, drawer);
+      }
     });
 
     drawer.addEventListener('click', (event) => {
       this._closeDrawer(event, drawer);
+      menuButton.active = false;
     });
 
     content.addEventListener('click', (event) => {
       this._closeDrawer(event, drawer);
+      menuButton.active = false;
     });
   },
 
-  _toggleDrawer(event, drawer) {
+  _openDrawer(event, drawer) {
     event.stopPropagation();
-    drawer.classList.toggle('open');
+    drawer.classList.add('open');
   },
 
   _closeDrawer(event, drawer) {
