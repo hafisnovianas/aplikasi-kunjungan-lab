@@ -56,8 +56,6 @@ class HamburgerButton extends HTMLElement {
 
         background: none;
         border: none;
-        font-size: 1.3rem;
-        border: none;
       }
 
       span {
