@@ -44,7 +44,7 @@ async function loadDailyHistory() {
                     item.innerHTML = `
                       <div class="visit-list-item__main">
                         <h6 class="visit-list-item__name">${visit.name}</h6>
-                        <p class="visit-list-item__purpose">${visit.purpose}</p>
+                        <p>${visit.purpose}</p>
                       </div>
                       <span class="visit-list-item__time">${visit.time}</span>
                     `;

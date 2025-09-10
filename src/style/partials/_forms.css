@@ -20,11 +20,23 @@
   font-size: 1.2rem;
 }
 
-.form-group input {
+.form-group input, .form-group select {
   padding: 10px;
   font-size: 1rem;
   border: 1px solid var(--abu-abu-terang);
   border-radius: 5px;
+}
+
+.form-group select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("../../public/chevron-down.svg");
+
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
 }
 
 .form-group .invalid-feedback {
@@ -34,18 +46,4 @@
 
 .form-container button {
   align-self: flex-end;
-  padding: 0.7rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--dongker-fisika);
-  border: 1px solid var(--dongker-fisika);
-  border-radius: 5px;
-  background-color: transparent;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.form-container button:hover, .form-container button:active {
-  background-color: var(--kuning-fisika);
-  border-color: var(--kuning-fisika);
-  cursor: pointer;
 }

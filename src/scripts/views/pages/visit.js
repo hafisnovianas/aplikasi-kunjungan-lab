@@ -4,31 +4,31 @@ const VisitPage = {
   async render() {
     return `
       <div id="visitView" class="page-view">
-        <p>Silakan isi keperluan Anda, lalu pindai QR Code untuk mencatat kunjungan.</p>
+        <p>Silahkan isi keperluan Anda, lalu pindai QR Code</p>
         
-        <div class="mb-3">
-            <label for="purposeDropdown" class="form-label"><b>Keperluan Kunjungan</b></label>
+        <div class="form-group">
+            <label for="purposeDropdown" class="form-label">Keperluan Kunjungan</label>
             <select class="form-select" id="purposeDropdown">
                 <option selected disabled value="">-- Pilih Keperluan --</option>
             </select>
         </div>
 
-        <div class="mb-3" id="otherPurposeContainer" style="display:none;">
-            <label for="otherPurposeInput" class="form-label">Keperluan Lainnya:</label>
-            <input type="text" class="form-control" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda">
+        <div id="otherPurposeContainer" class="form-group" style="display:none;">
+            <label for="otherPurposeInput">Keperluan Lainnya:</label>
+            <input type="text" id="otherPurposeInput" placeholder="Sebutkan keperluan Anda">
         </div>
     
-        <div class="d-grid gap-2 mt-4">
-            <button class="btn btn-success btn-lg">Pindai QR</button>
+        <div>
+            <button>Pindai QR</button>
             <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
         </div>
 
         <div id="reader" style="display:none;"></div>
       </div>
 
-      <div id="successView" class="text-center" style="display:none;">
-        <div id="successMessage" class="alert alert-success" role="alert"></div>
-        <button class="btn btn-primary mt-3"><a href="#/dashboard">kembali</a></button>
+      <div id="successView" style="display:none;">
+        <div id="successMessage" role="alert"></div>
+        <button><a href="#/dashboard">kembali</a></button>
       </div>
     `
   },
@@ -170,7 +170,7 @@ function checkOtherOption() {
   const otherInput = document.getElementById('otherPurposeInput');
 
   if (dropdown.value === 'Lainnya') {
-    otherContainer.style.display = 'block';
+    otherContainer.style.display = 'flex';
     
     const lastPurpose = localStorage.getItem('lastOtherPurpose');
     if (lastPurpose) {

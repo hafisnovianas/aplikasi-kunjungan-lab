@@ -28,6 +28,8 @@
   padding: 15px 20px;
   display: block;
   transition: background-color 0.3s ease;
+  text-decoration: none;
+  color: inherit;
 }      
 
 .nav-item a:hover {

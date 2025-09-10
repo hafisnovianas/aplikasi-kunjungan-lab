@@ -36,7 +36,7 @@
   font-weight: 600;
 }
 
-.visit-list-item__purpose {
+.visit-list-item p {
   font-size: 0.8rem;
   color: var(--light-grey);
 }

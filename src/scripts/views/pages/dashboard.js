@@ -4,16 +4,8 @@ const DashboardPage = {
   async render() {
     return `
       <div id="dashboardView" class="page-view">
-        <div class="dashboard-welcome">
-          <h5 id="dashboard-welcome__text">Selamat Datang</h5>
-          <h4 id="dashboard-welcome__username"></h4>
-        </div>
-
-        <div>
-          <button>
-            ➕ Catat Kunjungan Baru
-          </button>
-        </div>
+        <h4 class="welcome-message">Selamat Datang <span id="username"></span>!</h4>
+        <a class="btn-primary" href="#/visit">➕ Catat Kunjungan Baru</a>
 
         <section class="visit-card card">
           <h3 class="visit-card__title">Riwayat Kunjungan Anda</h3>
@@ -24,12 +16,8 @@ const DashboardPage = {
   },
 
   async afterRender() {
-    document.getElementById('dashboard-welcome__username').innerText = localStorage.getItem('lastUsedName');
+    document.getElementById('username').innerText = localStorage.getItem('lastUsedName');
     loadHistory();
-
-    document.getElementById('dashboardView').querySelector('button').addEventListener('click', ()=> {
-      window.location.hash = '#/visit';
-    })
   }
 };
 
@@ -62,7 +50,7 @@ async function loadHistory() {
                 item.innerHTML = `
                   <div class="visit-list-item__main">
                     <h6 class="visit-list-item__name">${visit.purpose}</h6>
-                    <p class="visit-list-item__purpose">${formattedDate}</p>
+                    <p>${formattedDate}</p>
                   </div>
                 `;
                 historyContent.appendChild(item);
