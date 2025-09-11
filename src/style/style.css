@@ -63,7 +63,9 @@ main {
 
 .total-visit-card {
   justify-content: center;
-  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .total-visit-card__value {
@@ -72,6 +74,11 @@ main {
   margin: 0;
   text-align: center;
   line-height: 1;
+  height: 90px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .total-visit-card__label {
