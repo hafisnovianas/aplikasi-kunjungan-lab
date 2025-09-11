@@ -1,4 +1,4 @@
-class HamburgerButton extends HTMLElement {
+niclass HamburgerButton extends HTMLElement {
   _shadowRoot = null;
   _style = null;
   _isActive = false;
@@ -71,7 +71,7 @@ class HamburgerButton extends HTMLElement {
       }
 
       span:nth-child(1) {
-        top: 20%;
+        top: 8px;
       }
 
       span:nth-child(2) {
@@ -80,7 +80,7 @@ class HamburgerButton extends HTMLElement {
       }
 
       span:nth-child(3) {
-        bottom: 20%;
+        bottom: 8px;
       }
 
       .active span:nth-child(1) {
