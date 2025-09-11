@@ -63,8 +63,8 @@ class HamburgerButton extends HTMLElement {
         position: absolute;
         left: 10%;
         right: 10%;
-        height: 2px;
-        background-color: #333;
+        height: 4px;
+        background-color: #203264;
         border-radius: 4px;
 
         transition: all 0.3s ease-in-out;
