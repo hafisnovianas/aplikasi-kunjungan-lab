@@ -56,8 +56,6 @@ class HamburgerButton extends HTMLElement {
 
         background: none;
         border: none;
-        font-size: 1.3rem;
-        border: none;
       }
 
       span {
@@ -65,7 +63,7 @@ class HamburgerButton extends HTMLElement {
         position: absolute;
         left: 10%;
         right: 10%;
-        height: 4px;
+        height: 2px;
         background-color: #333;
         border-radius: 4px;
 
@@ -73,7 +71,7 @@ class HamburgerButton extends HTMLElement {
       }
 
       span:nth-child(1) {
-        top: 15%;
+        top: 20%;
       }
 
       span:nth-child(2) {
@@ -82,7 +80,7 @@ class HamburgerButton extends HTMLElement {
       }
 
       span:nth-child(3) {
-        bottom: 15%;
+        bottom: 20%;
       }
 
       .active span:nth-child(1) {
@@ -92,6 +90,7 @@ class HamburgerButton extends HTMLElement {
 
       .active span:nth-child(2) {
         opacity: 0;
+        transition: none;
       }
 
       .active span:nth-child(3) {
