@@ -71,7 +71,7 @@ niclass HamburgerButton extends HTMLElement {
       }
 
       span:nth-child(1) {
-        top: 8px;
+        top: 10%;
       }
 
       span:nth-child(2) {
@@ -80,7 +80,7 @@ niclass HamburgerButton extends HTMLElement {
       }
 
       span:nth-child(3) {
-        bottom: 8px;
+        bottom: 10%;
       }
 
       .active span:nth-child(1) {
