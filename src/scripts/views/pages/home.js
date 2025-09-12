@@ -31,13 +31,13 @@ async function loadDailyHistory() {
 
     try {
         const response = await CallApi.callApi('getDailyHistory');
-
+        const dataLength = response.data.length;
+        totalVisitElement.textContent = dataLength;
         if (response.status === 'success') {
             todaysHistoryContent.innerHTML = '';
-            if (response.data.length === 0) {
+            if (dataLength === 0) {
                 todaysHistoryContent.innerHTML = '<p class="text-center">Belum ada kunjungan hari ini.</p>';
             } else {
-                totalVisitElement.textContent = response.data.length;
                 response.data.forEach(visit => {
                     const item = document.createElement('li');
                     item.className = 'visit-list-item';
