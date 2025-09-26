@@ -1,20 +1,21 @@
 .nav-container {
   position: fixed;
   top: 64px;
-  /* right: 0; */
+  right: 0;
   min-width: 250px;
-  width: 90vw;
+  width: 100%;
+  height: 100%;
 
-  transform: translateY(-164%);
+  transform: translateX(164%);
   transition: transform 0.5s ease;
 
   color: var(--dongker-fisika);
-  align-self: center;
-  border-radius: 0 0 20px 20px;
+  background-color: var(--putih);
 }
 
 .open {
   transform: translate(0, 0);
+  /* height: 100vh; */
 }
 
 .nav-title {
