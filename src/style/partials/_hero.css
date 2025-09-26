@@ -3,9 +3,10 @@
   background-position: center center;
   background-size: cover;
   display: flex;
-  min-height: 300px;
+  height: 300px;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .hero-inner {

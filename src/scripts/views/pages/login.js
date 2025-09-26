@@ -32,7 +32,7 @@ const LoginPage = {
     const lastNIM = localStorage.getItem('lastUsedNIM');
     if (lastNIM) {
       document.getElementById('nimInput').value = lastNIM;
-      document.getElementById('passwordInput').focus();
+      // document.getElementById('passwordInput').focus();
     }
     
     document.getElementById('loginForm').addEventListener('submit', event => {
@@ -73,9 +73,7 @@ async function login() {
       localStorage.setItem('lastUsedNIM', nim);
       localStorage.setItem('lastUsedName', response.nama);
       localStorage.setItem('kunjunganLabToken', response.token);
-
-      document.getElementById('menuButton').style.display= "flex";
-      document.getElementById('loginButton').style.display = "none";
+      
       window.location.hash = '#/dashboard';
     } else {
       if (response.message.toLowerCase().includes('password')) {

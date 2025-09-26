@@ -1,0 +1,59 @@
+.drawer-container {
+  position: fixed;
+  top: 64px;
+  padding-block: 20px;
+  
+  min-width: 250px;
+  width: 100%;
+  height: 100%;
+
+  transform: translateX(100%);
+  transition: transform 0.5s ease;
+
+  color: var(--dongker-fisika);
+  background-color: var(--putih);
+}
+
+.drawer-container a{
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  padding: 15px 35px;
+}
+
+.drawer-container a:hover {
+  background-color: var(--kuning-fisika);
+}
+
+.nav-title {
+  padding: 15px 35px;
+}
+
+.nav-list {
+  list-style: none;
+}
+
+.nav-item a {
+  display: block;
+}      
+
+#authButton {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  padding-block: 30px;
+}
+
+#authButton a {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  border: 2px solid var(--dongker-fisika);
+  border-radius: 5px;
+}
+
+.open {
+  transform: translate(0, 0);
+}

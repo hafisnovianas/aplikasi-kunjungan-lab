@@ -3,8 +3,10 @@ import Helper from "./utils/helper.js";
 import './views/components/components.js';
 
 const app = new App ({
-  loginButton: document.getElementById('loginButton'),
+  hero: document.getElementById('hero'),
   menuButton: document.getElementById("menuButton"),
+  authButton: document.getElementById('authButton'),
+  navContainer: document.getElementById('navContainer'),
   drawer: document.getElementById("drawer"),
   content: document.getElementById("maincontent")
 })
@@ -20,7 +22,6 @@ window.addEventListener('load', async () => {
 });
 
 document.getElementById('logoutButton').addEventListener('click', () => {
-  console.log('hapus')
   Helper.destroyUserToken('kunjunganLabToken');
   window.location.hash = '/login';
 })

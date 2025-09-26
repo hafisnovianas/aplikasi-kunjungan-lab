@@ -3,9 +3,11 @@ import UrlParser from '../routes/url-parser.js';
 import routes from '../routes/routes.js';
 
 class App {
-  constructor({ loginButton, menuButton, drawer, content}) {
-    this._loginButton = loginButton;
+  constructor({ hero, menuButton, authButton, navContainer, drawer, content}) {
+    this._hero = hero;
     this._menuButton = menuButton;
+    this._authButton = authButton;
+    this._navContainer = navContainer;
     this._drawer = drawer;
     this._content = content;
 
@@ -22,11 +24,17 @@ class App {
 
   async renderPage() {
     const url = UrlParser.parseActiveUrlWithCombiner();
+    if (url === '/login' || url === '/register') {
+      this._hero.style.height = '64px';
+    } else {
+      this._hero.style.height = ''; // Kembalikan ke nilai default dari CSS
+    }
+    
     const token = localStorage.getItem('kunjunganLabToken');
 
     if (token) {
-      this._menuButton.style.display= "flex";
-      this._loginButton.style.display = "none";
+      this._authButton.style.display = "none";
+      this._navContainer.style.display = "";
 
       if (url === '/login' || url === '/register') {
         window.location.hash = '#/dashboard';
@@ -39,12 +47,8 @@ class App {
         this._drawer.querySelector('.nav-title').textContent = navTitle;
       }
     } else {
-      this._menuButton.style.display= "none";
-      this._loginButton.style.display = "flex";
-
-      if (url === '/login') {
-        this._loginButton.style.display = 'none';
-      } 
+      this._authButton.style.display = "";
+      this._navContainer.style.display = "none";
       
       const publicPages = ['/login','/register','/home','/']
       if (!publicPages.includes(url)) {

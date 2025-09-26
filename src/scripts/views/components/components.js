@@ -1,1 +1,1 @@
-import './hamburger-button.js'
+import './hamburger-button.js';
