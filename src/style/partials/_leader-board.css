@@ -1,0 +1,19 @@
+.leaderboard-list {
+  counter-reset: leaderboard-counter;
+}
+
+.leaderboard-list__item::before {
+  counter-increment: leaderboard-counter;
+  content: counter(leaderboard-counter) ". ";
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.leaderboard-list__badge {
+  background-color: var(--kuning-fisika);
+  color: var(--putih);
+  padding: 0.25rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}

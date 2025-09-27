@@ -53,14 +53,6 @@ main {
   flex-grow: 1;
 }
 
-.card {
-  border: 2px solid var(--abu-abu);
-  border-radius: 8px;
-  min-height: 200px;
-  background-color: var(--putih);
-  color: var(--dongker-fisika);
-}
-
 .total-visit-card {
   justify-content: center;
   display: flex;

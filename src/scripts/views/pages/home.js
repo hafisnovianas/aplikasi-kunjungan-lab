@@ -4,6 +4,25 @@ const HomePage = {
   async render() {
     return `
       <div id="home" class="page-view">
+        <div class="card">
+          <div class="promo-card__content">
+            <div class="promo-card__text">
+              <h1>OPEN RECRUITMENT ASISTEN 2025</h1>
+              <p>Jadilah bagian dari tim Laboratorium Fisika UMRI. Tunjukkan kemampuan dan dedikasimu!</p>
+            </div>
+            <div class="promo-card__image">
+              <img src="src/public/asisten2.png">
+            </div>
+          </div>
+          <a href="#" class="btn-primary">Daftar Sekarang!</a>
+        </div>
+
+        <div class="card">
+          <h3 class="card__title">🏆 LEADERBOARD 🏆</h3>
+          <p class="card__subtitle">3 Pengunjung Paling Aktif</p>
+          <ol id="leaderboardList" class="card-list"></ol>
+        </div>
+
         <figure class="total-visit-card card">
           <p id="totalVisit" class="total-visit-card__value">...</p>
           <figcaption class="total-visit-card__label">Kunjungan Hari Ini</figcaption>
@@ -18,6 +37,7 @@ const HomePage = {
   },
 
   async afterRender() {
+    loadLeaderboard();
     loadDailyHistory();
   }
 };
@@ -56,5 +76,37 @@ async function loadDailyHistory() {
         }
     } catch (error) {
         todaysHistoryContent.innerHTML = `<p class="text-center text-danger">Gagal memuat riwayat hari ini.</p>`;
+    }
+}
+
+// Ganti seluruh fungsi loadLeaderboard() dengan ini
+async function loadLeaderboard() {
+    const leaderboardList = document.getElementById('leaderboardList');
+    leaderboardList.innerHTML = '<p class="text-center">Memuat peringkat...</p>';
+
+    try {
+        const response = await CallApi.callApi('getLeaderboard');
+
+        if (response.status === 'success') {
+            leaderboardList.innerHTML = '';
+            if (response.data.length === 0) {
+                leaderboardList.innerHTML = '<p class="text-center">Belum ada data.</p>';
+            } else {
+                response.data.forEach(user => {
+                    const item = document.createElement('li');
+                    item.className = 'card-list__item';
+                    
+                    item.innerHTML = `
+                        <span>${user.name}</span>
+                        <span class="leaderboard-list__badge">${user.visitCount} Kunjungan</span>
+                    `;
+                    leaderboardList.appendChild(item);
+                });
+            }
+        } else {
+            throw new Error(response.message);
+        }
+    } catch (error) {
+        leaderboardList.innerHTML = `<p class="text-center text-danger">Gagal memuat peringkat.</p>`;
     }
 }

@@ -1,0 +1,27 @@
+.promo-card__content {
+  display: flex;
+  justify-content: space-between;
+  max-height: 100%;
+}
+
+.promo-card__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  flex: 2;
+}
+
+.promo-card__image {
+  overflow: hidden;
+  flex: 1;
+  height: 100%;
+}
+
+.promo-card__image img {
+  width: 130%;
+  object-fit: cover;
+  filter: drop-shadow(0 0px 4px rgba(0, 0, 0, 0.2));
+
+}
+
