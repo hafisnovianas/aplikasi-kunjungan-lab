@@ -19,7 +19,7 @@
 }
 
 .promo-card__image img {
-  width: 130%;
+  width: 100%;
   object-fit: cover;
   filter: drop-shadow(0 0px 4px rgba(0, 0, 0, 0.2));
 
