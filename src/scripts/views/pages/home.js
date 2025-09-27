@@ -18,7 +18,7 @@ const HomePage = {
         </div>
 
         <div class="card">
-          <h4 class="card__title">🏆 LEADERBOARD 🏆</h4>
+          <h5 class="card__title">🏆 LEADERBOARD 🏆</h5>
           <p class="card__subtitle">3 Pengunjung Paling Aktif</p>
           <ol id="leaderboardList" class="card-list"></ol>
         </div>
