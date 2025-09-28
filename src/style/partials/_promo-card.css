@@ -12,6 +12,10 @@
   flex: 2;
 }
 
+.promo-card__text h2 {
+  font-size: 2rem;
+}
+
 .promo-card__image {
   overflow: hidden;
   flex: 1;
