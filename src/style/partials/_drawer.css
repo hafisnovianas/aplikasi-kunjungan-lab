@@ -12,6 +12,7 @@
 
   color: var(--dongker-fisika);
   background-color: var(--putih);
+  z-index: 999;
 }
 
 .drawer-container a{

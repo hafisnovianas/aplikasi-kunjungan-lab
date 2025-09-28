@@ -9,7 +9,9 @@
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
-  flex: 2;
+  flex: 3;
+  min-width: 0;
+  /* word-break: break-word; */
 }
 
 .promo-card__text h2 {
@@ -18,7 +20,7 @@
 
 .promo-card__image {
   overflow: hidden;
-  flex: 1;
+  flex: 2;
   height: 100%;
 }
 
