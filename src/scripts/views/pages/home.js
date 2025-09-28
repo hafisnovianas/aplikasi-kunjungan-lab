@@ -14,7 +14,7 @@ const HomePage = {
               <img src="src/public/asisten2.png">
             </div>
           </div>
-          <a href="#" class="btn-primary">Daftar Sekarang!</a>
+          <a href="https://docs.google.com/forms/d/1_PSJH5d1gB_UmVtXuZ4PunvOIDW8ERrb_z4FCgtYQZM" class="btn-primary">Daftar Sekarang!</a>
         </div>
 
         <div class="card">
