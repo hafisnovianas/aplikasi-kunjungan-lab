@@ -7,7 +7,7 @@ const HomePage = {
         <div class="card">
           <div class="promo-card__content">
             <div class="promo-card__text">
-              <h1>OPEN RECRUITMENT ASISTEN 2025</h1>
+              <h2>OPEN RECRUITMENT ASISTEN 2025</h2>
               <p>Jadilah bagian dari tim Laboratorium Fisika UMRI. Tunjukkan kemampuan dan dedikasimu!</p>
             </div>
             <div class="promo-card__image">
@@ -18,7 +18,7 @@ const HomePage = {
         </div>
 
         <div class="card">
-          <h5 class="card__title">🏆 LEADERBOARD 🏆</h5>
+          <h3 class="card__title">🏆 LEADERBOARD 🏆</h3>
           <p class="card__subtitle">3 Pengunjung Paling Aktif</p>
           <ol id="leaderboardList" class="card-list"></ol>
         </div>
