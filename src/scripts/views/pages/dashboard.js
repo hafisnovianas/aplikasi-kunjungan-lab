@@ -5,10 +5,11 @@ const DashboardPage = {
     return `
       <div id="dashboardView" class="page-view">
         <h4 class="welcome-message">Selamat Datang <span id="username"></span>!</h4>
-        <a class="btn-primary" href="#/visit">➕ Catat Kunjungan Baru</a>
+        
 
         <section class="visit-card card">
           <h3 class="visit-card__title">Riwayat Kunjungan Anda</h3>
+          <a class="btn-primary" href="#/visit">➕ Catat Kunjungan Baru</a>
           <ul id="historyVisitList" class="visit-card__list"></ul>
         </section>
       </div>

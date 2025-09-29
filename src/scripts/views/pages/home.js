@@ -32,9 +32,13 @@ const HomePage = {
           <h3 class="visit-card__title">Riwayat Kunjungan Hari Ini</h3>
           <ul id="dailyVisitList" class="visit-card__list"></ul>
         </section>
+
+        <a class="add-visit-button" href="#/visit"> <span id="plusIcon">+</span>&nbsp;Catat Kunjungan</a>
       </div>
     `
   },
+
+  // 
 
   async afterRender() {
     loadLeaderboard();
