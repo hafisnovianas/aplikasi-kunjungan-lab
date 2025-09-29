@@ -1,6 +1,7 @@
 .btn-primary {
   text-align: center;
   text-decoration: none;
+  justify-content: center;
   color: inherit;
   padding: 0.7rem 1rem;
   font-size: 0.9rem;

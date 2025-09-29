@@ -36,8 +36,8 @@
 }
 
 .nav-item a {
-  display: block;
-}      
+  gap: 10px;
+}
 
 #authButton {
   display: flex;

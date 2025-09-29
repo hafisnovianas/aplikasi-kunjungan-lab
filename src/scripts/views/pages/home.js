@@ -26,14 +26,10 @@ const HomePage = {
         <figure class="total-visit-card card">
           <p id="totalVisit" class="total-visit-card__value">...</p>
           <figcaption class="total-visit-card__label">Kunjungan Hari Ini</figcaption>
+          <ul id="dailyVisitList" class="visit-card__list"></ul>
         </figure>
 
-        <section class="visit-card card">
-          <h3 class="visit-card__title">Riwayat Kunjungan Hari Ini</h3>
-          <ul id="dailyVisitList" class="visit-card__list"></ul>
-        </section>
-
-        <a class="add-visit-button" href="#/visit"> <span id="plusIcon">+</span>&nbsp;Catat Kunjungan</a>
+        <a class="add-visit-button" href="#/visit"><i class="fa-solid fa-plus"></i>Catat Kunjungan</a>
       </div>
     `
   },
