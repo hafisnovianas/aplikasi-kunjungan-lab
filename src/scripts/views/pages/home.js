@@ -29,7 +29,7 @@ const HomePage = {
           <ul id="dailyVisitList" class="visit-card__list"></ul>
         </figure>
 
-        <a class="add-visit-button a-icon" href="#/visit"><i class="fa-solid fa-plus"></i>Catat Kunjungan</a>
+        <a class="add-visit-button a-icon" href="#/visit"><i class="fa-solid fa-plus"></i>Kunjungan</a>
       </div>
     `
   },
