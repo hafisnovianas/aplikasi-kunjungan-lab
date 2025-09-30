@@ -7,11 +7,11 @@
   background-color: var(--kuning-fisika);
   position: fixed;
   
-  bottom: 32px;
+  bottom: 40px;
   right: 25px;
   border-radius: 10px;
   border: 0;
-  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 rgba(0, 0, 0, 0.2);
   
   font-size: 0.9rem;
   font-weight: 600;
