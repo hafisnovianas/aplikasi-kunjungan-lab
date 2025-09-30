@@ -22,7 +22,7 @@ const LoginPage = {
           <button type="submit" class="btn-primary">Masuk</button>
         </form>
 
-        <p class="text-center">Belum punya akun? <a href="#/register" return false;">Daftar di sini</a></p>
+        <p class="text-center">Belum punya akun?? <a href="#/register" return false;">Daftar di sini</a></p>
       </div>
     `
   },
