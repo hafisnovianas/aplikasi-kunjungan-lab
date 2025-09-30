@@ -7,8 +7,8 @@
   background-color: var(--kuning-fisika);
   position: fixed;
   
-  bottom: 30px;
-  right: 30px;
+  bottom: 50px;
+  right: 20px;
   border-radius: 10px;
   border: 0;
   box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.2);
