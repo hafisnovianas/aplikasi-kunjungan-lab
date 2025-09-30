@@ -3,12 +3,12 @@
   align-items: center;
   justify-content: space-between;
   
-  padding: 15px;
+  padding: 10px 15px;
   background-color: var(--kuning-fisika);
   position: fixed;
   
   bottom: 32px;
-  right: 16px;
+  right: 25px;
   border-radius: 10px;
   border: 0;
   box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.2);
