@@ -24,7 +24,7 @@ class App {
 
   async renderPage() {
     const url = UrlParser.parseActiveUrlWithCombiner();
-    if (url === '/login' || url === '/register') {
+    if (url === '/login' || url === '/register' || url === '/gate') {
       this._hero.style.height = '64px';
     } else {
       this._hero.style.height = ''; // Kembalikan ke nilai default dari CSS
@@ -33,10 +33,12 @@ class App {
     const token = localStorage.getItem('kunjunganLabToken');
 
     if (token) {
+      console.log('has tokon')
       this._authButton.style.display = "none";
       this._navContainer.style.display = "";
 
-      if (url === '/login' || url === '/register') {
+      if (url === '/login' || url === '/register' || url === '/gate' || url === '/visitguest') {
+        console.log('auth page')
         window.location.hash = '#/dashboard';
         return;
       }
@@ -47,15 +49,19 @@ class App {
         this._drawer.querySelector('.nav-title').textContent = navTitle;
       }
     } else {
+      console.log('no token')
       this._authButton.style.display = "";
       this._navContainer.style.display = "none";
       
-      const publicPages = ['/login','/register','/home','/']
+      const publicPages = ['/login','/register','/gate','/home','/visitguest','/']
       if (!publicPages.includes(url)) {
-        window.location.hash = '#/login';
+        console.log('no auth page')
+        window.location.hash = '#/gate';
         return
       }
     }
+
+    console.log(url)
 
     const page = routes[url];
     const content = await page.render();

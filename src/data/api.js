@@ -19,7 +19,7 @@ class CallApi {
 
       if (responseJson.message && responseJson.message.toLowerCase().includes('sesi')) {
         localStorage.removeItem('kunjunganLabToken');
-        window.location.hash = '#/login';
+        window.location.hash = '#/gate';
       }
 
       return responseJson;

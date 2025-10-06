@@ -1,4 +1,5 @@
 import CallApi from "../../../data/api.js";
+import { checkOtherOption } from "../../utils/form-utils.js";
 
 const VisitPage = {
   async render() {
@@ -39,11 +40,19 @@ const VisitPage = {
 
     const visitViewElement = document.getElementById('visitView')
     visitViewElement.querySelector('button').addEventListener('click', processVisit)
-    visitViewElement.querySelector('select').addEventListener('change', checkOtherOption)
+
+    const dropdownElement = visitViewElement.querySelector('#purposeDropdown')
+    const otherPurposeContainer = visitViewElement.querySelector('#otherPurposeContainer')
+    const otherPurposeInput = visitViewElement.querySelector('#otherPurposeInput')
+    
+    visitViewElement.querySelector('select').addEventListener('change', () => {
+      checkOtherOption(dropdownElement, otherPurposeContainer, otherPurposeInput)
+    })
   }
 };
 
 export default VisitPage;
+
 function resetInput () {
   document.getElementById('purposeDropdown').value = "";
   document.getElementById('otherPurposeInput').value = "";
@@ -158,24 +167,6 @@ async function fillPurposeDropdown() {
   otherOption.value = 'Lainnya';
   otherOption.innerText = 'Lainnya...';
   dropdown.appendChild(otherOption);
-}
-
-function checkOtherOption() {
-  const dropdown = document.getElementById('purposeDropdown');
-  const otherContainer = document.getElementById('otherPurposeContainer');
-  const otherInput = document.getElementById('otherPurposeInput');
-
-  if (dropdown.value === 'Lainnya') {
-    otherContainer.style.display = 'flex';
-    
-    const lastPurpose = localStorage.getItem('lastOtherPurpose');
-    if (lastPurpose) {
-      otherInput.value = lastPurpose;
-    }
-    otherInput.focus();
-  } else {
-    otherContainer.style.display = 'none';
-  }
 }
 
 function showSuccessView (message) {

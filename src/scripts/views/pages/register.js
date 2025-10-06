@@ -8,29 +8,29 @@ const RegisterPage = {
 
         <form id="registerForm" class="form-container">
           <div class="form-group">
-            <label for="nim_reg" class="form-label">NIM</label>
-            <input type="number" class="form-control" id="nim_reg" required>
+            <label for="nim_reg">NIM</label>
+            <input type="number" id="nim_reg" required>
             <div id="nimWarning" class="invalid-feedback" style="display:none;"></div>
           </div>
 
           <div class="form-group">
-            <label for="nama_reg" class="form-label">Nama Lengkap</label>
-            <input type="text" class="form-control" id="nama_reg" required>
+            <label for="nama_reg">Nama Lengkap</label>
+            <input type="text" id="nama_reg" required>
           </div>
 
           <div class="form-group">
-            <label for="prodi_reg" class="form-label">Program Studi</label>
-            <input type="text" class="form-control" id="prodi_reg" value="Fisika" required>
+            <label for="prodi_reg">Program Studi</label>
+            <input type="text" id="prodi_reg" value="Fisika" required>
           </div>
 
           <div class="form-group">
-            <label for="password_reg" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password_reg" required>
+            <label for="password_reg">Password</label>
+            <input type="password" id="password_reg" required>
           </div>
 
           <div class="form-group">
-            <label for="confirm_password_reg" class="form-label">Konfirmasi Password</label>
-            <input type="password" class="form-control" id="confirm_password_reg" required>
+            <label for="confirm_password_reg">Konfirmasi Password</label>
+            <input type="password" id="confirm_password_reg" required>
           </div>
 
           <button type="submit" class="btn-primary">Daftar</button>

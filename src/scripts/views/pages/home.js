@@ -79,7 +79,6 @@ async function loadDailyHistory() {
     }
 }
 
-// Ganti seluruh fungsi loadLeaderboard() dengan ini
 async function loadLeaderboard() {
     const leaderboardList = document.getElementById('leaderboardList');
     leaderboardList.innerHTML = '<p class="text-center">Memuat peringkat...</p>';
