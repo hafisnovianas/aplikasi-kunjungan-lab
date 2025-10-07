@@ -1,0 +1,15 @@
+.gate-view a{
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gate-view i{
+  font-size: 5rem;
+}
+
+.gate-view span{
+  font-size: 1.5rem;
+  font-weight: 500;
+}

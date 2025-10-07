@@ -39,6 +39,12 @@
   gap: 10px;
 }
 
+.nav-item i {
+  font-size: 1.5rem;
+  width: 2rem;
+  align-items: center;
+}
+
 #authButton {
   display: flex;
   justify-content: center;

@@ -47,7 +47,7 @@ class HamburgerButton extends HTMLElement {
   }
 
   _updateStyle() {
-    this._style.textContent = `
+    this._style.textContent = /*css*/`
       button {
         width: 40px;
         height: 40px;
