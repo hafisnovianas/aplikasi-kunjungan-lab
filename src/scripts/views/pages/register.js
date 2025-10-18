@@ -20,7 +20,7 @@ const RegisterPage = {
 
           <div class="form-group">
             <label for="prodi_reg">Program Studi</label>
-            <input type="text" id="prodi_reg" required>
+            <input type="text" id="prodi_reg" placeholder="Masukkan Prodi Asal" required>
           </div>
 
           <div class="form-group">
