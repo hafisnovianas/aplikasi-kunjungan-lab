@@ -120,7 +120,9 @@ function resetInput () {
 async function scanGuestHandle(file, guestName, guestInst, purpose) {
   const html5QrCode = new window.Html5Qrcode("reader");
   try {
-    const decodedText = await html5QrCode.scanFile(file, true);
+    const decodedResult = await html5QrCode.scanFileV2(file, true);
+    const decodedText = decodedResult.decodedText;
+    console.log(decodedText)
 
     const payload = { 
       name: guestName,

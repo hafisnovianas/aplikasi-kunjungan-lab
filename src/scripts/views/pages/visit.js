@@ -109,7 +109,10 @@ function processVisit() {
 async function scanHandle(file, keperluan) {
   const html5QrCode = new window.Html5Qrcode("reader");
   try {
-    const decodedText = await html5QrCode.scanFile(file, true);
+    const decodedResult = await html5QrCode.scanFileV2(file, true);
+    const decodedText = decodedResult.decodedText;
+    console.log(decodedText)
+    
     const token = localStorage.getItem('kunjunganLabToken');
 
     if (!token) {
