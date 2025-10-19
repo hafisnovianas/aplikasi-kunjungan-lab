@@ -31,7 +31,7 @@ const VisitGuestPage = {
     
         <div>
             <button class="btn-primary">Pindai QR</button>
-            <input type="file" id="qr-input-file" accept="image/*" capture="environment" style="display:none">
+            <input type="file" id="qr-input-file" accept="image/png, image/jpeg" capture="environment" style="display:none">
         </div>
 
         <div id="reader" style="display:none;"></div>
