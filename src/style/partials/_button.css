@@ -1,19 +1,26 @@
-.btn-primary {
-  text-align: center;
-  text-decoration: none;
+.btn {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  color: inherit;
-  padding: 0.7rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  border: 1px solid var(--dongker-fisika);
-  border-radius: 5px;
-  background-color: transparent;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  text-decoration: none;
+
+  padding: var(--btn-padding);
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight); 
+  border-style: solid;
+  border-radius: var(--btn-border-radius);
+  border-width: var(--btn-border-width);
+  transition: var(--btn-transition);
+}
+
+.btn-primary {
+  color: var(--btn-primary-color);
+  background-color: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border-color);
 }
 
 .btn-primary:hover, .btn-primary:active {
-  background-color: var(--kuning-fisika);
-  border-color: var(--kuning-fisika);
+  background-color: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border-color);
   cursor: pointer;
 }

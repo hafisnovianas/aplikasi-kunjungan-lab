@@ -8,7 +8,22 @@
     --putih: #f4f6f8;
     --light-grey: #6c757d;
     --abu-abu-terang: #ccc;
-}
+
+    /*btn*/
+    --btn-padding: 0.7rem 1rem;
+    --btn-font-size: 0.9rem;
+    --btn-font-weight: 700;
+    --btn-border-radius: 5px;
+    --btn-border-width: 1px;
+    --btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    /*btn-primary*/
+    --btn-primary-color: inherit;
+    --btn-primary-bg: transparent;
+    --btn-primary-border-color: var(--dongker-fisika);
+    --btn-primary-hover-bg: var(--kuning-fisika);
+    --btn-primary-hover-border-color: var(--kuning-fisika);
+  }
 
 * {
   padding: 0;

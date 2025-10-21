@@ -19,7 +19,7 @@ const LoginPage = {
             <div id="passwordError" class="invalid-feedback"></div>
           </div>
         
-          <button type="submit" class="btn-primary">Masuk</button>
+          <button type="submit" class="btn btn-primary">Masuk</button>
         </form>
 
         <p class="text-center">Belum punya akun? <a href="#/register" return false;">Daftar di sini</a></p>

@@ -33,14 +33,14 @@ const RegisterPage = {
             <input type="password" id="confirm_password_reg" required>
           </div>
 
-          <button type="submit" class="btn-primary">Daftar</button>
+          <button type="submit" class="btn btn-primary">Daftar</button>
         </form>
       </div>
 
       <div id="registerSuccessView" style="display:none;" class="text-center">
         <div class="alert alert-success" role="alert">Pendaftaran Berhasil!</div>
         <p>Silakan klik tombol di bawah untuk masuk ke halaman login.</p>
-        <button class="btn btn-primary"><a href="#/login">Ke Halaman Login</a></button>
+        <button class="btn btn-primary"><a class="btn btn-primary" href="#/login">Ke Halaman Login</a></button>
       </div>
     `
   },

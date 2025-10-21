@@ -20,7 +20,7 @@ const VisitPage = {
         </div>
     
         <div>
-            <button class="btn-primary">Pindai QR</button>
+            <button class="btn btn-primary">Pindai QR</button>
             <input type="file" id="qr-input-file" accept="image/png, image/jpeg" capture="environment" style="display:none">
         </div>
 
@@ -29,7 +29,7 @@ const VisitPage = {
 
       <div id="successView" class="page-view" style="display:none">
         <div id="successMessage">jack</div>
-        <a class="btn-primary" href="#/dashboard">kembali</a>
+        <a class="btn btn-primary" href="#/dashboard">kembali</a>
       </div>
     `
   },

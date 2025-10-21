@@ -8,7 +8,7 @@ const DashboardPage = {
       
         <section class="visit-card card">
           <h3 class="visit-card__title">Riwayat Kunjungan Anda</h3>
-          <a class="btn-primary" href="#/visit">➕ Catat Kunjungan Baru</a>
+          <a class="btn btn-primary" href="#/visit">➕ Catat Kunjungan Baru</a>
           <ul id="historyVisitList" class="visit-card__list"></ul>
         </section>
       </div>

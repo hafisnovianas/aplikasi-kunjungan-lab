@@ -19,6 +19,7 @@ const HomePage = {
             <a href="https://docs.google.com/forms/d/1_PSJH5d1gB_UmVtXuZ4PunvOIDW8ERrb_z4FCgtYQZM" class="btn-primary">Daftar Sekarang!</a>
           </div>
           -->
+          <info-card></info-card>
         </div>
 
         <div class="card">
