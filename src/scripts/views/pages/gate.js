@@ -1,6 +1,6 @@
 const GatePage = {
   async render() {
-    return /*html*/`
+    return `
       <div id="gateView" class="page-view gate-view">
         <a href="#/login" class="card">
           <i class="fa-solid fa-user-graduate"></i>

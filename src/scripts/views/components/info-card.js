@@ -11,27 +11,26 @@ class InfoCard extends HTMLElement {
 
   _updateStyle() {
     this._style.textContent = `
-      .info-card {
-        border: 2px solid var(--abu-abu);
-        border-radius: 8px;
-        min-height: 200px;
-        background-color: var(--putih);
-        color: var(--dongker-fisika);
-
-        /* baru */
-        padding: 20px;
+      .card {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        padding: 20px;
+        min-height: 200px;
+
+        color: var(--dongker-fisika);
+        border: 2px solid var(--abu-abu);
+        border-radius: 8px;
+        background-color: transparent;
       }
 
-      .info-card__content {
+      .card__content {
         display: flex;
         justify-content: space-between;
         height: 300px;
       }
 
-      .info-card__text {
+      .card__text {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -40,18 +39,18 @@ class InfoCard extends HTMLElement {
         min-width: 0;
       }
 
-      .info-card__text h2 {
+      .card__text h2 {
         font-size: 2.3rem;
         margin: 0;
       }
 
-      .info-card__image {
+      .card__image {
         overflow: hidden;
         flex: 2;
         height: 100%;
       }
 
-      .info-card__image img {
+      .card__image img {
         height: 100%;
         object-fit: cover;
         filter: drop-shadow(0 0px 4px rgba(0, 0, 0, 0.2));
@@ -92,18 +91,18 @@ class InfoCard extends HTMLElement {
 
     this._shadowRoot.appendChild(this._style);
     this._shadowRoot.innerHTML += `
-      <div class="info-card">
-        <div class="info-card__content">
-          <div class="info-card__text">
+      <div class="card">
+        <div class="card__content">
+          <div class="card__text">
             <h2>INFO PRAKTIKUM 2025</h2>
             <p>Informasi terbaru seputar jadwal, modul, dan ketentuan praktikum.</p>
           </div>
-          <div class="info-card__image">
+          <div class="card__image">
             <img src="src/public/asisten2.png">
           </div>
         </div>
-        <a href="https://drive.google.com/drive/folders/1opQm8k6GN9d3m60Ad5hqQl7EfUo8EhjK?usp=sharing                                                                                                                   " class="btn btn-primary">
-          Klik disini! <i class="fa-solid fa-arrow-right"></i></i>
+        <a href="#/infopraktikum" class="btn btn-primary">
+          Klik disini!
         </a>
       </div>
     `;

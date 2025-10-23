@@ -5,6 +5,7 @@ import VisitPage from '../views/pages/visit.js';
 import RegisterPage from '../views/pages/register.js';
 import GatePage from '../views/pages/gate.js';
 import VisitGuestPage from '../views/pages/visit-guest.js';
+import InfoPraktikum from '../views/pages/info-praktikum.js';
 
 const routes = {
   '/': HomePage,
@@ -15,6 +16,7 @@ const routes = {
   '/visitguest': VisitGuestPage,
   '/gate': GatePage,
   '/register': RegisterPage,
+  '/infopraktikum': InfoPraktikum
 };
 
 export default routes;

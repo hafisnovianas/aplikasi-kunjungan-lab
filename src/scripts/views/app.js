@@ -24,20 +24,21 @@ class App {
 
   async renderPage() {
     const url = UrlParser.parseActiveUrlWithCombiner();
-    if (url === '/login' || url === '/register' || url === '/gate') {
-      this._hero.style.height = '64px';
-    } else {
-      this._hero.style.height = ''; // Kembalikan ke nilai default dari CSS
+
+    this._hero.style.height = '64px';
+    if (url === '/home' || url === '/') {
+      this._hero.style.height = '';
     }
     
     const token = localStorage.getItem('kunjunganLabToken');
 
     if (token) {
-      console.log('has tokon')
+      console.log('has token')
       this._authButton.style.display = "none";
       this._navContainer.style.display = "";
 
-      if (url === '/login' || url === '/register' || url === '/gate' || url === '/visitguest') {
+      const authPage = ['/login', '/register', '/gate', '/visitguest']
+      if (authPage.includes(url)) {
         console.log('auth page')
         window.location.hash = '#/dashboard';
         return;
@@ -53,8 +54,8 @@ class App {
       this._authButton.style.display = "";
       this._navContainer.style.display = "none";
       
-      const publicPages = ['/login','/register','/gate','/home','/visitguest','/']
-      if (!publicPages.includes(url)) {
+      const privatePages = ['/dashboard','/visit']
+      if (privatePages.includes(url)) {
         console.log('no auth page')
         window.location.hash = '#/gate';
         return
