@@ -24,8 +24,8 @@ const RegisterPage = {
           </div>
 
           <div class="form-group">
-            <label for="email_reg">Email Kampus</label>
-            <input type="email" id="email_reg" placeholder="Contoh: 150203036@student.umri.ac.id" required>
+            <label for="email_reg">Email</label>
+            <input type="email" id="email_reg" placeholder="masukkan email" required>
             <div id="emailWarning" class="invalid-feedback" style="display:none;"></div>
           </div>
 
