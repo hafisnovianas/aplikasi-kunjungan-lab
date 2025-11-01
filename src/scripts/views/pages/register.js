@@ -46,7 +46,7 @@ const RegisterPage = {
       <div id="registerSuccessView" style="display:none;" class="text-center">
         <div class="alert alert-success" role="alert">Pendaftaran Berhasil!</div>
         <p>Silakan klik tombol di bawah untuk masuk ke halaman login.</p>
-        <button class="btn btn-primary"><a class="btn btn-primary" href="#/login">Ke Halaman Login</a></button>
+        <a class="btn btn-primary" href="#/login">Ke Halaman Login</a>
       </div>
     `
   },
@@ -76,13 +76,13 @@ const RegisterPage = {
     emailElement.classList.remove('is-invalid');
     emailWarning.style.display = 'none';
 
-    const campusEmailRegex = /^[a-zA-Z0-9._%+-]+@student\.umri\.ac\.id$/i;
-    if (email && !campusEmailRegex.test(email)) {
-      emailWarning.innerText = 'Gunakan email @student.umri.ac.id';
-      emailWarning.style.display = 'block';
-      emailElement.classList.add('is-invalid');
-      return;
-    }
+    // const campusEmailRegex = /^[a-zA-Z0-9._%+-]+@student\.umri\.ac\.id$/i;
+    // if (email && !campusEmailRegex.test(email)) {
+    //   emailWarning.innerText = 'Gunakan email @student.umri.ac.id';
+    //   emailWarning.style.display = 'block';
+    //   emailElement.classList.add('is-invalid');
+    //   return;
+    // }
 
     if (password !== confirmPassword) {
       alert('Password dan Konfirmasi Password tidak cocok!');
