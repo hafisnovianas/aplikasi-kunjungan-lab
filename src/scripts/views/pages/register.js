@@ -24,6 +24,12 @@ const RegisterPage = {
           </div>
 
           <div class="form-group">
+            <label for="email_reg">Email Kampus</label>
+            <input type="email" id="email_reg" placeholder="Contoh: 150203036@student.umri.ac.id" required>
+            <div id="emailWarning" class="invalid-feedback" style="display:none;"></div>
+          </div>
+
+          <div class="form-group">
             <label for="password_reg">Password</label>
             <input type="password" id="password_reg" required>
           </div>
@@ -48,51 +54,76 @@ const RegisterPage = {
   async afterRender() {
     document.getElementById('registerForm').addEventListener('submit', event => {
       event.preventDefault();
-      registerUser();
+      this._registerUser();
     });
+  },
+
+  async _registerUser() {
+    const nim = document.getElementById('nim_reg').value;
+    const nama = document.getElementById('nama_reg').value;
+    const prodi = document.getElementById('prodi_reg').value;
+    const email = document.getElementById('email_reg').value.trim().toLowerCase();
+    const password = document.getElementById('password_reg').value;
+    const confirmPassword = document.getElementById('confirm_password_reg').value;
+
+    const nimElement = document.getElementById('nim_reg');
+    const nimWarning = document.getElementById('nimWarning');
+    const emailElement = document.getElementById('email_reg');
+    const emailWarning = document.getElementById('emailWarning');
+
+    nimElement.classList.remove('is-invalid');
+    nimWarning.style.display = 'none';
+    emailElement.classList.remove('is-invalid');
+    emailWarning.style.display = 'none';
+
+    const campusEmailRegex = /^[a-zA-Z0-9._%+-]+@student\.umri\.ac\.id$/i;
+    if (email && !campusEmailRegex.test(email)) {
+      emailWarning.innerText = 'Gunakan email @student.umri.ac.id';
+      emailWarning.style.display = 'block';
+      emailElement.classList.add('is-invalid');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert('Password dan Konfirmasi Password tidak cocok!');
+      return;
+    }
+    if (!nim || !nama || !prodi || !email || !password || !confirmPassword) {
+      alert('Semua field wajib diisi!');
+      return;
+    }
+
+    const registerButton = document.querySelector('.form-container button');
+    registerButton.disabled = true;
+    registerButton.innerText = 'Mendaftar...';
+
+    try {
+      const payload = { nim, nama, prodi, email, password };
+      const response = await CallApi.callApi('register', payload);
+
+      if (response.status === 'success') {
+        document.getElementById('registerForm').reset();
+        document.getElementById('registerView').style.display = 'none';
+        document.getElementById('registerSuccessView').style.display = 'block';
+      } else if (response.status === 'duplicate') {
+        nimWarning.innerText = response.message;
+        nimWarning.style.display = 'block';
+        nimElement.classList.add('is-invalid');
+      } else if (response.status === 'email duplicate') {
+        emailWarning.innerText = response.message;
+        emailWarning.style.display = 'block';
+        emailElement.classList.add('is-invalid');
+      } else {
+        alert(response.message);
+      } 
+    } catch (error) {
+      alert('Error: ' + error.message);
+    } finally {
+      registerButton.disabled = false;
+      registerButton.innerText = 'Daftar';
+    }
   }
 };
 
 export default RegisterPage;
 
-async function registerUser() {
-  const nim = document.getElementById('nim_reg').value;
-  const nama = document.getElementById('nama_reg').value;
-  const prodi = document.getElementById('prodi_reg').value;
-  const password = document.getElementById('password_reg').value;
-  const confirmPassword = document.getElementById('confirm_password_reg').value;
-
-  if (password !== confirmPassword) {
-    alert('Password dan Konfirmasi Password tidak cocok!');
-    return;
-  }
-  if (!nim || !nama || !prodi) {
-    alert('Semua field wajib diisi!');
-    return;
-  }
-
-  const registerButton = document.querySelector('.form-container button');
-  registerButton.disabled = true;
-  registerButton.innerText = 'Mendaftar...';
-
-  try {
-    const payload = { nim, nama, prodi, password };
-    const response = await CallApi.callApi('register', payload);
-    const nimInput = document.getElementById('nim_reg');
-    const nimWarning = document.getElementById('nimWarning');
-
-    if (response.status === 'success') {
-      document.getElementById('registerForm').reset();
-      document.getElementById('registerView').style.display = 'none';
-      document.getElementById('registerSuccessView').style.display = 'block';
-    } else if (response.status === 'duplicate') {
-      nimWarning.innerText = response.message;
-      nimWarning.style.display = 'block';
-      nimInput.classList.add('is-invalid');
-    } else {
-      alert(response.message);
-    }
-  } catch (error) {
-    alert('Error: ' + error.message);
-  }
-}

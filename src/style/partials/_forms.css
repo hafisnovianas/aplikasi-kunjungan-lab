@@ -27,6 +27,10 @@
   border-radius: 5px;
 }
 
+.form-group .is-invalid {
+  border-color: #dc3545;
+}
+
 .form-group select {
   -webkit-appearance: none;
   -moz-appearance: none;
